@@ -4,9 +4,9 @@ directories:
   buildResources: build
 files:
   - '!**/.vscode/*'
-  - '!.github/*'
+  - '!.github/**/*'
   - '!Wooly.bat'
-  - '!scripts/*'
+  - '!scripts/**/*'
   - '!src/*'
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
