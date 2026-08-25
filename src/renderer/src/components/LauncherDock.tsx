@@ -8,7 +8,7 @@ import StopIcon from '@hugeicons/core-free-icons/StopIcon'
 import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/motion'
-import type { AppUpdateState, GameInstance, LaunchState } from '@shared/types'
+import type { AppUpdateState, CatalogVersion, GameInstance, LaunchState } from '@shared/types'
 import { Icon } from './ui/icon'
 import { UpdateBanner } from './UpdateBanner'
 
@@ -133,12 +133,13 @@ const styles = stylex.create({
   },
   dock: {
     alignItems: 'center',
+    alignSelf: 'center',
     borderRadius: 999,
     display: 'flex',
-    gap: 8,
+    gap: 6,
     minHeight: 58,
     padding: 6,
-    width: '100%'
+    width: 'auto'
   },
   version: {
     appearance: 'none',
@@ -146,19 +147,12 @@ const styles = stylex.create({
     borderStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
-    flex: 1,
+    flexShrink: 0,
     font: 'inherit',
     fontSize: 15,
     fontWeight: 500,
-    minWidth: 0,
-    overflow: 'hidden',
-    padding: '0 12px',
-    textAlign: 'left',
-    textOverflow: 'ellipsis',
+    padding: '0 14px 0 16px',
     whiteSpace: 'nowrap'
-  },
-  muted: {
-    color: colors.mutedForeground
   },
   round: {
     alignItems: 'center',
@@ -200,6 +194,7 @@ function playLabel(phase: LaunchState['phase']): string {
 export function LauncherDock({
   instances,
   selected,
+  versions,
   launch,
   settingsActive,
   update,
@@ -214,6 +209,7 @@ export function LauncherDock({
 }: {
   instances: GameInstance[]
   selected: GameInstance | null
+  versions: CatalogVersion[]
   launch: LaunchState
   settingsActive: boolean
   update: AppUpdateState
@@ -230,6 +226,9 @@ export function LauncherDock({
   const [shown, setShown] = useState(false)
   const panel = useRef<HTMLDivElement>(null)
   const plus = useRef<HTMLSpanElement>(null)
+  const latestVersion =
+    versions.find((item) => item.latestRelease)?.id ?? versions[0]?.id ?? ''
+  const versionLabel = selected?.versionId ?? latestVersion
   const busy = Boolean(selected && launch.phase !== 'idle' && launch.instanceId === selected.id)
   const running = Boolean(selected && launch.phase === 'running' && launch.instanceId === selected.id)
   const locked = busy && !running
@@ -399,9 +398,9 @@ export function LauncherDock({
           <button
             type="button"
             onClick={() => (open ? hide() : show())}
-            {...stylex.props(styles.version, !selected && styles.muted)}
+            {...stylex.props(styles.version)}
           >
-            {selected?.versionId ?? '—'}
+            {versionLabel}
           </button>
           <button
             type="button"

@@ -70,41 +70,37 @@ export function AccountDialog({
         </div>
       ) : null}
       <div {...stylex.props(styles.list)}>
-        {accounts.length === 0 ? (
-          <p {...stylex.props(styles.muted)}>{t.noAccountsHint}</p>
-        ) : (
-          accounts.map((account) => (
-            <div key={account.id} {...stylex.props(styles.row)}>
-              <div {...stylex.props(styles.who)}>
-                <img alt="" src={account.avatarUrl} {...stylex.props(styles.avatar)} />
-                <div>
-                  <div>{account.username}</div>
-                  <div {...stylex.props(styles.muted)}>
-                    {account.id === activeId ? t.active : account.xboxGamertag}
-                  </div>
+        {accounts.map((account) => (
+          <div key={account.id} {...stylex.props(styles.row)}>
+            <div {...stylex.props(styles.who)}>
+              <img alt="" src={account.avatarUrl} {...stylex.props(styles.avatar)} />
+              <div>
+                <div>{account.username}</div>
+                <div {...stylex.props(styles.muted)}>
+                  {account.id === activeId ? t.active : account.xboxGamertag}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {account.id !== activeId ? (
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => void window.wooly.accounts.select(account.id)}
-                  >
-                    {t.useAccount}
-                  </Button>
-                ) : null}
+            </div>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {account.id !== activeId ? (
                 <Button
                   size="sm"
-                  variant="ghost"
-                  onClick={() => void window.wooly.accounts.logout(account.id)}
+                  variant="secondary"
+                  onClick={() => void window.wooly.accounts.select(account.id)}
                 >
-                  {t.signOut}
+                  {t.useAccount}
                 </Button>
-              </div>
+              ) : null}
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => void window.wooly.accounts.logout(account.id)}
+              >
+                {t.signOut}
+              </Button>
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
       {error ? <p {...stylex.props(styles.error)}>{error}</p> : null}
       <Button onClick={() => void login()} disabled={busy}>

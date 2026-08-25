@@ -25,7 +25,6 @@ export const t = {
   useAccount: 'Use this account',
   active: 'Active',
   noAccounts: 'No Microsoft account yet.',
-  noAccountsHint: 'Wooly launches premium Minecraft Java only. Sign in to continue.',
   microsoftReady: 'Microsoft login is built into Wooly. Add your account from Accounts.',
   noInstances: 'Nothing here yet.',
   noInstancesVanilla: 'Create a vanilla instance to start playing.',

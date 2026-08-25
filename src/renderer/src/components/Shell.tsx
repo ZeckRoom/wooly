@@ -132,6 +132,7 @@ export function Shell() {
             <LauncherDock
               instances={store.instances}
               selected={selected}
+              versions={store.versions}
               launch={store.launch}
               settingsActive={store.view === 'settings'}
               update={store.update}

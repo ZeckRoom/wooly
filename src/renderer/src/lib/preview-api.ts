@@ -18,22 +18,22 @@ export function installPreviewApi(): void {
 
   const versions: CatalogVersion[] = [
     {
-      id: '1.21.8',
+      id: '26.2',
       type: 'release',
-      releaseTime: '2025-07-17T00:00:00+00:00',
+      releaseTime: '2026-06-16T12:03:33+00:00',
       url: '',
       latestRelease: true
     },
     {
-      id: '1.21.4',
+      id: '1.21.8',
       type: 'release',
-      releaseTime: '2024-12-03T00:00:00+00:00',
+      releaseTime: '2025-07-17T00:00:00+00:00',
       url: ''
     },
     {
-      id: '25w32a',
+      id: '26.3-snapshot-10',
       type: 'snapshot',
-      releaseTime: '2025-08-06T00:00:00+00:00',
+      releaseTime: '2026-08-25T12:53:43+00:00',
       url: '',
       latestSnapshot: true
     }
