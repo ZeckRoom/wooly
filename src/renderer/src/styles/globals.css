@@ -3,6 +3,7 @@
 :root {
   --ink: #f3ece3;
   --background: #161310;
+  --titlebar-bg: #2c2721;
   --card: #1e1a16;
   --card-foreground: var(--ink);
   --popover: #221e19;

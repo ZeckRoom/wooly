@@ -11,6 +11,10 @@ import { Icon } from './ui/icon'
 const styles = stylex.create({
   bar: {
     alignItems: 'center',
+    backgroundColor: colors.titlebar,
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
     display: 'flex',
     height: 'var(--titlebar)',
     justifyContent: 'space-between',
@@ -32,7 +36,7 @@ const styles = stylex.create({
     letterSpacing: '-0.03em'
   },
   tabs: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.background,
     borderRadius: 999,
     display: 'flex',
     gap: 2,
@@ -47,7 +51,7 @@ const styles = stylex.create({
     paddingInline: 14
   },
   tabActive: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.secondary,
     color: colors.foreground
   },
   right: {
