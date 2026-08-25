@@ -119,7 +119,7 @@ export function TitleBar({
       data-tauri-drag-region
       {...stylex.props(styles.bar, customClassName('wooly-titlebar'))}
     >
-      <nav {...stylex.props(styles.nav, customClassName('wooly-glass'))} aria-label={t.appProduct}>
+      <nav {...stylex.props(styles.nav, customClassName('wooly-island'))} aria-label={t.appProduct}>
         <button
           type="button"
           title={t.appProduct}

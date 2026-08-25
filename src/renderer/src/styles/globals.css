@@ -139,6 +139,17 @@ input[type='range'] {
   backdrop-filter: blur(24px);
 }
 
+.wooly-island {
+  appearance: none;
+  background: rgb(18 19 22 / 0.92);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
+  color: var(--ink);
+  -webkit-appearance: none;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
 [data-tauri-drag-region] {
   -webkit-app-region: drag;
   app-region: drag;
