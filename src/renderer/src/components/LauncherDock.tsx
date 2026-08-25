@@ -142,16 +142,24 @@ const styles = stylex.create({
     width: 'auto'
   },
   version: {
+    alignItems: 'center',
     appearance: 'none',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgb(10 12 14 / 0.9)',
+    borderRadius: 999,
     borderStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
+    display: 'flex',
     flexShrink: 0,
     font: 'inherit',
-    fontSize: 15,
-    fontWeight: 500,
-    padding: '0 8px 0 16px',
+    fontSize: 13,
+    fontWeight: 600,
+    height: 46,
+    justifyContent: 'center',
+    letterSpacing: '-0.02em',
+    minWidth: 46,
+    padding: '0 14px',
+    WebkitAppearance: 'none',
     whiteSpace: 'nowrap'
   },
   round: {
@@ -389,7 +397,7 @@ export function LauncherDock({
             aria-expanded={open}
             aria-haspopup="dialog"
             onClick={() => (open ? hide() : show())}
-            {...stylex.props(styles.version)}
+            {...stylex.props(styles.version, customClassName('wooly-glass-dot'))}
           >
             {versionLabel}
           </button>
