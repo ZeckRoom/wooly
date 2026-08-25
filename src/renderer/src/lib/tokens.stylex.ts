@@ -33,7 +33,9 @@ export const colors = stylex.defineVars({
   sidebarPrimaryForeground: 'var(--sidebar-primary-foreground)',
   sidebarRing: 'var(--sidebar-ring)',
   info: 'var(--info)',
-  infoForeground: 'var(--info-foreground)'
+  infoForeground: 'var(--info-foreground)',
+  success: 'var(--success)',
+  successForeground: 'var(--success-foreground)'
 })
 
 export const radius = stylex.defineVars({

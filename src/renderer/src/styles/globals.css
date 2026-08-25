@@ -22,6 +22,8 @@
   --destructive: #e26d5a;
   --info: #3d7dff;
   --info-foreground: #f4f8ff;
+  --success: #2fbf71;
+  --success-foreground: #f2fff7;
   --radius: 0.625rem;
   --sidebar: #101214;
   --titlebar-bg: var(--sidebar);

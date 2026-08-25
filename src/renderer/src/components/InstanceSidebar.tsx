@@ -24,15 +24,12 @@ const styles = stylex.create({
   head: {
     alignItems: 'center',
     backgroundColor: {
-      ':hover': colors.accent,
-      default: colors.secondary
+      ':hover': 'color-mix(in srgb, white 10%, var(--success))',
+      default: colors.success
     },
-    borderBottomColor: colors.border,
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
     borderRadius: 0,
     borderStyle: 'none',
-    color: colors.foreground,
+    color: colors.successForeground,
     cursor: 'pointer',
     display: 'flex',
     flexShrink: 0,
