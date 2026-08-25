@@ -7,7 +7,6 @@ import { t } from '@/lib/i18n'
 import type { AppUpdateState, GameInstance, InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
-import { Plate } from './ui/plate'
 import { UpdateBanner } from './UpdateBanner'
 
 const styles = stylex.create({
@@ -83,12 +82,6 @@ const styles = stylex.create({
   meta: {
     color: colors.mutedForeground,
     fontSize: 12
-  },
-  empty: {
-    color: colors.mutedForeground,
-    fontSize: 13,
-    lineHeight: 1.6,
-    padding: 12
   },
   footer: {
     display: 'flex',
@@ -221,27 +214,19 @@ export function InstanceSidebar({
         ))}
       </div>
       <div {...stylex.props(styles.list)}>
-        {rows.length === 0 ? (
-          <Plate>
-            <p {...stylex.props(styles.empty)}>
-              {group === 'modded' ? t.noInstancesModded : t.noInstancesVanilla}
-            </p>
-          </Plate>
-        ) : (
-          rows.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onSelect(item.id)}
-              {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
-            >
-              <span {...stylex.props(styles.name)}>{item.name}</span>
-              <span {...stylex.props(styles.meta)}>
-                {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
-              </span>
-            </button>
-          ))
-        )}
+        {rows.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelect(item.id)}
+            {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
+          >
+            <span {...stylex.props(styles.name)}>{item.name}</span>
+            <span {...stylex.props(styles.meta)}>
+              {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
+            </span>
+          </button>
+        ))}
       </div>
       <div {...stylex.props(styles.footer)}>
         <UpdateBanner
