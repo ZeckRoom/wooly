@@ -7,6 +7,7 @@ import { AccountChip } from './AccountChip'
 import { AccountDialog } from './AccountDialog'
 import { InstanceDetail } from './InstanceDetail'
 import { InstanceFormDialog } from './InstanceFormDialog'
+import { InstanceRail } from './InstanceRail'
 import { LauncherDock } from './LauncherDock'
 import { SettingsView } from './SettingsView'
 import { TitleBar } from './TitleBar'
@@ -14,12 +15,20 @@ import { activeAccount, useLauncher } from '@/state/store'
 
 const styles = stylex.create({
   root: {
+    backgroundColor: colors.sidebar,
+    display: 'flex',
+    flexDirection: 'row',
+    height: '100%',
+    overflow: 'hidden'
+  },
+  stage: {
     backgroundColor: colors.background,
     backgroundImage:
       'radial-gradient(ellipse 90% 55% at 50% 115%, rgb(61 125 255 / 0.22), transparent 58%), radial-gradient(ellipse 45% 40% at 8% 88%, rgb(47 191 113 / 0.12), transparent 52%)',
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
-    height: '100%',
+    minWidth: 0,
     position: 'relative'
   },
   body: {
@@ -95,13 +104,27 @@ export function Shell() {
 
   return (
     <div {...stylex.props(styles.root)}>
-      <TitleBar maximized={store.maximized} />
-      {store.error && store.error !== store.launch.error ? (
-        <p role="alert" {...stylex.props(styles.banner)}>
-          {store.error}
-        </p>
-      ) : null}
-      <div {...stylex.props(styles.body)}>
+      <InstanceRail
+        instances={store.instances}
+        selectedId={store.selectedId}
+        onSelect={(id) => {
+          store.selectInstance(id)
+          store.setView('library')
+        }}
+        onCreate={() => {
+          store.setView('library')
+          setCreateOpen(true)
+        }}
+        onHome={() => store.setView('library')}
+      />
+      <div {...stylex.props(styles.stage)}>
+        <TitleBar maximized={store.maximized} />
+        {store.error && store.error !== store.launch.error ? (
+          <p role="alert" {...stylex.props(styles.banner)}>
+            {store.error}
+          </p>
+        ) : null}
+        <div {...stylex.props(styles.body)}>
         {store.view === 'settings' ? (
           <SettingsView
             settings={store.settings}
@@ -153,6 +176,7 @@ export function Shell() {
             />
           </div>
         </div>
+      </div>
       </div>
       <InstanceFormDialog
         key={`create-${createOpen}`}

@@ -28,7 +28,7 @@ const styles = stylex.create({
     borderStyle: 'none',
     bottom: 0,
     cursor: 'default',
-    left: 0,
+    left: 'var(--rail)',
     pointerEvents: 'auto',
     position: 'fixed',
     right: 0,
