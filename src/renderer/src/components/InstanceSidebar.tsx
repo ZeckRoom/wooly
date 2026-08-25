@@ -21,13 +21,6 @@ const styles = stylex.create({
     padding: 0,
     width: 300
   },
-  body: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    minHeight: 0,
-    padding: 16
-  },
   head: {
     alignItems: 'center',
     backgroundColor: {
@@ -52,25 +45,33 @@ const styles = stylex.create({
     width: '100%'
   },
   list: {
+    alignItems: 'stretch',
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    gap: 8,
+    gap: 0,
     minHeight: 0,
-    overflow: 'auto'
+    overflow: 'auto',
+    padding: 0,
+    width: '100%'
   },
   row: {
-    backgroundColor: 'transparent',
-    borderColor: colors.border,
-    borderRadius: 18,
-    borderStyle: 'solid',
-    borderWidth: 1,
+    backgroundColor: {
+      ':hover': colors.accent,
+      default: 'transparent'
+    },
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
+    borderRadius: 0,
+    borderStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
+    flexShrink: 0,
     gap: 2,
-    padding: '10px 12px',
+    padding: '12px 16px',
     textAlign: 'left',
     width: '100%'
   },
@@ -216,22 +217,20 @@ export function InstanceSidebar({
         <Icon icon={PlusSignIcon} size={14} />
         {t.newInstance}
       </button>
-      <div {...stylex.props(styles.body)}>
-        <div {...stylex.props(styles.list)}>
-          {instances.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onSelect(item.id)}
-              {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
-            >
-              <span {...stylex.props(styles.name)}>{item.name}</span>
-              <span {...stylex.props(styles.meta)}>
-                {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
-              </span>
-            </button>
-          ))}
-        </div>
+      <div {...stylex.props(styles.list)}>
+        {instances.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => onSelect(item.id)}
+            {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
+          >
+            <span {...stylex.props(styles.name)}>{item.name}</span>
+            <span {...stylex.props(styles.meta)}>
+              {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
+            </span>
+          </button>
+        ))}
       </div>
       <div {...stylex.props(styles.footer)}>
         <UpdateBanner
