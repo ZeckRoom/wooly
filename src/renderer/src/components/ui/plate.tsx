@@ -26,12 +26,26 @@ const styles = stylex.create({
     borderStyle: 'solid',
     borderWidth: 1,
     boxShadow: '0 1px 2px rgb(0 0 0 / 0.18)'
+  },
+  flatBare: {
+    backgroundColor: colors.card,
+    borderRadius: 22,
+    borderWidth: 0,
+    boxShadow: 'none'
   }
 })
 
-export function Plate({ children, inset = false }: { children: React.ReactNode; inset?: boolean }) {
+export function Plate({
+  children,
+  inset = false,
+  bordered = true
+}: {
+  children: React.ReactNode
+  inset?: boolean
+  bordered?: boolean
+}) {
   if (!inset) {
-    return <section {...stylex.props(styles.flat)}>{children}</section>
+    return <section {...stylex.props(bordered ? styles.flat : styles.flatBare)}>{children}</section>
   }
   return (
     <section {...stylex.props(styles.outer)}>

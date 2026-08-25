@@ -119,7 +119,7 @@ export function InstanceDetail({
   if (!instance) {
     return (
       <main {...stylex.props(styles.root)}>
-        <Plate>
+        <Plate bordered={false}>
           <div {...stylex.props(styles.hero)}>
             <h1 {...stylex.props(styles.title)}>{t.noInstances}</h1>
           </div>
