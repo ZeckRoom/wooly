@@ -2,7 +2,8 @@ import * as stylex from '@stylexjs/stylex'
 import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
-import type { GameInstance } from '@shared/types'
+import type { GameInstance, PublicAccount } from '@shared/types'
+import { AccountChip } from './AccountChip'
 import { Icon } from './ui/icon'
 
 const styles = stylex.create({
@@ -116,9 +117,12 @@ const styles = stylex.create({
     flexShrink: 0,
     height: 48,
     justifyContent: 'center',
-    marginTop: 4,
     transition: 'border-radius 0.18s var(--ease-out), background-color 0.18s var(--ease-out)',
     width: 48
+  },
+  account: {
+    flexShrink: 0,
+    paddingTop: 8
   }
 })
 
@@ -136,15 +140,19 @@ function initialFor(name: string): string {
 export function InstanceRail({
   instances,
   selectedId,
+  account,
   onSelect,
   onCreate,
-  onHome
+  onHome,
+  onAccounts
 }: {
   instances: GameInstance[]
   selectedId: string | null
+  account: PublicAccount | null
   onSelect: (id: string) => void
   onCreate: () => void
   onHome: () => void
+  onAccounts: () => void
 }) {
   return (
     <aside {...stylex.props(styles.root)} aria-label={t.instances}>
@@ -178,16 +186,19 @@ export function InstanceRail({
             </div>
           )
         })}
+        <button
+          type="button"
+          title={t.newInstance}
+          aria-label={t.newInstance}
+          onClick={onCreate}
+          {...stylex.props(styles.add)}
+        >
+          <Icon icon={PlusSignIcon} size={22} />
+        </button>
       </div>
-      <button
-        type="button"
-        title={t.newInstance}
-        aria-label={t.newInstance}
-        onClick={onCreate}
-        {...stylex.props(styles.add)}
-      >
-        <Icon icon={PlusSignIcon} size={22} />
-      </button>
+      <div {...stylex.props(styles.account)}>
+        <AccountChip account={account} onClick={onAccounts} />
+      </div>
     </aside>
   )
 }

@@ -3,7 +3,6 @@ import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceDraft } from '@shared/types'
-import { AccountChip } from './AccountChip'
 import { AccountDialog } from './AccountDialog'
 import { InstanceDetail } from './InstanceDetail'
 import { InstanceFormDialog } from './InstanceFormDialog'
@@ -42,13 +41,6 @@ const styles = stylex.create({
     pointerEvents: 'none',
     position: 'absolute',
     zIndex: 20
-  },
-  account: {
-    bottom: 18,
-    left: 18,
-    pointerEvents: 'auto',
-    position: 'absolute',
-    zIndex: 21
   },
   dock: {
     bottom: 18,
@@ -107,6 +99,7 @@ export function Shell() {
       <InstanceRail
         instances={store.instances}
         selectedId={store.selectedId}
+        account={account}
         onSelect={(id) => {
           store.selectInstance(id)
           store.setView('library')
@@ -116,6 +109,7 @@ export function Shell() {
           setCreateOpen(true)
         }}
         onHome={() => store.setView('library')}
+        onAccounts={() => setAccountsOpen(true)}
       />
       <div {...stylex.props(styles.stage)}>
         <TitleBar maximized={store.maximized} />
@@ -148,9 +142,6 @@ export function Shell() {
           />
         )}
         <div {...stylex.props(styles.chrome)}>
-          <div {...stylex.props(styles.account)}>
-            <AccountChip account={account} onClick={() => setAccountsOpen(true)} />
-          </div>
           <div {...stylex.props(styles.dock)}>
             <LauncherDock
               instances={store.instances}
