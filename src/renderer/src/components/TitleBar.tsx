@@ -11,7 +11,7 @@ import { Icon } from './ui/icon'
 const styles = stylex.create({
   bar: {
     alignItems: 'center',
-    backgroundColor: colors.titlebar,
+    backgroundColor: 'var(--titlebar-bg)',
     borderBottomColor: colors.border,
     borderBottomStyle: 'solid',
     borderBottomWidth: 1,

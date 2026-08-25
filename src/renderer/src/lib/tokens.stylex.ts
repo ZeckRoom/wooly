@@ -9,7 +9,6 @@ export const colors = stylex.defineVars({
   accent: 'var(--accent)',
   accentForeground: 'var(--accent-foreground)',
   background: 'var(--background)',
-  titlebar: 'var(--titlebar-bg)',
   border: 'var(--border)',
   card: 'var(--card)',
   cardForeground: 'var(--card-foreground)',
