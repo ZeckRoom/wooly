@@ -5,7 +5,6 @@ import UserIcon from '@hugeicons/core-free-icons/UserIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AppUpdateState, GameInstance, PublicAccount } from '@shared/types'
-import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { UpdateBanner } from './UpdateBanner'
 
@@ -17,19 +16,40 @@ const styles = stylex.create({
     borderRightWidth: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: 12,
     height: '100%',
     minWidth: 280,
-    paddingBottom: 0,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
+    padding: 0,
     width: 300
+  },
+  body: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    minHeight: 0,
+    padding: 16
   },
   head: {
     alignItems: 'center',
+    backgroundColor: {
+      ':hover': colors.accent,
+      default: colors.secondary
+    },
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
+    borderRadius: 0,
+    borderStyle: 'none',
+    color: colors.foreground,
+    cursor: 'pointer',
     display: 'flex',
-    justifyContent: 'flex-start'
+    flexShrink: 0,
+    font: 'inherit',
+    fontWeight: 500,
+    gap: 8,
+    justifyContent: 'flex-start',
+    padding: '10px 16px',
+    textAlign: 'left',
+    width: '100%'
   },
   list: {
     display: 'flex',
@@ -67,30 +87,28 @@ const styles = stylex.create({
   },
   footer: {
     borderColor: colors.border,
-    borderLeftStyle: 'none',
+    borderLeftWidth: 0,
     borderRadius: 0,
-    borderRightStyle: 'none',
-    borderBottomStyle: 'none',
-    borderTopStyle: 'solid',
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+    borderStyle: 'solid',
     borderTopWidth: 1,
     display: 'flex',
     flexDirection: 'column',
     gap: 0,
-    marginLeft: -16,
-    marginRight: -16,
     marginTop: 'auto',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: '100%'
   },
   profile: {
-    alignItems: 'center',
+    alignItems: 'stretch',
     borderTopColor: colors.border,
     borderTopStyle: 'solid',
     borderTopWidth: 1,
     display: 'flex',
-    gap: 4,
+    minHeight: 56,
     minWidth: 0,
-    paddingBlock: 4,
-    paddingInline: 4
+    padding: 0
   },
   identity: {
     alignItems: 'center',
@@ -106,7 +124,7 @@ const styles = stylex.create({
     flex: 1,
     gap: 10,
     minWidth: 0,
-    padding: '6px 8px',
+    padding: '10px 12px',
     textAlign: 'left'
   },
   avatar: {
@@ -144,9 +162,20 @@ const styles = stylex.create({
     whiteSpace: 'nowrap'
   },
   gear: {
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    backgroundColor: {
+      ':hover': colors.accent,
+      default: 'transparent'
+    },
     borderRadius: 0,
+    borderStyle: 'none',
     color: colors.mutedForeground,
-    flexShrink: 0
+    cursor: 'pointer',
+    display: 'flex',
+    flexShrink: 0,
+    justifyContent: 'center',
+    width: 52
   },
   gearActive: {
     backgroundColor: colors.accent,
@@ -183,26 +212,26 @@ export function InstanceSidebar({
 }) {
   return (
     <aside {...stylex.props(styles.root)}>
-      <div {...stylex.props(styles.head)}>
-        <Button size="sm" variant="secondary" onClick={onCreate}>
-          <Icon icon={PlusSignIcon} size={14} />
-          {t.newInstance}
-        </Button>
-      </div>
-      <div {...stylex.props(styles.list)}>
-        {instances.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onSelect(item.id)}
-            {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
-          >
-            <span {...stylex.props(styles.name)}>{item.name}</span>
-            <span {...stylex.props(styles.meta)}>
-              {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
-            </span>
-          </button>
-        ))}
+      <button type="button" onClick={onCreate} {...stylex.props(styles.head)}>
+        <Icon icon={PlusSignIcon} size={14} />
+        {t.newInstance}
+      </button>
+      <div {...stylex.props(styles.body)}>
+        <div {...stylex.props(styles.list)}>
+          {instances.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => onSelect(item.id)}
+              {...stylex.props(styles.row, selectedId === item.id && styles.rowActive)}
+            >
+              <span {...stylex.props(styles.name)}>{item.name}</span>
+              <span {...stylex.props(styles.meta)}>
+                {item.versionId} · {item.versionType === 'snapshot' ? t.snapshot : t.releases}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
       <div {...stylex.props(styles.footer)}>
         <UpdateBanner
@@ -229,16 +258,15 @@ export function InstanceSidebar({
               </span>
             </span>
           </button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
+          <button
+            type="button"
             aria-label={t.settings}
             aria-pressed={settingsActive}
             onClick={onSettings}
-            sx={settingsActive ? [styles.gear, styles.gearActive] : styles.gear}
+            {...stylex.props(styles.gear, settingsActive && styles.gearActive)}
           >
             <Icon icon={Settings01Icon} size={18} />
-          </Button>
+          </button>
         </div>
       </div>
     </aside>
