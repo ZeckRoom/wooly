@@ -15,7 +15,7 @@ const styles = stylex.create({
     paddingInline: '0.9rem',
     width: '100%',
     boxShadow: {
-      ':focus-visible': '0 0 0 3px color-mix(in srgb, var(--ring) 45%, transparent)',
+      ':focus-visible': '0 0 0 3px color-mix(in srgb, var(--ring) 40%, transparent)',
       default: 'none'
     }
   }

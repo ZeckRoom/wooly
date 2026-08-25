@@ -7,7 +7,7 @@ Wooly is a **Tauri 2** desktop app: a short branded splash, isolated instances, 
 ## v1
 
 - Tauri 2 + WebView2, React, TypeScript, [StyleX](https://stylexjs.com), [shadcn-cssinjs](https://shadcn-cssinjs.com/docs)
-- Visual language: Open Design / OA plates and pills, warm wool palette
+- Visual language: void black, emerald Play, version chips, Geist, one surface at a time
 - English UI (Spanish and Polish later)
 - Microsoft / Xbox / Minecraft login, multiple accounts, encrypted persistent sessions
 - Isolated instances in **Vanilla** and **Modded** groups (loaders and mods come later)

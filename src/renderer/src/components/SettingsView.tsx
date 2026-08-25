@@ -4,26 +4,33 @@ import { t } from '@/lib/i18n'
 import type { AppSettings } from '@shared/types'
 import { useLauncher } from '@/state/store'
 import { Button } from './ui/button'
-import { Plate } from './ui/plate'
+import { Well } from './ui/well'
 
 const styles = stylex.create({
   root: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    gap: 16,
-    padding: '8px 24px 120px'
+    gap: 20,
+    padding: '20px 32px 120px'
+  },
+  kicker: {
+    color: colors.mutedForeground,
+    fontSize: 11,
+    fontWeight: 500,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase'
   },
   title: {
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: 500,
-    letterSpacing: '-0.04em'
+    letterSpacing: '-0.03em'
   },
-  plate: {
+  body: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 10,
-    padding: 20
+    gap: 14,
+    padding: '18px 20px'
   },
   muted: {
     color: colors.mutedForeground,
@@ -34,6 +41,11 @@ const styles = stylex.create({
     alignItems: 'center',
     display: 'flex',
     gap: 10
+  },
+  version: {
+    color: colors.success,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
+    fontSize: 13
   }
 })
 
@@ -48,9 +60,12 @@ export function SettingsView({
 
   return (
     <main {...stylex.props(styles.root)}>
-      <h1 {...stylex.props(styles.title)}>{t.settings}</h1>
-      <Plate>
-        <div {...stylex.props(styles.plate)}>
+      <div>
+        <div {...stylex.props(styles.kicker)}>{t.appName}</div>
+        <h1 {...stylex.props(styles.title)}>{t.settings}</h1>
+      </div>
+      <Well>
+        <div {...stylex.props(styles.body)}>
           <label {...stylex.props(styles.row)}>
             <input
               type="checkbox"
@@ -68,7 +83,7 @@ export function SettingsView({
             {t.language}: {t.languageValue}. {t.languageSoon}
           </p>
           <p {...stylex.props(styles.muted)}>
-            {t.appVersion} {appVersion}
+            {t.appVersion} <span {...stylex.props(styles.version)}>{appVersion}</span>
           </p>
           <div {...stylex.props(styles.row)}>
             <Button
@@ -94,7 +109,7 @@ export function SettingsView({
             </Button>
           </div>
         </div>
-      </Plate>
+      </Well>
     </main>
   )
 }

@@ -7,17 +7,15 @@ import type { AppUpdateState } from '@shared/types'
 import { Icon } from './ui/icon'
 
 const styles = stylex.create({
-  card: {
+  row: {
     alignItems: 'center',
     backgroundColor: {
-      ':disabled': colors.info,
-      ':hover': 'color-mix(in srgb, white 10%, var(--info))',
-      default: colors.info
+      ':hover': 'rgb(255 255 255 / 0.05)',
+      default: 'transparent'
     },
-    borderRadius: 0,
+    borderRadius: 10,
     borderStyle: 'none',
-    boxShadow: 'none',
-    color: colors.infoForeground,
+    color: colors.foreground,
     cursor: { ':disabled': 'default', default: 'pointer' },
     display: 'flex',
     font: 'inherit',
@@ -29,13 +27,8 @@ const styles = stylex.create({
     textAlign: 'left',
     width: '100%'
   },
-  idle: {
-    backgroundColor: {
-      ':hover': 'color-mix(in srgb, var(--ink) 10%, var(--secondary))',
-      default: colors.secondary
-    },
-    boxShadow: 'none',
-    color: colors.foreground
+  live: {
+    color: colors.success
   },
   title: {
     flex: 1,
@@ -58,15 +51,15 @@ const styles = stylex.create({
     width: 18
   },
   track: {
-    backgroundColor: 'rgb(255 255 255 / 0.22)',
+    backgroundColor: 'rgb(52 211 153 / 0.22)',
     bottom: 0,
-    height: 3,
-    left: 0,
+    height: 2,
+    left: 12,
     position: 'absolute',
-    right: 0
+    right: 12
   },
   bar: {
-    backgroundColor: colors.infoForeground,
+    backgroundColor: colors.success,
     height: '100%',
     transition: 'width 0.2s ease-out'
   }
@@ -121,7 +114,7 @@ export function UpdateBanner({
       aria-live="polite"
       aria-label={hint ? `${title}. ${hint}` : title}
       onClick={activate}
-      {...stylex.props(styles.card, idle && styles.idle)}
+      {...stylex.props(styles.row, !idle && styles.live)}
     >
       <span {...stylex.props(styles.title)}>{title}</span>
       <span {...stylex.props(styles.glyph)} aria-hidden>

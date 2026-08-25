@@ -5,9 +5,10 @@ import { colors, customClassName } from '../../lib/tokens.stylex'
 const styles = stylex.create({
   base: {
     alignItems: 'center',
+    borderColor: 'transparent',
     borderRadius: '9999px',
     borderStyle: 'solid',
-    borderWidth: 0,
+    borderWidth: 1,
     cursor: { ':disabled': 'not-allowed', default: 'pointer' },
     display: 'inline-flex',
     flexShrink: 0,
@@ -19,51 +20,54 @@ const styles = stylex.create({
     outline: 'none',
     pointerEvents: { ':disabled': 'none', default: null },
     transform: { ':active': 'translateY(1px) scale(0.98)', default: 'none' },
-    transition: 'color 0.15s, background-color 0.15s, box-shadow 0.15s, border-color 0.15s',
+    transition: 'color 0.15s, background-color 0.15s, border-color 0.15s',
     whiteSpace: 'nowrap'
   },
   default: {
     backgroundColor: {
-      ':hover': 'color-mix(in srgb, var(--primary) 88%, white)',
+      ':hover': 'color-mix(in srgb, var(--primary) 82%, white)',
       default: colors.primary
     },
-    boxShadow: 'inset 0 1px 0 rgb(255 255 255 / 0.22), 0 1px 2px rgb(0 0 0 / 0.18)',
+    borderColor: 'var(--primary-edge)',
     color: colors.primaryForeground
   },
   destructive: {
     backgroundColor: {
-      ':hover': 'color-mix(in srgb, var(--destructive) 90%, transparent)',
+      ':hover': 'color-mix(in srgb, var(--destructive) 88%, white)',
       default: colors.destructive
     },
+    borderColor: 'var(--destructive-edge)',
     color: '#fff'
   },
   focusable: {
     boxShadow: {
-      ':focus-visible': '0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent)',
+      ':focus-visible': '0 0 0 3px color-mix(in srgb, var(--ring) 45%, transparent)',
       default: null
     }
   },
   ghost: {
     backgroundColor: { ':hover': colors.accent, default: 'transparent' },
+    borderColor: 'transparent',
     color: { ':hover': colors.accentForeground, default: colors.foreground }
   },
   link: {
     backgroundColor: 'transparent',
-    color: colors.primary,
+    borderColor: 'transparent',
+    color: colors.success,
     textDecorationLine: { ':hover': 'underline', default: 'none' },
     textUnderlineOffset: '4px'
   },
   outline: {
     backgroundColor: { ':hover': colors.accent, default: 'transparent' },
     borderColor: colors.border,
-    borderWidth: 1,
     color: colors.foreground
   },
   secondary: {
     backgroundColor: {
-      ':hover': 'color-mix(in srgb, var(--ink) 10%, var(--secondary))',
+      ':hover': 'color-mix(in srgb, var(--ink) 8%, var(--secondary))',
       default: colors.secondary
     },
+    borderColor: colors.border,
     color: colors.secondaryForeground
   },
   sizeDefault: { height: '2.25rem', paddingInline: '1rem' },

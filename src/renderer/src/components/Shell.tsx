@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as stylex from '@stylexjs/stylex'
-import { colors } from '../lib/tokens.stylex'
+import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceDraft } from '@shared/types'
 import { AccountDialog } from './AccountDialog'
@@ -21,9 +21,6 @@ const styles = stylex.create({
     overflow: 'hidden'
   },
   stage: {
-    backgroundColor: colors.background,
-    backgroundImage:
-      'radial-gradient(ellipse 90% 55% at 50% 115%, rgb(61 125 255 / 0.22), transparent 58%), radial-gradient(ellipse 45% 40% at 8% 88%, rgb(47 191 113 / 0.12), transparent 52%)',
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
@@ -111,7 +108,7 @@ export function Shell() {
         onHome={() => store.setView('library')}
         onAccounts={() => setAccountsOpen(true)}
       />
-      <div {...stylex.props(styles.stage)}>
+      <div {...stylex.props(styles.stage, customClassName('wooly-stage'))}>
         <TitleBar maximized={store.maximized} />
         {store.error && store.error !== store.launch.error ? (
           <p role="alert" {...stylex.props(styles.banner)}>

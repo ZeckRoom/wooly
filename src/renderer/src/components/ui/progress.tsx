@@ -9,20 +9,21 @@ const styles = stylex.create({
     width: '100%'
   },
   track: {
-    backgroundColor: 'color-mix(in srgb, var(--primary) 20%, transparent)',
+    backgroundColor: 'color-mix(in srgb, var(--success) 18%, transparent)',
     borderRadius: '9999px',
-    height: '0.5rem',
+    height: '0.35rem',
     overflow: 'hidden',
     position: 'relative',
     width: '100%'
   },
   bar: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.success,
     height: '100%',
     transition: 'width 0.2s ease-out'
   },
   label: {
     color: colors.mutedForeground,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
     fontSize: '0.75rem'
   }
 })

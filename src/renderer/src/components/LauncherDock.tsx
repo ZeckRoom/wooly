@@ -24,7 +24,7 @@ const styles = stylex.create({
     zIndex: 21
   },
   overlay: {
-    backgroundColor: 'rgb(0 0 0 / 0.28)',
+    backgroundColor: 'rgb(0 0 0 / 0.45)',
     borderStyle: 'none',
     bottom: 0,
     cursor: 'default',
@@ -36,7 +36,7 @@ const styles = stylex.create({
     zIndex: 20
   },
   panel: {
-    borderRadius: 28,
+    borderRadius: 16,
     color: colors.foreground,
     display: 'flex',
     flexDirection: 'column',
@@ -53,13 +53,15 @@ const styles = stylex.create({
   },
   kicker: {
     color: colors.mutedForeground,
-    fontSize: 12,
-    letterSpacing: '0.04em'
+    fontSize: 11,
+    fontWeight: 500,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase'
   },
   close: {
     alignItems: 'center',
-    backgroundColor: 'rgb(8 10 12 / 0.42)',
-    borderColor: 'rgb(255 255 255 / 0.12)',
+    backgroundColor: 'transparent',
+    borderColor: colors.border,
     borderRadius: 999,
     borderStyle: 'solid',
     borderWidth: 1,
@@ -74,17 +76,16 @@ const styles = stylex.create({
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    gap: 2,
     minHeight: 0,
     overflow: 'auto',
-    padding: '4px 10px 8px'
+    padding: '4px 8px 8px'
   },
   item: {
     backgroundColor: {
-      ':hover': 'rgb(255 255 255 / 0.08)',
+      ':hover': 'rgb(255 255 255 / 0.05)',
       default: 'transparent'
     },
-    borderRadius: 14,
+    borderRadius: 10,
     borderStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
@@ -97,7 +98,7 @@ const styles = stylex.create({
     width: '100%'
   },
   itemActive: {
-    backgroundColor: 'rgb(255 255 255 / 0.1)'
+    backgroundColor: 'rgb(255 255 255 / 0.07)'
   },
   itemRow: {
     alignItems: 'center',
@@ -110,6 +111,7 @@ const styles = stylex.create({
   },
   meta: {
     color: colors.mutedForeground,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
     fontSize: 12
   },
   empty: {
@@ -118,46 +120,42 @@ const styles = stylex.create({
     padding: '12px 12px 16px'
   },
   rule: {
-    backgroundColor: 'rgb(255 255 255 / 0.1)',
+    backgroundColor: colors.border,
     borderStyle: 'none',
     height: 1,
     margin: '4px 16px',
     width: 'auto'
   },
   foot: {
-    padding: '4px 10px 10px'
-  },
-  update: {
-    borderRadius: 14,
-    overflow: 'hidden'
+    padding: '4px 8px 10px'
   },
   dock: {
     alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 999,
     display: 'flex',
-    gap: 6,
-    minHeight: 58,
+    gap: 8,
+    minHeight: 56,
     padding: 6,
     width: 'auto'
   },
   version: {
     alignItems: 'center',
     appearance: 'none',
-    backgroundColor: 'rgb(10 12 14 / 0.9)',
+    backgroundColor: colors.chip,
     borderRadius: 999,
     borderStyle: 'none',
-    color: colors.foreground,
+    color: colors.chipForeground,
     cursor: 'pointer',
     display: 'flex',
     flexShrink: 0,
-    font: 'inherit',
-    fontSize: 13,
-    fontWeight: 600,
-    height: 46,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
+    fontSize: 12,
+    fontWeight: 500,
+    height: 40,
     justifyContent: 'center',
-    letterSpacing: '-0.02em',
-    minWidth: 46,
+    letterSpacing: '0.02em',
+    minWidth: 40,
     padding: '0 14px',
     WebkitAppearance: 'none',
     whiteSpace: 'nowrap'
@@ -165,17 +163,19 @@ const styles = stylex.create({
   round: {
     alignItems: 'center',
     appearance: 'none',
-    backgroundColor: 'rgb(10 12 14 / 0.9)',
+    backgroundColor: colors.primary,
+    borderColor: 'var(--primary-edge)',
     borderRadius: 999,
-    borderStyle: 'none',
-    color: colors.foreground,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    color: colors.primaryForeground,
     cursor: 'pointer',
     display: 'flex',
     flexShrink: 0,
-    height: 46,
+    height: 44,
     justifyContent: 'center',
     WebkitAppearance: 'none',
-    width: 46
+    width: 44
   },
   play: {
     backgroundColor: {
@@ -183,8 +183,14 @@ const styles = stylex.create({
       ':hover': 'color-mix(in srgb, white 12%, var(--primary))',
       default: colors.primary
     },
-    color: colors.primaryForeground,
     opacity: { ':disabled': 0.7, default: 1 }
+  },
+  stop: {
+    backgroundColor: {
+      ':hover': 'color-mix(in srgb, white 12%, var(--destructive))',
+      default: colors.destructive
+    },
+    borderColor: 'var(--destructive-edge)'
   }
 })
 
@@ -380,7 +386,7 @@ export function LauncherDock({
                 <Icon icon={Settings01Icon} size={16} />
                 <span {...stylex.props(styles.name)}>{t.settings}</span>
               </button>
-              <div data-dock-item {...stylex.props(styles.update)}>
+              <div data-dock-item>
                 <UpdateBanner
                   update={update}
                   onCheck={onUpdateCheck}
@@ -397,7 +403,7 @@ export function LauncherDock({
             aria-expanded={open}
             aria-haspopup="dialog"
             onClick={() => (open ? hide() : show())}
-            {...stylex.props(styles.version, customClassName('wooly-glass-dot'))}
+            {...stylex.props(styles.version)}
           >
             {versionLabel}
           </button>
@@ -413,7 +419,7 @@ export function LauncherDock({
               if (running) onStop()
               else onPlay()
             }}
-            {...stylex.props(styles.round, styles.play)}
+            {...stylex.props(styles.round, styles.play, running && styles.stop)}
           >
             <Icon icon={running ? StopIcon : PlayIcon} size={18} />
           </button>

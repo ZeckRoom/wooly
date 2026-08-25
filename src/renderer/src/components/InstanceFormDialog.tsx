@@ -31,7 +31,10 @@ const styles = stylex.create({
   },
   label: {
     color: colors.mutedForeground,
-    fontSize: 12
+    fontSize: 11,
+    fontWeight: 500,
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase'
   },
   field: {
     display: 'flex',
@@ -43,26 +46,31 @@ const styles = stylex.create({
     gap: 8
   },
   list: {
-    borderColor: colors.border,
-    borderRadius: 16,
-    borderStyle: 'solid',
-    borderWidth: 1,
     maxHeight: 180,
     overflow: 'auto'
   },
   option: {
-    backgroundColor: 'transparent',
-    borderStyle: 'none',
+    backgroundColor: {
+      ':hover': 'rgb(255 255 255 / 0.05)',
+      default: 'transparent'
+    },
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
+    borderLeftStyle: 'none',
+    borderRightStyle: 'none',
+    borderTopStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
     display: 'block',
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
     fontSize: 13,
-    padding: '8px 12px',
+    padding: '10px 4px',
     textAlign: 'left',
     width: '100%'
   },
   optionActive: {
-    backgroundColor: colors.accent
+    color: colors.success
   },
   error: {
     color: colors.destructive,

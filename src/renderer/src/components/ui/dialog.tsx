@@ -6,7 +6,7 @@ import { Button } from './button'
 const styles = stylex.create({
   backdrop: {
     alignItems: 'center',
-    backgroundColor: 'rgb(0 0 0 / 0.45)',
+    backgroundColor: 'rgb(0 0 0 / 0.55)',
     display: 'flex',
     inset: 0,
     justifyContent: 'center',
@@ -17,16 +17,16 @@ const styles = stylex.create({
   panel: {
     backgroundColor: colors.card,
     borderColor: colors.border,
-    borderRadius: 26,
+    borderRadius: 16,
     borderStyle: 'solid',
     borderWidth: 1,
-    boxShadow: '0 8px 24px rgb(0 0 0 / 0.28)',
+    boxShadow: '0 12px 40px rgb(0 0 0 / 0.3)',
     display: 'flex',
     flexDirection: 'column',
     gap: '1rem',
     maxHeight: 'min(640px, calc(100vh - 72px))',
     maxWidth: 560,
-    padding: '1.25rem',
+    padding: '1.25rem 1.35rem',
     width: 'min(560px, calc(100vw - 48px))'
   },
   title: {

@@ -10,14 +10,11 @@ import { Icon } from './ui/icon'
 const styles = stylex.create({
   bar: {
     alignItems: 'center',
-    backgroundColor: colors.sidebar,
-    borderBottomColor: colors.border,
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
+    backgroundColor: 'transparent',
     display: 'flex',
     height: 'var(--titlebar)',
     justifyContent: 'space-between',
-    paddingLeft: 12,
+    paddingLeft: 16,
     paddingRight: 0,
     position: 'relative',
     WebkitAppRegion: 'drag',
@@ -30,9 +27,10 @@ const styles = stylex.create({
     WebkitAppRegion: 'no-drag'
   },
   brand: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: 500,
-    letterSpacing: '-0.03em',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
     whiteSpace: 'nowrap'
   },
   right: {
@@ -53,7 +51,7 @@ const styles = stylex.create({
   },
   captionClose: {
     backgroundColor: {
-      ':hover': 'color-mix(in srgb, #e26d5a 46%, transparent)',
+      ':hover': 'color-mix(in srgb, var(--destructive) 46%, transparent)',
       default: 'transparent'
     },
     color: { ':hover': '#fff', default: colors.foreground }

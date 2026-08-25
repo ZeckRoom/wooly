@@ -19,7 +19,7 @@ const styles = stylex.create({
     width: '100%'
   },
   bar: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.success,
     height: '100%',
     transform: 'scaleX(0)',
     transformOrigin: 'left center',

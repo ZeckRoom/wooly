@@ -7,29 +7,30 @@ import { Button } from './ui/button'
 import { Dialog } from './ui/dialog'
 
 const styles = stylex.create({
-  list: { display: 'flex', flexDirection: 'column', gap: 8 },
+  list: { display: 'flex', flexDirection: 'column' },
   row: {
     alignItems: 'center',
-    backgroundColor: colors.background,
-    borderRadius: 16,
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
     display: 'flex',
     gap: 12,
     justifyContent: 'space-between',
-    padding: 10
+    paddingBlock: 12
   },
   who: { alignItems: 'center', display: 'flex', gap: 10 },
   avatar: { borderRadius: 999, height: 32, width: 32 },
   muted: { color: colors.mutedForeground, fontSize: 13, lineHeight: 1.6 },
   code: {
-    backgroundColor: colors.secondary,
-    borderRadius: 12,
-    fontFamily: 'ui-monospace, Consolas, monospace',
+    color: colors.success,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
     fontSize: 22,
     letterSpacing: '0.12em',
-    padding: '10px 14px',
+    padding: '8px 0',
     textAlign: 'center'
   },
-  error: { color: colors.destructive, fontSize: 13 }
+  error: { color: colors.destructive, fontSize: 13 },
+  name: { fontWeight: 500 }
 })
 
 export function AccountDialog({
@@ -75,7 +76,7 @@ export function AccountDialog({
             <div {...stylex.props(styles.who)}>
               <img alt="" src={account.avatarUrl} {...stylex.props(styles.avatar)} />
               <div>
-                <div>{account.username}</div>
+                <div {...stylex.props(styles.name)}>{account.username}</div>
                 <div {...stylex.props(styles.muted)}>
                   {account.id === activeId ? t.active : account.xboxGamertag}
                 </div>

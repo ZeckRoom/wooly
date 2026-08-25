@@ -14,23 +14,22 @@ import type {
 } from '@shared/types'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
-import { Plate } from './ui/plate'
 import { Progress } from './ui/progress'
+import { Well } from './ui/well'
 
 const styles = stylex.create({
   root: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    gap: 16,
+    gap: 28,
     minWidth: 0,
-    padding: '8px 24px 120px'
+    padding: '20px 32px 120px'
   },
   hero: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 8,
-    padding: '20px 22px'
+    gap: 10
   },
   titleRow: {
     alignItems: 'flex-start',
@@ -38,14 +37,31 @@ const styles = stylex.create({
     justifyContent: 'space-between',
     gap: 16
   },
-  title: {
-    fontSize: 22,
+  kicker: {
+    color: colors.mutedForeground,
+    fontSize: 11,
     fontWeight: 500,
-    letterSpacing: '-0.04em'
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase'
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 500,
+    letterSpacing: '-0.03em',
+    lineHeight: 1.15
   },
   muted: {
     color: colors.mutedForeground,
     fontSize: 13
+  },
+  meta: {
+    color: colors.mutedForeground,
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
+    fontSize: 13,
+    letterSpacing: '-0.02em'
+  },
+  latest: {
+    color: colors.success
   },
   actions: {
     display: 'flex',
@@ -53,24 +69,35 @@ const styles = stylex.create({
     gap: 8,
     justifyContent: 'flex-end'
   },
+  consoleWell: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    minHeight: 180,
+    minWidth: 0
+  },
+  consoleHead: {
+    borderBottomColor: colors.border,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
+    padding: '12px 18px'
+  },
   console: {
-    backgroundColor: '#0e1012',
-    borderRadius: 18,
-    color: '#c8cdd4',
+    color: '#c4cdc8',
     cursor: 'text',
     flex: 1,
-    fontFamily: 'ui-monospace, Consolas, monospace',
+    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
     fontSize: 12,
-    lineHeight: 1.6,
-    minHeight: 180,
+    lineHeight: 1.65,
+    minHeight: 140,
     overflow: 'auto',
-    padding: 14,
+    padding: '12px 18px 16px',
     userSelect: 'text',
     whiteSpace: 'pre-wrap'
   },
-  err: { color: '#e26d5a' },
-  out: { color: '#c8cdd4' },
-  launch: { color: colors.primary }
+  err: { color: '#fb923c' },
+  out: { color: '#c4cdc8' },
+  launch: { color: colors.success }
 })
 
 function installLabel(phase: LaunchState['phase'], instanceId: string, currentId: string): string {
@@ -111,7 +138,9 @@ export function InstanceDetail({
     return (
       <main {...stylex.props(styles.root)}>
         <div {...stylex.props(styles.hero)}>
+          <div {...stylex.props(styles.kicker)}>{t.appName}</div>
           <h1 {...stylex.props(styles.title)}>{t.noInstances}</h1>
+          <p {...stylex.props(styles.muted)}>{t.noInstancesVanilla}</p>
         </div>
       </main>
     )
@@ -131,57 +160,56 @@ export function InstanceDetail({
 
   return (
     <main {...stylex.props(styles.root)}>
-      <Plate>
-        <div {...stylex.props(styles.hero)}>
-          <div {...stylex.props(styles.titleRow)}>
-            <div>
-              <h1 {...stylex.props(styles.title)}>{instance.name}</h1>
-              <p {...stylex.props(styles.muted)}>
+      <div {...stylex.props(styles.hero)}>
+        <div {...stylex.props(styles.titleRow)}>
+          <div>
+            <div {...stylex.props(styles.kicker)}>{t.instances}</div>
+            <h1 {...stylex.props(styles.title)}>{instance.name}</h1>
+            <p {...stylex.props(styles.meta)}>
+              <span {...stylex.props(version?.latestRelease && styles.latest)}>
                 {instance.versionId}
-                {version?.latestRelease ? ` · ${t.latest}` : ''}
-                {version?.latestSnapshot ? ` · ${t.snapshot}` : ''}
-                {` · ${instance.memoryMaxMb} ${t.mb}`}
-              </p>
-              <p {...stylex.props(styles.muted)}>
-                {t.lastPlayed}: {lastPlayed}
-              </p>
-            </div>
-            <div {...stylex.props(styles.actions)}>
-              <Button variant="secondary" onClick={onInstall} disabled={busy}>
-                <Icon icon={Download01Icon} size={14} />
-                {installLabel(launch.phase, launch.instanceId ?? '', instance.id)}
-              </Button>
-              <Button variant="secondary" onClick={onEdit} disabled={busy}>
-                {t.edit}
-              </Button>
-              <Button variant="ghost" onClick={onFolder} aria-label={t.folder}>
-                <Icon icon={FolderOpenIcon} size={16} />
-              </Button>
-              <Button variant="ghost" onClick={onDelete} disabled={busy}>
-                {t.delete}
-              </Button>
-            </div>
+              </span>
+              {version?.latestRelease ? ` · ${t.latest}` : ''}
+              {version?.latestSnapshot ? ` · ${t.snapshot}` : ''}
+              {` · ${instance.memoryMaxMb} ${t.mb}`}
+            </p>
+            <p {...stylex.props(styles.muted)}>
+              {t.lastPlayed}: {lastPlayed}
+            </p>
           </div>
-          {busy && install ? (
-            <Progress
-              value={percent}
-              label={`${install.label}${install.speed ? ` · ${formatSpeed(install.speed)}` : ''}${
-                install.total
-                  ? ` · ${formatBytes(install.current)} / ${formatBytes(install.total)}`
-                  : ''
-              }`}
-            />
-          ) : null}
-          {launch.error && launch.instanceId === instance.id ? (
-            <p {...stylex.props(styles.err)}>{launch.error}</p>
-          ) : null}
+          <div {...stylex.props(styles.actions)}>
+            <Button variant="secondary" onClick={onInstall} disabled={busy}>
+              <Icon icon={Download01Icon} size={14} />
+              {installLabel(launch.phase, launch.instanceId ?? '', instance.id)}
+            </Button>
+            <Button variant="secondary" onClick={onEdit} disabled={busy}>
+              {t.edit}
+            </Button>
+            <Button variant="ghost" onClick={onFolder} aria-label={t.folder}>
+              <Icon icon={FolderOpenIcon} size={16} />
+            </Button>
+            <Button variant="ghost" onClick={onDelete} disabled={busy}>
+              {t.delete}
+            </Button>
+          </div>
         </div>
-      </Plate>
-      <Plate>
-        <div {...stylex.props(styles.hero)} style={{ paddingBottom: 8 }}>
-          <div {...stylex.props(styles.title)} style={{ fontSize: 14 }}>
-            {t.console}
-          </div>
+        {busy && install ? (
+          <Progress
+            value={percent}
+            label={`${install.label}${install.speed ? ` · ${formatSpeed(install.speed)}` : ''}${
+              install.total
+                ? ` · ${formatBytes(install.current)} / ${formatBytes(install.total)}`
+                : ''
+            }`}
+          />
+        ) : null}
+        {launch.error && launch.instanceId === instance.id ? (
+          <p {...stylex.props(styles.err)}>{launch.error}</p>
+        ) : null}
+      </div>
+      <Well sx={styles.consoleWell}>
+        <div {...stylex.props(styles.consoleHead)}>
+          <div {...stylex.props(styles.kicker)}>{t.console}</div>
         </div>
         <div ref={consoleRef} {...stylex.props(styles.console)}>
           {logs.length === 0 ? (
@@ -203,7 +231,7 @@ export function InstanceDetail({
             ))
           )}
         </div>
-      </Plate>
+      </Well>
     </main>
   )
 }

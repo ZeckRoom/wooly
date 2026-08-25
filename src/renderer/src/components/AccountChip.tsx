@@ -23,7 +23,10 @@ const styles = stylex.create({
   avatar: {
     alignItems: 'center',
     backgroundColor: colors.secondary,
+    borderColor: colors.border,
     borderRadius: 999,
+    borderStyle: 'solid',
+    borderWidth: 1,
     color: colors.foreground,
     display: 'flex',
     flexShrink: 0,
@@ -34,7 +37,7 @@ const styles = stylex.create({
     width: 48
   },
   name: {
-    color: colors.foreground,
+    color: colors.mutedForeground,
     fontSize: 11,
     fontWeight: 500,
     maxWidth: '100%',

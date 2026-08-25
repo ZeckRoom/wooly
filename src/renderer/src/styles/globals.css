@@ -1,41 +1,47 @@
-@import '@fontsource-variable/inter-tight';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
 
 :root {
-  --ink: #eef0f3;
-  --background: #121416;
-  --card: #1a1d21;
+  --ink: #f5f5f4;
+  --void: #000000;
+  --background: #000000;
+  --card: #0b0c0e;
   --card-foreground: var(--ink);
-  --popover: #1e2227;
+  --popover: #0b0c0e;
   --popover-foreground: var(--ink);
   --foreground: var(--ink);
-  --muted: color-mix(in srgb, var(--ink) 7%, transparent);
-  --muted-foreground: #8b919a;
-  --border: color-mix(in srgb, var(--ink) 14%, transparent);
-  --input: color-mix(in srgb, var(--ink) 16%, transparent);
-  --accent: color-mix(in srgb, var(--ink) 7%, transparent);
+  --muted: color-mix(in srgb, var(--ink) 6%, transparent);
+  --muted-foreground: #8b938f;
+  --border: #26302e;
+  --input: #26302e;
+  --accent: color-mix(in srgb, var(--ink) 6%, transparent);
   --accent-foreground: var(--ink);
-  --primary: #3d7dff;
-  --primary-foreground: #f4f8ff;
-  --ring: #6b9fff;
-  --secondary: #25282d;
+  --primary: #166534;
+  --primary-edge: #34d399;
+  --primary-foreground: #ffffff;
+  --ring: #34d399;
+  --secondary: #161616;
   --secondary-foreground: var(--ink);
-  --destructive: #e26d5a;
-  --info: #3d7dff;
-  --info-foreground: #f4f8ff;
-  --success: #2fbf71;
-  --success-foreground: #f2fff7;
-  --radius: 0.625rem;
-  --sidebar: #101214;
-  --titlebar-bg: var(--sidebar);
+  --destructive: #9a3412;
+  --destructive-edge: #fb923c;
+  --info: #166534;
+  --info-foreground: #ffffff;
+  --success: #34d399;
+  --success-foreground: #022c22;
+  --chip: #6d28d9;
+  --chip-foreground: #f5f3ff;
+  --radius: 0.75rem;
+  --sidebar: #000000;
+  --titlebar-bg: #000000;
   --sidebar-foreground: var(--ink);
-  --sidebar-accent: color-mix(in srgb, var(--ink) 7%, transparent);
+  --sidebar-accent: color-mix(in srgb, var(--ink) 6%, transparent);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: color-mix(in srgb, var(--ink) 22%, transparent);
+  --sidebar-border: #26302e;
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-ring: var(--ring);
-  --shadow-rest: 0 1px 2px rgb(0 0 0 / 0.18);
-  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.2), 0 8px 24px rgb(0 0 0 / 0.28);
+  --shadow-rest: none;
+  --shadow-float: 0 12px 40px rgb(0 0 0 / 0.3);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --titlebar: 56px;
   --rail: 72px;
@@ -54,9 +60,9 @@ body,
 }
 
 body {
-  background: #121416;
+  background: var(--void);
   color: var(--foreground);
-  font-family: 'Inter Tight Variable', 'Inter Tight', 'Segoe UI', sans-serif;
+  font-family: 'Geist Variable', Geist, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 1.5;
@@ -77,7 +83,7 @@ code,
 kbd,
 pre,
 .mono {
-  font-family: ui-monospace, 'Cascadia Mono', 'Geist Mono', Consolas, monospace;
+  font-family: 'Geist Mono Variable', 'Geist Mono', ui-monospace, Consolas, monospace;
 }
 
 h1,
@@ -87,13 +93,18 @@ strong {
   font-weight: 500;
 }
 
+input[type='checkbox'],
+input[type='range'] {
+  accent-color: var(--success);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: padding-box;
@@ -105,34 +116,32 @@ strong {
 }
 
 .wooly-titlebar {
-  background-color: var(--titlebar-bg);
-  border-bottom: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  background-color: transparent;
+  border-bottom: 1px solid var(--border);
 }
 
 .wooly-titlebar button {
   border-radius: 0;
 }
 
-.wooly-glass {
-  appearance: none;
-  background: rgb(16 18 22 / 0.78);
-  border: 1px solid rgb(255 255 255 / 0.18);
-  box-shadow:
-    0 12px 40px rgb(0 0 0 / 0.38),
-    inset 0 1px 0 rgb(255 255 255 / 0.12);
-  color: var(--ink);
-  -webkit-appearance: none;
-  -webkit-backdrop-filter: blur(22px) saturate(1.45);
-  backdrop-filter: blur(22px) saturate(1.45);
+.wooly-stage {
+  background-color: var(--void);
+  background-image: radial-gradient(
+    ellipse 78% 42% at 50% 118%,
+    rgb(22 101 52 / 0.28),
+    transparent 62%
+  );
 }
 
-.wooly-glass-dot {
+.wooly-glass {
   appearance: none;
-  background: rgb(10 12 14 / 0.88);
-  border: 1px solid rgb(255 255 255 / 0.16);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+  background: rgb(10 11 14 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.3);
   color: var(--ink);
   -webkit-appearance: none;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 
 [data-tauri-drag-region] {

@@ -3,7 +3,7 @@ import type { StyleXStyles } from '@stylexjs/stylex'
 
 /**
  * Design tokens for the StyleX component set.
- * Maps CSS variables so theming stays in globals.css (cool charcoal + blue).
+ * Palette lives in globals.css (void black, hairline, emerald, version chip).
  */
 export const colors = stylex.defineVars({
   accent: 'var(--accent)',
@@ -12,6 +12,8 @@ export const colors = stylex.defineVars({
   border: 'var(--border)',
   card: 'var(--card)',
   cardForeground: 'var(--card-foreground)',
+  chip: 'var(--chip)',
+  chipForeground: 'var(--chip-foreground)',
   destructive: 'var(--destructive)',
   foreground: 'var(--foreground)',
   input: 'var(--input)',

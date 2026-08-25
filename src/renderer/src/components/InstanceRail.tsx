@@ -6,10 +6,15 @@ import type { GameInstance, PublicAccount } from '@shared/types'
 import { AccountChip } from './AccountChip'
 import { Icon } from './ui/icon'
 
+const TILE = ['#1e40af', '#166534', '#9a3412', '#6d28d9'] as const
+
 const styles = stylex.create({
   root: {
     alignItems: 'center',
     backgroundColor: colors.sidebar,
+    borderRightColor: colors.border,
+    borderRightStyle: 'solid',
+    borderRightWidth: 1,
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
@@ -23,8 +28,10 @@ const styles = stylex.create({
     alignItems: 'center',
     appearance: 'none',
     backgroundColor: colors.primary,
+    borderColor: 'var(--primary-edge)',
     borderRadius: 16,
-    borderStyle: 'none',
+    borderStyle: 'solid',
+    borderWidth: 1,
     color: colors.primaryForeground,
     cursor: 'pointer',
     display: 'flex',
@@ -38,10 +45,10 @@ const styles = stylex.create({
     width: 48
   },
   rule: {
-    backgroundColor: 'rgb(255 255 255 / 0.12)',
+    backgroundColor: colors.border,
     borderStyle: 'none',
     flexShrink: 0,
-    height: 2,
+    height: 1,
     margin: '2px 0',
     width: 32
   },
@@ -100,16 +107,21 @@ const styles = stylex.create({
     alignItems: 'center',
     appearance: 'none',
     backgroundColor: {
-      ':hover': colors.success,
-      default: colors.secondary
+      ':hover': colors.primary,
+      default: 'transparent'
+    },
+    borderColor: {
+      ':hover': 'var(--primary-edge)',
+      default: colors.border
     },
     borderRadius: {
       ':hover': 16,
       default: 999
     },
-    borderStyle: 'none',
+    borderStyle: 'solid',
+    borderWidth: 1,
     color: {
-      ':hover': colors.successForeground,
+      ':hover': colors.primaryForeground,
       default: colors.success
     },
     cursor: 'pointer',
@@ -126,10 +138,10 @@ const styles = stylex.create({
   }
 })
 
-function hueFrom(value: string): number {
+function tileColor(value: string): string {
   let hash = 0
   for (const char of value) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
-  return hash % 360
+  return TILE[hash % TILE.length]!
 }
 
 function initialFor(name: string): string {
@@ -178,7 +190,7 @@ export function InstanceRail({
                 aria-current={active}
                 aria-label={item.name}
                 onClick={() => onSelect(item.id)}
-                style={{ backgroundColor: `hsl(${hueFrom(item.id)} 54% 38%)` }}
+                style={{ backgroundColor: tileColor(item.id) }}
                 {...stylex.props(styles.tile, active && styles.tileActive)}
               >
                 {initialFor(item.name)}
