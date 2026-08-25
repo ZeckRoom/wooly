@@ -7,6 +7,7 @@ export const t = {
   vanilla: 'Vanilla',
   modded: 'Modded',
   instances: 'Instances',
+  library: 'Library',
   newInstance: 'New instance',
   play: 'Play',
   playing: 'Playing',

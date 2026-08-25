@@ -3,7 +3,6 @@ import * as stylex from '@stylexjs/stylex'
 import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
 import PlayIcon from '@hugeicons/core-free-icons/PlayIcon'
 import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
-import Settings01Icon from '@hugeicons/core-free-icons/Settings01Icon'
 import StopIcon from '@hugeicons/core-free-icons/StopIcon'
 import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
@@ -207,13 +206,11 @@ export function LauncherDock({
   selected,
   versions,
   launch,
-  settingsActive,
   update,
   onPlay,
   onStop,
   onSelect,
   onCreate,
-  onSettings,
   onUpdateCheck,
   onUpdateDownload,
   onUpdateInstall
@@ -222,13 +219,11 @@ export function LauncherDock({
   selected: GameInstance | null
   versions: CatalogVersion[]
   launch: LaunchState
-  settingsActive: boolean
   update: AppUpdateState
   onPlay: () => void
   onStop: () => void
   onSelect: (id: string) => void
   onCreate: () => void
-  onSettings: () => void
   onUpdateCheck: () => void
   onUpdateDownload: () => void
   onUpdateInstall: () => void
@@ -374,18 +369,6 @@ export function LauncherDock({
             </div>
             <hr {...stylex.props(styles.rule)} />
             <div {...stylex.props(styles.foot)}>
-              <button
-                type="button"
-                data-dock-item
-                onClick={() => {
-                  hide()
-                  onSettings()
-                }}
-                {...stylex.props(styles.item, styles.itemRow, settingsActive && styles.itemActive)}
-              >
-                <Icon icon={Settings01Icon} size={16} />
-                <span {...stylex.props(styles.name)}>{t.settings}</span>
-              </button>
               <div data-dock-item>
                 <UpdateBanner
                   update={update}

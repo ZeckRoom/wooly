@@ -117,11 +117,6 @@ input[type='range'] {
 
 .wooly-titlebar {
   background-color: transparent;
-  border-bottom: 1px solid var(--border);
-}
-
-.wooly-titlebar button {
-  border-radius: 0;
 }
 
 .wooly-stage {

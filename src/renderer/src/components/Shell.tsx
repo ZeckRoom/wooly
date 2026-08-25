@@ -109,7 +109,12 @@ export function Shell() {
         onAccounts={() => setAccountsOpen(true)}
       />
       <div {...stylex.props(styles.stage, customClassName('wooly-stage'))}>
-        <TitleBar maximized={store.maximized} />
+        <TitleBar
+          maximized={store.maximized}
+          view={store.view}
+          onLibrary={() => store.setView('library')}
+          onSettings={() => store.setView('settings')}
+        />
         {store.error && store.error !== store.launch.error ? (
           <p role="alert" {...stylex.props(styles.banner)}>
             {store.error}
@@ -145,7 +150,6 @@ export function Shell() {
               selected={selected}
               versions={store.versions}
               launch={store.launch}
-              settingsActive={store.view === 'settings'}
               update={store.update}
               onPlay={() => void play()}
               onStop={() => void window.wooly.launch.stop()}
@@ -157,7 +161,6 @@ export function Shell() {
                 store.setView('library')
                 setCreateOpen(true)
               }}
-              onSettings={() => store.setView(store.view === 'settings' ? 'library' : 'settings')}
               onUpdateCheck={() => void window.wooly.update.check()}
               onUpdateDownload={() => void window.wooly.update.download()}
               onUpdateInstall={() => void window.wooly.update.install()}
