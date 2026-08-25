@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex'
 import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
 import MinusSignIcon from '@hugeicons/core-free-icons/MinusSignIcon'
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon'
-import { colors } from '../lib/tokens.stylex'
+import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
@@ -99,7 +99,10 @@ export function TitleBar({
   maximized: boolean
 }) {
   return (
-    <header {...stylex.props(styles.bar)}>
+    <header
+      data-tauri-drag-region
+      {...stylex.props(styles.bar, customClassName('wooly-titlebar'))}
+    >
       <div {...stylex.props(styles.left)}>
         <span {...stylex.props(styles.brand)}>{t.appName}</span>
       </div>

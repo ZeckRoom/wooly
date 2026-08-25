@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
@@ -72,6 +71,13 @@ export function SettingsView({
             {t.appVersion} {appVersion}
           </p>
           <div {...stylex.props(styles.row)}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => void window.wooly.update.check()}
+            >
+              {t.updateCheck}
+            </Button>
             <Button
               variant="secondary"
               size="sm"

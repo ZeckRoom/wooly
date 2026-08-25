@@ -2,18 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Main Process",
-      "type": "node",
+      "name": "Wooly UI (Chrome)",
+      "type": "chrome",
       "request": "launch",
-      "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-vite",
-      "windows": {
-        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-vite.cmd"
-      },
-      "runtimeArgs": ["--sourcemap"],
-      "env": {
-        "REMOTE_DEBUGGING_PORT": "9222"
-      }
+      "url": "http://127.0.0.1:5173",
+      "webRoot": "${workspaceRoot}/src/renderer"
     }
   ]
 }

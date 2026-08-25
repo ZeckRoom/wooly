@@ -7,8 +7,18 @@ if (!runNumber || !/^\d+$/.test(runNumber)) {
   process.exit(1)
 }
 
-const path = fileURLToPath(new URL('../package.json', import.meta.url))
-const pkg = JSON.parse(readFileSync(path, 'utf8'))
-pkg.version = `0.1.${runNumber}`
-writeFileSync(path, `${JSON.stringify(pkg, null, 2)}\n`)
-console.log(`Wooly version ${pkg.version}`)
+const version = `0.1.${runNumber}`
+
+const pkgPath = fileURLToPath(new URL('../package.json', import.meta.url))
+const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'))
+pkg.version = version
+writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`)
+
+const cargoPath = fileURLToPath(new URL('../src-tauri/Cargo.toml', import.meta.url))
+const cargo = readFileSync(cargoPath, 'utf8').replace(
+  /^version = ".*"$/m,
+  `version = "${version}"`
+)
+writeFileSync(cargoPath, cargo)
+
+console.log(`Wooly version ${version}`)

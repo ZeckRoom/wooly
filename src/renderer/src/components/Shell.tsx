@@ -108,6 +108,7 @@ export function Shell() {
               onSelect={store.selectInstance}
               onCreate={() => setCreateOpen(true)}
               update={store.update}
+              onUpdateCheck={() => void window.wooly.update.check()}
               onUpdateDownload={() => void window.wooly.update.download()}
               onUpdateInstall={() => void window.wooly.update.install()}
             />
@@ -165,6 +166,7 @@ export function Shell() {
         <div {...stylex.props(styles.settingsUpdate)}>
           <UpdateBanner
             update={store.update}
+            onCheck={() => void window.wooly.update.check()}
             onDownload={() => void window.wooly.update.download()}
             onInstall={() => void window.wooly.update.install()}
           />

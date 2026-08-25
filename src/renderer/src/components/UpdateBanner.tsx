@@ -15,6 +15,11 @@ const styles = stylex.create({
     gap: 10,
     padding: '14px 16px'
   },
+  idle: {
+    backgroundColor: colors.secondary,
+    boxShadow: 'none',
+    color: colors.foreground
+  },
   kicker: {
     fontSize: 11,
     fontWeight: 500,
@@ -60,14 +65,33 @@ const styles = stylex.create({
 
 export function UpdateBanner({
   update,
+  onCheck,
   onDownload,
   onInstall
 }: {
   update: AppUpdateState
+  onCheck?: () => void
   onDownload: () => void
   onInstall: () => void
 }) {
-  if (update.phase === 'idle') return null
+  if (update.phase === 'idle') {
+    return (
+      <aside {...stylex.props(styles.card, styles.idle)} aria-live="polite">
+        <div {...stylex.props(styles.kicker)}>{t.updateKicker}</div>
+        <div {...stylex.props(styles.title)}>
+          {t.appVersion} {update.currentVersion}
+        </div>
+        <p {...stylex.props(styles.meta)}>{t.updateIdle}</p>
+        {onCheck ? (
+          <div {...stylex.props(styles.actions)}>
+            <Button size="sm" variant="secondary" onClick={onCheck}>
+              {t.updateCheck}
+            </Button>
+          </div>
+        ) : null}
+      </aside>
+    )
+  }
 
   const title =
     update.phase === 'ready'
@@ -101,7 +125,7 @@ export function UpdateBanner({
             {t.updateRestart}
           </Button>
         ) : update.phase === 'downloading' ? null : update.phase === 'error' ? (
-          <Button size="sm" sx={styles.action} onClick={onDownload}>
+          <Button size="sm" sx={styles.action} onClick={onCheck ?? onDownload}>
             {t.updateRetry}
           </Button>
         ) : (

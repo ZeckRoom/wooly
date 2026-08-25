@@ -25,6 +25,13 @@ if not exist "node_modules\" (
   )
 )
 
+where rustc >nul 2>&1
+if errorlevel 1 (
+  echo Install Rust from https://rustup.rs/ and the MSVC C++ build tools, then run this file again.
+  pause
+  exit /b 1
+)
+
 echo Starting Wooly Launcher...
 call pnpm dev
 if errorlevel 1 pause

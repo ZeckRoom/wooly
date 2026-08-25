@@ -2,11 +2,11 @@
 
 Standalone **Minecraft Java Edition** launcher for Windows 10 and 11. It is not a fork of MultiMC, Prism, or the official launcher.
 
-Wooly focuses on a fast desktop shell: a short branded splash, isolated instances, official Microsoft accounts (premium Java only), Mojang version downloads, managed Java, Play, and a live console.
+Wooly is a **Tauri 2** desktop app: a short branded splash, isolated instances, official Microsoft accounts (premium Java only), Mojang version downloads, managed Java, Play, and a live console.
 
 ## v1
 
-- Electron desktop app, React, TypeScript, [StyleX](https://stylexjs.com), [shadcn-cssinjs](https://shadcn-cssinjs.com/docs)
+- Tauri 2 + WebView2, React, TypeScript, [StyleX](https://stylexjs.com), [shadcn-cssinjs](https://shadcn-cssinjs.com/docs)
 - Visual language: Open Design / OA plates and pills, warm wool palette
 - English UI (Spanish and Polish later)
 - Microsoft / Xbox / Minecraft login, multiple accounts, encrypted persistent sessions
@@ -15,80 +15,85 @@ Wooly focuses on a fast desktop shell: a short branded splash, isolated instance
 - Shared libraries/assets cache, per-instance game folder
 - Automatic Mojang Java runtime
 - Play + install progress + console logs
+- In-app updates from GitHub Releases (the repository must be **public**)
 
 ## Run on Windows
 
-There is no store listing yet. Use the repo (this branch / PR) on Windows 10/11.
+There is no store listing yet.
 
-### Fastest: open from source
+### Fastest: installer
 
-1. Install [Node.js 22 LTS](https://nodejs.org/) (include PATH).
-2. Install [Git](https://git-scm.com/download/win).
-3. PowerShell:
+1. Make [ZeckRoom/wooly](https://github.com/ZeckRoom/wooly) public so Releases are readable without a GitHub login.
+2. Download `wooly-launcher-0.1.N-setup.exe` from [Releases](https://github.com/ZeckRoom/wooly/releases) or Actions → **Windows installer** → **wooly-launcher-windows**.
+3. SmartScreen may warn because the build is unsigned; choose More info → Run anyway.
+4. The first Tauri build does not replace an old Electron install automatically. Run the new setup once.
+
+WebView2 is already on Windows 10/11. The installer can bootstrap it if needed.
+
+### From source (development)
+
+1. [Node.js 22 LTS](https://nodejs.org/)
+2. [Rust](https://rustup.rs/) (stable) and the MSVC C++ build tools
+3. Git
 
 ```powershell
 git clone https://github.com/ZeckRoom/wooly.git
 cd wooly
-git checkout cursor/wooly-launcher-v1-f472
 corepack enable
 pnpm install
 pnpm dev
 ```
 
-After the first install you can double-click `Wooly.bat` in the repo folder, or run `pnpm dev` again.
+`pnpm dev` runs the Tauri shell. After the first install you can double-click `Wooly.bat`.
 
-### Installer (shortcut on the desktop)
+Chrome-only UI (no Microsoft login / Play):
 
-From the same folder:
+```powershell
+pnpm dev:web
+```
+
+Then open **http://127.0.0.1:5173/**
+
+Windows installer from this machine:
 
 ```powershell
 pnpm build:win
 ```
 
-Then run `dist\wooly-launcher-0.1.0-setup.exe`. SmartScreen may warn because the build is unsigned; choose More info → Run anyway.
-
-CI also builds that setup file: GitHub → Actions → **Windows installer** → latest run → **wooly-launcher-windows**.
-
 ## Develop
-
-Requires Node 22+ and pnpm.
 
 ```bash
 pnpm install
 pnpm test
 pnpm typecheck
+pnpm exec cargo test --manifest-path src-tauri/Cargo.toml
+pnpm dev:web
 pnpm dev
-```
-
-On Linux (Cloud Agent / CI) Electron may need `--no-sandbox`:
-
-```bash
-pnpm exec electron-vite dev -- --no-sandbox
-```
-
-Windows installers:
-
-```bash
-pnpm build:win
 ```
 
 ## Microsoft login
 
-Wooly already includes its Azure public-client app. Open **Accounts → Add Microsoft account** — you do not paste an Application (client) ID.
+Wooly already includes its Azure public-client app. Open **Accounts → Add Microsoft account**.
+
+In Azure, register a **Mobile and desktop** redirect of `http://localhost` (any port). `http://127.0.0.1` without a port is not enough. Allow public client flows.
+
+If the browser page errors, Wooly falls back to a device code.
 
 Only premium Minecraft Java accounts work. A fork can override the ID with `WOOLY_MS_CLIENT_ID`.
 
 ## Data on Windows
 
-`%APPDATA%\wooly-launcher\`
+`%APPDATA%\wooly-launcher\` (same folder as the previous Electron builds)
 
 - `instances\<id>\game` — isolated world/options folder
 - `meta` — shared versions, libraries, assets, Java runtimes
-- `accounts.json` — public profiles; tokens encrypted with Windows DPAPI via Electron `safeStorage`
+- `accounts.json` — public profiles; tokens encrypted with Windows DPAPI (`enc:`) or `plain:` on other OS
+
+If you signed in with the Electron app, sign in once more. Chromium `safeStorage` blobs are not the same as Tauri DPAPI.
 
 ## Layout
 
-- `src/main` — window, IPC, auth, install, launch
+- `src-tauri` — window, commands, auth, install, launch (Rust)
 - `src/renderer` — splash, library, settings (StyleX)
 - `src/shared` — types and pure helpers (tested)
 

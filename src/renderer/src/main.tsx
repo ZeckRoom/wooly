@@ -4,8 +4,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import { installPreviewApi } from './lib/preview-api'
+import { installTauriApi, isTauriRuntime } from './lib/tauri-api'
 
-installPreviewApi()
+if (isTauriRuntime()) installTauriApi()
+else installPreviewApi()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

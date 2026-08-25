@@ -85,7 +85,9 @@ export const t = {
   updateHint: 'A newer Wooly build is ready.',
   updateNow: 'Update',
   updateRestart: 'Restart',
-  updateRetry: 'Try again'
+  updateRetry: 'Try again',
+  updateCheck: 'Check for updates',
+  updateIdle: 'You are on this build.'
 } as const
 
 export type MessageKey = keyof typeof t

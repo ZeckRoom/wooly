@@ -80,6 +80,7 @@ export function InstanceSidebar({
   onSelect,
   onCreate,
   update,
+  onUpdateCheck,
   onUpdateDownload,
   onUpdateInstall
 }: {
@@ -89,6 +90,7 @@ export function InstanceSidebar({
   onSelect: (id: string) => void
   onCreate: () => void
   update: AppUpdateState
+  onUpdateCheck: () => void
   onUpdateDownload: () => void
   onUpdateInstall: () => void
 }) {
@@ -126,7 +128,12 @@ export function InstanceSidebar({
         )}
       </div>
       <div {...stylex.props(styles.updateSlot)}>
-        <UpdateBanner update={update} onDownload={onUpdateDownload} onInstall={onUpdateInstall} />
+        <UpdateBanner
+          update={update}
+          onCheck={onUpdateCheck}
+          onDownload={onUpdateDownload}
+          onInstall={onUpdateInstall}
+        />
       </div>
     </aside>
   )

@@ -47,3 +47,12 @@ export function updateDownloadPercent(transferred: number, total: number): numbe
   if (!Number.isFinite(transferred) || !Number.isFinite(total) || total <= 0) return 0
   return Math.max(0, Math.min(100, Math.round((transferred / total) * 100)))
 }
+
+export function updateFeedErrorMessage(error: unknown): string {
+  const text = error instanceof Error ? error.message : String(error ?? '')
+  if (/404|not found|HttpError:\s*404/i.test(text)) {
+    return 'Could not read GitHub Releases. The wooly repository must be public for in-app updates.'
+  }
+  const trimmed = text.trim()
+  return trimmed || 'Could not check for updates.'
+}

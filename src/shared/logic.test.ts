@@ -6,7 +6,8 @@ import { DEFAULT_MEMORY_MAX, defaultInstanceDraft, validateInstanceDraft } from 
 import {
   compareLauncherVersions,
   isLauncherUpdate,
-  updateDownloadPercent
+  updateDownloadPercent,
+  updateFeedErrorMessage
 } from './update'
 
 describe('ownsMinecraftJava', () => {
@@ -106,6 +107,11 @@ describe('launcher updates', () => {
     expect(isLauncherUpdate('0.1.0', '0.1.16')).toBe(true)
     expect(isLauncherUpdate('0.1.16', '0.1.16')).toBe(false)
     expect(isLauncherUpdate('0.1.16', '0.1.2')).toBe(false)
+  })
+
+  it('explains a private GitHub Releases 404', () => {
+    expect(updateFeedErrorMessage(new Error('HttpError: 404 Not Found'))).toMatch(/public/)
+    expect(updateFeedErrorMessage(new Error('offline'))).toBe('offline')
   })
 
   it('clamps download percent', () => {

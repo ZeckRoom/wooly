@@ -105,6 +105,19 @@ strong {
   app-region: drag;
 }
 
+.wooly-titlebar {
+  background-color: var(--titlebar-bg);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+[data-tauri-drag-region] {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+[data-tauri-drag-region] button,
+[data-tauri-drag-region] input,
+[data-tauri-drag-region] a,
 .no-drag {
   -webkit-app-region: no-drag;
   app-region: no-drag;

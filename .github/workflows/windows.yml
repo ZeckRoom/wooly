@@ -27,21 +27,37 @@ jobs:
         with:
           node-version: '22'
           cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
       - run: pnpm install --frozen-lockfile --config.minimumReleaseAge=0 --config.confirmModulesPurge=false
       - run: pnpm test
       - run: pnpm typecheck
+      - name: Rust tests
+        run: cargo test --manifest-path src-tauri/Cargo.toml
       - name: Stamp installer version
         run: node scripts/stamp-version.mjs ${{ github.run_number }}
       - name: Build Windows installer
+        run: pnpm exec tauri build --bundles nsis
+      - name: Collect installer
+        shell: bash
         run: |
-          pnpm exec electron-vite build
-          pnpm exec electron-builder --win --publish never
+          mkdir -p dist
+          shopt -s globstar nullglob
+          files=(src-tauri/target/release/bundle/nsis/*.exe)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No NSIS installer found"
+            ls -R src-tauri/target/release/bundle || true
+            exit 1
+          fi
+          version="0.1.${{ github.run_number }}"
+          cp "${files[0]}" "dist/wooly-launcher-${version}-setup.exe"
+          ls -la dist
       - uses: actions/upload-artifact@v7
         with:
           name: wooly-launcher-windows
-          path: |
-            dist/*.exe
-            dist/*.yml
+          path: dist/*.exe
           if-no-files-found: error
       - name: Publish GitHub release
         if: github.event_name != 'pull_request'
@@ -54,8 +70,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "$tag"
           git push origin "$tag"
-          shopt -s nullglob
-          files=(dist/*.exe dist/*.yml dist/*.blockmap)
-          gh release create "$tag" "${files[@]}" \
+          gh release create "$tag" dist/*.exe \
             --title "Wooly Launcher 0.1.${{ github.run_number }}" \
-            --notes "Windows installer. Wooly checks this GitHub Release for in-app updates."
+            --notes "Windows installer (Tauri + WebView2). Make the repository public so Wooly can check this GitHub Release for in-app updates."
