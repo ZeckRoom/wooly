@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react'
 import * as stylex from '@stylexjs/stylex'
-import { Download, FolderOpen, Play, Square } from 'lucide-react'
+import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
+import FolderOpenIcon from '@hugeicons/core-free-icons/FolderOpenIcon'
+import PlayIcon from '@hugeicons/core-free-icons/PlayIcon'
+import StopIcon from '@hugeicons/core-free-icons/StopIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { formatBytes, formatSpeed } from '@shared/minecraft'
@@ -13,6 +16,7 @@ import type {
   LogLine
 } from '@shared/types'
 import { Button } from './ui/button'
+import { Icon } from './ui/icon'
 import { Plate } from './ui/plate'
 import { Progress } from './ui/progress'
 
@@ -163,19 +167,19 @@ export function InstanceDetail({
             <div {...stylex.props(styles.actions)}>
               {running ? (
                 <Button variant="secondary" onClick={onStop}>
-                  <Square size={14} />
+                  <Icon icon={StopIcon} size={14} />
                   {t.stop}
                 </Button>
               ) : (
                 <>
                   <Button variant="secondary" onClick={onInstall} disabled={busy}>
-                    <Download size={14} />
+                    <Icon icon={Download01Icon} size={14} />
                     {launch.instanceId === instance.id && launch.phase === 'installing'
                       ? t.installing
                       : t.install}
                   </Button>
                   <Button onClick={onPlay} disabled={busy}>
-                    <Play size={14} />
+                    <Icon icon={PlayIcon} size={14} />
                     {playLabel(launch.instanceId === instance.id ? launch.phase : 'idle')}
                   </Button>
                 </>
@@ -184,7 +188,7 @@ export function InstanceDetail({
                 {t.edit}
               </Button>
               <Button variant="ghost" onClick={onFolder} aria-label={t.folder}>
-                <FolderOpen size={16} />
+                <Icon icon={FolderOpenIcon} size={16} />
               </Button>
               <Button variant="ghost" onClick={onDelete} disabled={busy}>
                 {t.delete}

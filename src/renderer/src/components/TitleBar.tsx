@@ -1,9 +1,12 @@
 import * as stylex from '@stylexjs/stylex'
-import { Minus, Square, X } from 'lucide-react'
+import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
+import MinusSignIcon from '@hugeicons/core-free-icons/MinusSignIcon'
+import SquareIcon from '@hugeicons/core-free-icons/SquareIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
+import { Icon } from './ui/icon'
 
 const styles = stylex.create({
   bar: {
@@ -130,7 +133,7 @@ export function TitleBar({
           aria-label={t.minimize}
           onClick={() => window.wooly.window.minimize()}
         >
-          <Minus size={14} />
+          <Icon icon={MinusSignIcon} size={14} />
         </Button>
         <Button
           variant="ghost"
@@ -138,7 +141,7 @@ export function TitleBar({
           aria-label={maximized ? t.restore : t.maximize}
           onClick={() => window.wooly.window.maximize()}
         >
-          <Square size={12} />
+          <Icon icon={SquareIcon} size={12} />
         </Button>
         <Button
           variant="ghost"
@@ -146,7 +149,7 @@ export function TitleBar({
           aria-label={t.close}
           onClick={() => window.wooly.window.close()}
         >
-          <X size={14} />
+          <Icon icon={Cancel01Icon} size={14} />
         </Button>
       </div>
     </header>

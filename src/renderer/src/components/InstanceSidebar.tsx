@@ -1,9 +1,10 @@
 import * as stylex from '@stylexjs/stylex'
-import { Plus } from 'lucide-react'
+import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AppUpdateState, GameInstance, InstanceGroup } from '@shared/types'
 import { Button } from './ui/button'
+import { Icon } from './ui/icon'
 import { Plate } from './ui/plate'
 import { UpdateBanner } from './UpdateBanner'
 
@@ -97,7 +98,7 @@ export function InstanceSidebar({
       <div {...stylex.props(styles.head)}>
         <div {...stylex.props(styles.title)}>{t.instances}</div>
         <Button size="sm" variant="secondary" onClick={onCreate}>
-          <Plus size={14} />
+          <Icon icon={PlusSignIcon} size={14} />
           {t.newInstance}
         </Button>
       </div>
