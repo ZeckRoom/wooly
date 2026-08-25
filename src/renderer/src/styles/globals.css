@@ -1,0 +1,117 @@
+@import '@fontsource-variable/inter-tight';
+
+:root {
+  --ink: #f3ece3;
+  --background: #161310;
+  --card: #1e1a16;
+  --card-foreground: var(--ink);
+  --popover: #221e19;
+  --popover-foreground: var(--ink);
+  --foreground: var(--ink);
+  --muted: color-mix(in srgb, var(--ink) 7%, transparent);
+  --muted-foreground: #a39484;
+  --border: color-mix(in srgb, var(--ink) 14%, transparent);
+  --input: color-mix(in srgb, var(--ink) 16%, transparent);
+  --accent: color-mix(in srgb, var(--ink) 7%, transparent);
+  --accent-foreground: var(--ink);
+  --primary: #d4b48c;
+  --primary-foreground: #1a1612;
+  --ring: #e0c9a4;
+  --secondary: #2a241e;
+  --secondary-foreground: var(--ink);
+  --destructive: #e26d5a;
+  --radius: 0.625rem;
+  --sidebar: #14110e;
+  --sidebar-foreground: var(--ink);
+  --sidebar-accent: color-mix(in srgb, var(--ink) 7%, transparent);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: color-mix(in srgb, var(--ink) 14%, transparent);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-ring: var(--ring);
+  --shadow-rest: 0 1px 2px rgb(0 0 0 / 0.18);
+  --shadow-float: 0 1px 2px rgb(0 0 0 / 0.2), 0 8px 24px rgb(0 0 0 / 0.28);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --titlebar: 56px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #161310;
+  color: var(--foreground);
+  font-family: 'Inter Tight Variable', 'Inter Tight', 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+code,
+kbd,
+pre,
+.mono {
+  font-family: ui-monospace, 'Cascadia Mono', 'Geist Mono', Consolas, monospace;
+}
+
+h1,
+h2,
+h3,
+strong {
+  font-weight: 500;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.drag {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
