@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex'
-import { colors } from '@/lib/tokens.stylex'
+import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { Progress } from './ui/progress'
 

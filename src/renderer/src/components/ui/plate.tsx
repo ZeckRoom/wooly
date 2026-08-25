@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex'
-import { colors } from '@/lib/tokens.stylex'
+import { colors } from '../../lib/tokens.stylex'
 
 const styles = stylex.create({
   outer: {

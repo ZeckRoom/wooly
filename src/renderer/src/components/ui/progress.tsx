@@ -1,5 +1,5 @@
 import * as stylex from '@stylexjs/stylex'
-import { colors, customClassName } from '@/lib/tokens.stylex'
+import { colors, customClassName } from '../../lib/tokens.stylex'
 
 const styles = stylex.create({
   wrap: {

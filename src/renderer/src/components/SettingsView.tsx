@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as stylex from '@stylexjs/stylex'
-import { colors } from '@/lib/tokens.stylex'
+import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AppSettings } from '@shared/types'
 import { Button } from './ui/button'

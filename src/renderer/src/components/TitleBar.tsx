@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
 import { Minus, Square, X } from 'lucide-react'
-import { colors } from '@/lib/tokens.stylex'
+import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'

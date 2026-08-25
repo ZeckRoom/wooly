@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as stylex from '@stylexjs/stylex'
 import { Download, FolderOpen, Play, Square } from 'lucide-react'
-import { colors } from '@/lib/tokens.stylex'
+import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { formatBytes, formatSpeed } from '@shared/minecraft'
 import type {
