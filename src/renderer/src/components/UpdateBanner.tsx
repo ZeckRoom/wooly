@@ -1,58 +1,68 @@
 import * as stylex from '@stylexjs/stylex'
+import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
+import RefreshCwIcon from '@hugeicons/core-free-icons/RefreshCwIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AppUpdateState } from '@shared/types'
-import { Button } from './ui/button'
+import { Icon } from './ui/icon'
 
 const styles = stylex.create({
   card: {
-    backgroundColor: colors.info,
-    borderRadius: 22,
+    alignItems: 'center',
+    backgroundColor: {
+      ':disabled': colors.info,
+      ':hover': 'color-mix(in srgb, white 10%, var(--info))',
+      default: colors.info
+    },
+    borderRadius: 16,
+    borderStyle: 'none',
     boxShadow: '0 8px 24px rgb(20 50 120 / 0.28)',
     color: colors.infoForeground,
+    cursor: { ':disabled': 'default', default: 'pointer' },
     display: 'flex',
-    flexDirection: 'column',
+    font: 'inherit',
     gap: 10,
-    padding: '14px 16px'
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+    padding: '10px 12px',
+    position: 'relative',
+    textAlign: 'left',
+    width: '100%'
   },
   idle: {
-    backgroundColor: colors.secondary,
+    backgroundColor: {
+      ':hover': 'color-mix(in srgb, var(--ink) 10%, var(--secondary))',
+      default: colors.secondary
+    },
     boxShadow: 'none',
     color: colors.foreground
   },
   title: {
-    fontSize: 15,
+    flex: 1,
+    fontSize: 14,
     fontWeight: 500,
     letterSpacing: '-0.03em',
-    lineHeight: 1.25
+    lineHeight: 1.2,
+    minWidth: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   },
-  meta: {
-    fontSize: 12,
-    lineHeight: 1.45,
-    opacity: 0.9
+  glyph: {
+    flexShrink: 0
   },
   track: {
     backgroundColor: 'rgb(255 255 255 / 0.22)',
-    borderRadius: 999,
-    height: 6,
-    overflow: 'hidden',
-    width: '100%'
+    bottom: 0,
+    height: 3,
+    left: 0,
+    position: 'absolute',
+    right: 0
   },
   bar: {
     backgroundColor: colors.infoForeground,
     height: '100%',
     transition: 'width 0.2s ease-out'
-  },
-  actions: {
-    display: 'flex',
-    gap: 8
-  },
-  action: {
-    backgroundColor: {
-      ':hover': '#f3ece3',
-      default: '#fff'
-    },
-    color: '#1a1612'
   }
 })
 
@@ -67,24 +77,8 @@ export function UpdateBanner({
   onDownload: () => void
   onInstall: () => void
 }) {
-  if (update.phase === 'idle') {
-    return (
-      <aside {...stylex.props(styles.card, styles.idle)} aria-live="polite">
-        <div {...stylex.props(styles.title)}>
-          {t.appVersion} {update.currentVersion}
-        </div>
-        <p {...stylex.props(styles.meta)}>{t.updateIdle}</p>
-        {onCheck ? (
-          <div {...stylex.props(styles.actions)}>
-            <Button size="sm" variant="secondary" onClick={onCheck}>
-              {t.updateCheck}
-            </Button>
-          </div>
-        ) : null}
-      </aside>
-    )
-  }
-
+  const busy = update.phase === 'downloading'
+  const idle = update.phase === 'idle'
   const title =
     update.phase === 'ready'
       ? t.updateReady
@@ -92,39 +86,46 @@ export function UpdateBanner({
         ? t.updateDownloading
         : update.phase === 'error'
           ? t.updateError
-          : t.updateAvailable
+          : idle
+            ? t.updateCheck
+            : t.updateAvailable
 
-  const meta =
+  const hint =
     update.phase === 'error'
-      ? update.error
+      ? (update.error ?? t.updateError)
       : update.availableVersion
         ? `${t.updateTo} ${update.availableVersion}`
-        : t.updateHint
+        : idle
+          ? `${t.appVersion} ${update.currentVersion}`
+          : t.updateHint
+
+  const activate = () => {
+    if (busy) return
+    if (update.phase === 'ready') onInstall()
+    else if (update.phase === 'error') (onCheck ?? onDownload)()
+    else if (idle) onCheck?.()
+    else onDownload()
+  }
 
   return (
-    <aside {...stylex.props(styles.card)} aria-live="polite">
-      <div {...stylex.props(styles.title)}>{title}</div>
-      {meta ? <p {...stylex.props(styles.meta)}>{meta}</p> : null}
-      {update.phase === 'downloading' ? (
-        <div {...stylex.props(styles.track)} role="progressbar" aria-valuenow={update.percent}>
-          <div {...stylex.props(styles.bar)} style={{ width: `${update.percent}%` }} />
-        </div>
+    <button
+      type="button"
+      disabled={busy || (idle && !onCheck)}
+      title={hint}
+      aria-live="polite"
+      aria-label={hint ? `${title}. ${hint}` : title}
+      onClick={activate}
+      {...stylex.props(styles.card, idle && styles.idle)}
+    >
+      <span {...stylex.props(styles.title)}>{title}</span>
+      <span {...stylex.props(styles.glyph)} aria-hidden>
+        <Icon icon={idle || update.phase === 'ready' ? RefreshCwIcon : Download01Icon} size={18} />
+      </span>
+      {busy ? (
+        <span {...stylex.props(styles.track)} role="progressbar" aria-valuenow={update.percent}>
+          <span {...stylex.props(styles.bar)} style={{ width: `${update.percent}%` }} />
+        </span>
       ) : null}
-      <div {...stylex.props(styles.actions)}>
-        {update.phase === 'ready' ? (
-          <Button size="sm" sx={styles.action} onClick={onInstall}>
-            {t.updateRestart}
-          </Button>
-        ) : update.phase === 'downloading' ? null : update.phase === 'error' ? (
-          <Button size="sm" sx={styles.action} onClick={onCheck ?? onDownload}>
-            {t.updateRetry}
-          </Button>
-        ) : (
-          <Button size="sm" sx={styles.action} onClick={onDownload}>
-            {t.updateNow}
-          </Button>
-        )}
-      </div>
-    </aside>
+    </button>
   )
 }

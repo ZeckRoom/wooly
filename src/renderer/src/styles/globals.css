@@ -106,6 +106,10 @@ strong {
   border-bottom: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
 }
 
+.wooly-titlebar button {
+  border-radius: 0;
+}
+
 [data-tauri-drag-region] {
   -webkit-app-region: drag;
   app-region: drag;

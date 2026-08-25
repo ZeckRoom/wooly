@@ -31,14 +31,24 @@ const styles = stylex.create({
   brand: {
     fontSize: 15,
     fontWeight: 500,
-    letterSpacing: '-0.03em'
+    letterSpacing: '-0.03em',
+    whiteSpace: 'nowrap'
   },
   right: {
-    alignItems: 'center',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
     display: 'flex',
-    gap: 4,
+    gap: 0,
+    height: '100%',
     justifyContent: 'flex-end',
+    marginRight: -12,
     WebkitAppRegion: 'no-drag'
+  },
+  caption: {
+    borderRadius: 0,
+    height: '100%',
+    transform: { ':active': 'none', default: 'none' },
+    width: 46
   }
 })
 
@@ -49,13 +59,14 @@ export function TitleBar({ maximized }: { maximized: boolean }) {
       {...stylex.props(styles.bar, customClassName('wooly-titlebar'))}
     >
       <div {...stylex.props(styles.left)}>
-        <span {...stylex.props(styles.brand)}>{t.appName}</span>
+        <span {...stylex.props(styles.brand)}>{t.appProduct}</span>
       </div>
       <div {...stylex.props(styles.right)}>
         <Button
           variant="ghost"
           size="icon-sm"
           aria-label={t.minimize}
+          sx={styles.caption}
           onClick={() => window.wooly.window.minimize()}
         >
           <Icon icon={MinusSignIcon} size={14} />
@@ -64,6 +75,7 @@ export function TitleBar({ maximized }: { maximized: boolean }) {
           variant="ghost"
           size="icon-sm"
           aria-label={maximized ? t.restore : t.maximize}
+          sx={styles.caption}
           onClick={() => window.wooly.window.maximize()}
         >
           <Icon icon={SquareIcon} size={12} />
@@ -72,6 +84,7 @@ export function TitleBar({ maximized }: { maximized: boolean }) {
           variant="ghost"
           size="icon-sm"
           aria-label={t.close}
+          sx={styles.caption}
           onClick={() => window.wooly.window.close()}
         >
           <Icon icon={Cancel01Icon} size={14} />
