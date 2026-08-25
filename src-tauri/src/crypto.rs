@@ -53,10 +53,10 @@ fn dpapi_unprotect(_data: &[u8]) -> Result<Vec<u8>> {
 #[cfg(windows)]
 mod win {
     use crate::error::{Result, WoolyError};
+    use windows_sys::Win32::Foundation::LocalFree;
     use windows_sys::Win32::Security::Cryptography::{
         CryptProtectData, CryptUnprotectData, CRYPT_INTEGER_BLOB, CRYPTPROTECT_UI_FORBIDDEN,
     };
-    use windows_sys::Win32::System::Memory::LocalFree;
 
     pub fn protect(data: &[u8]) -> Result<Vec<u8>> {
         crypt(data, true)
