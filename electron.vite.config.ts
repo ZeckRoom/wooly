@@ -1,9 +1,15 @@
-import { resolve } from 'path'
+import { resolve, sep } from 'path'
 import { defineConfig } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 import stylex from '@stylexjs/unplugin'
 
+/** StyleX alias matching breaks on Windows if paths keep backslashes. */
+function posixPath(filePath: string): string {
+  return filePath.split(sep).join('/')
+}
+
 const shared = resolve('src/shared')
+const rendererSrc = posixPath(resolve('src/renderer/src'))
 
 export default defineConfig({
   main: {
@@ -35,11 +41,12 @@ export default defineConfig({
       stylex.vite({
         useCSSLayers: true,
         aliases: {
-          '@/*': [`${resolve('src/renderer/src')}/*`]
+          '@': [rendererSrc],
+          '@/*': [`${rendererSrc}/*`]
         },
         unstable_moduleResolution: {
           type: 'commonJS',
-          rootDir: process.cwd()
+          rootDir: posixPath(process.cwd())
         }
       }),
       react()
