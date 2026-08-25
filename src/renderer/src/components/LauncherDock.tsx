@@ -141,6 +141,7 @@ const styles = stylex.create({
     width: '100%'
   },
   version: {
+    appearance: 'none',
     backgroundColor: 'transparent',
     borderStyle: 'none',
     color: colors.foreground,
@@ -161,6 +162,8 @@ const styles = stylex.create({
   },
   round: {
     alignItems: 'center',
+    appearance: 'none',
+    backgroundColor: 'rgb(10 12 14 / 0.9)',
     borderRadius: 999,
     borderStyle: 'none',
     color: colors.foreground,
@@ -169,6 +172,7 @@ const styles = stylex.create({
     flexShrink: 0,
     height: 46,
     justifyContent: 'center',
+    WebkitAppearance: 'none',
     width: 46
   },
   play: {

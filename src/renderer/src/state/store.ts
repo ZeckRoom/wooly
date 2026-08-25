@@ -45,7 +45,7 @@ const MAX_LOGS = 400
 export const useLauncher = create<LauncherStore>((set, get) => ({
   splash: true,
   splashStatus: 'Opening Wooly',
-  splashProgress: 12,
+  splashProgress: 0,
   group: 'vanilla',
   view: 'library',
   settings: { microsoftClientId: WOOLY_MS_CLIENT_ID, keepOpenOnLaunch: true, language: 'en' },
@@ -69,7 +69,6 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
   selectInstance: (id) => set({ selectedId: id }),
   setError: (error) => set({ error }),
   hydrate: async () => {
-    const started = Date.now()
     const offSplash = window.wooly.on(EVENTS.splash, (status) => {
       set({
         splashStatus: String(status),
@@ -143,10 +142,6 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
         splashStatus: 'Ready'
       })
     }
-
-    const wait = Math.max(0, 900 - (Date.now() - started))
-    await new Promise((resolve) => setTimeout(resolve, wait))
-    set({ splash: false })
   }
 }))
 

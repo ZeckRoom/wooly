@@ -3,92 +3,93 @@ import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/motion'
-import { Progress } from './ui/progress'
 
 const styles = stylex.create({
   root: {
-    alignItems: 'center',
     backgroundColor: colors.background,
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
     justifyContent: 'center',
-    gap: 28
+    width: '100%'
   },
-  mark: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 14
-  },
-  orb: {
-    backgroundImage: 'radial-gradient(circle at 30% 28%, #9ec0ff, #3d7dff 48%, #1f4fbf 100%)',
-    borderRadius: '50%',
-    boxShadow: '0 8px 32px rgb(61 125 255 / 0.22)',
-    height: 72,
-    width: 72
-  },
-  title: {
-    color: colors.foreground,
-    fontSize: 28,
-    fontWeight: 500,
-    letterSpacing: '-0.04em'
-  },
-  tag: {
-    color: colors.mutedForeground,
-    fontSize: 12,
-    letterSpacing: '0.12em',
-    textTransform: 'uppercase'
-  },
-  status: {
-    color: colors.mutedForeground,
-    fontSize: 13
+  track: {
+    height: 3,
+    overflow: 'hidden',
+    width: '100%'
   },
   bar: {
-    width: 220
+    backgroundColor: colors.primary,
+    height: '100%',
+    transform: 'scaleX(0)',
+    transformOrigin: 'left center',
+    width: '100%'
   }
 })
 
-export function Splash({ status, progress }: { status: string; progress: number }) {
+export function Splash({
+  progress,
+  onFinished
+}: {
+  progress: number
+  onFinished: () => void
+}) {
   const root = useRef<HTMLDivElement>(null)
-  const orb = useRef<HTMLDivElement>(null)
+  const bar = useRef<HTMLDivElement>(null)
+  const done = useRef(false)
 
   useGSAP(
     () => {
-      if (prefersReducedMotion() || !root.current) return
-      const intro = root.current.querySelectorAll('[data-gsap-intro]')
-      gsap.from(intro, {
-        opacity: 0,
-        y: 14,
-        duration: 0.45,
-        stagger: 0.07,
-        ease: 'power2.out'
-      })
-      if (orb.current) {
-        gsap.to(orb.current, {
-          scale: 1.06,
-          duration: 1.4,
-          yoyo: true,
-          repeat: -1,
-          ease: 'sine.inOut'
+      if (!bar.current) return
+      const reduced = prefersReducedMotion()
+      const target = Math.max(0, Math.min(100, progress)) / 100
+      const finish = () => {
+        if (done.current) return
+        done.current = true
+        if (reduced || !root.current) {
+          onFinished()
+          return
+        }
+        gsap.to(root.current, {
+          opacity: 0,
+          duration: 0.42,
+          ease: 'power2.inOut',
+          onComplete: onFinished
         })
       }
+
+      if (reduced) {
+        gsap.set(bar.current, { scaleX: target })
+        if (progress >= 100) finish()
+        return
+      }
+
+      gsap.to(bar.current, {
+        scaleX: target,
+        duration: progress >= 100 ? 0.55 : 0.4,
+        ease: progress >= 100 ? 'power2.inOut' : 'power1.out',
+        overwrite: 'auto',
+        transformOrigin: 'left center',
+        onComplete: () => {
+          if (progress >= 100) finish()
+        }
+      })
     },
-    { scope: root }
+    { dependencies: [progress], revertOnUpdate: false }
   )
 
   return (
-    <div ref={root} {...stylex.props(styles.root)}>
-      <div data-gsap-intro {...stylex.props(styles.mark)}>
-        <div ref={orb} aria-hidden="true" {...stylex.props(styles.orb)} />
-        <div {...stylex.props(styles.tag)}>{t.splashTag}</div>
-        <div {...stylex.props(styles.title)}>{t.appName}</div>
-      </div>
-      <div data-gsap-intro {...stylex.props(styles.bar)}>
-        <Progress value={progress} />
-      </div>
-      <div data-gsap-intro role="status" {...stylex.props(styles.status)}>
-        {status}
+    <div
+      ref={root}
+      role="progressbar"
+      aria-label={t.splashDefault}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.max(0, Math.min(100, progress))}
+      {...stylex.props(styles.root)}
+    >
+      <div {...stylex.props(styles.track)}>
+        <div ref={bar} {...stylex.props(styles.bar)} />
       </div>
     </div>
   )

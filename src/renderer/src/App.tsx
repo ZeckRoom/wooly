@@ -8,8 +8,16 @@ function ShellIn() {
   const root = useRef<HTMLDivElement>(null)
   useGSAP(
     () => {
-      if (prefersReducedMotion() || !root.current) return
-      gsap.from(root.current, { opacity: 0, duration: 0.32, ease: 'power2.out' })
+      if (!root.current) return
+      if (prefersReducedMotion()) {
+        gsap.set(root.current, { opacity: 1, y: 0 })
+        return
+      }
+      gsap.fromTo(
+        root.current,
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.62, ease: 'power3.out' }
+      )
     },
     { scope: root }
   )
@@ -22,7 +30,6 @@ function ShellIn() {
 
 export default function App(): React.JSX.Element {
   const splash = useLauncher((s) => s.splash)
-  const splashStatus = useLauncher((s) => s.splashStatus)
   const splashProgress = useLauncher((s) => s.splashProgress)
   const hydrate = useLauncher((s) => s.hydrate)
 
@@ -31,7 +38,12 @@ export default function App(): React.JSX.Element {
   }, [hydrate])
 
   if (splash) {
-    return <Splash status={splashStatus} progress={splashProgress} />
+    return (
+      <Splash
+        progress={splashProgress}
+        onFinished={() => useLauncher.setState({ splash: false })}
+      />
+    )
   }
   return <ShellIn />
 }

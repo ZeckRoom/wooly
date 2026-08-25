@@ -8,6 +8,8 @@ import { Icon } from './ui/icon'
 const styles = stylex.create({
   chip: {
     alignItems: 'center',
+    appearance: 'none',
+    backgroundColor: 'rgb(16 18 22 / 0.82)',
     borderRadius: 999,
     borderStyle: 'none',
     color: colors.foreground,
@@ -17,13 +19,14 @@ const styles = stylex.create({
     gap: 10,
     maxWidth: 240,
     padding: '6px 16px 6px 6px',
-    textAlign: 'left'
+    textAlign: 'left',
+    WebkitAppearance: 'none'
   },
   avatar: {
     alignItems: 'center',
-    backgroundColor: 'rgb(8 10 12 / 0.42)',
+    backgroundColor: 'rgb(255 255 255 / 0.1)',
     borderRadius: 999,
-    color: colors.mutedForeground,
+    color: colors.foreground,
     display: 'flex',
     flexShrink: 0,
     height: 40,
@@ -33,6 +36,7 @@ const styles = stylex.create({
     width: 40
   },
   name: {
+    color: colors.foreground,
     fontSize: 14,
     fontWeight: 500,
     overflow: 'hidden',
