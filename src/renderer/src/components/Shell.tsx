@@ -9,7 +9,6 @@ import { InstanceFormDialog } from './InstanceFormDialog'
 import { InstanceSidebar } from './InstanceSidebar'
 import { SettingsView } from './SettingsView'
 import { TitleBar } from './TitleBar'
-import { UpdateBanner } from './UpdateBanner'
 import { activeAccount, useLauncher } from '@/state/store'
 
 const styles = stylex.create({
@@ -19,13 +18,6 @@ const styles = stylex.create({
     flexDirection: 'column',
     height: '100%',
     position: 'relative'
-  },
-  settingsUpdate: {
-    bottom: 16,
-    left: 16,
-    position: 'absolute',
-    width: 268,
-    zIndex: 20
   },
   body: {
     display: 'flex',
@@ -80,57 +72,59 @@ export function Shell() {
 
   return (
     <div {...stylex.props(styles.root)}>
-      <TitleBar
-        group={store.group}
-        onGroup={store.setGroup}
-        account={account}
-        onAccounts={() => setAccountsOpen(true)}
-        onSettings={() => store.setView(store.view === 'settings' ? 'library' : 'settings')}
-        maximized={store.maximized}
-      />
+      <TitleBar maximized={store.maximized} />
       {store.error && store.error !== store.launch.error ? (
         <p role="alert" {...stylex.props(styles.banner)}>
           {store.error}
         </p>
       ) : null}
       <div {...stylex.props(styles.body)}>
+        <InstanceSidebar
+          group={store.group}
+          onGroup={store.setGroup}
+          instances={store.instances}
+          selectedId={store.selectedId}
+          onSelect={(id) => {
+            store.selectInstance(id)
+            store.setView('library')
+          }}
+          onCreate={() => {
+            store.setView('library')
+            setCreateOpen(true)
+          }}
+          account={account}
+          onAccounts={() => setAccountsOpen(true)}
+          settingsActive={store.view === 'settings'}
+          onSettings={() => store.setView(store.view === 'settings' ? 'library' : 'settings')}
+          update={store.update}
+          onUpdateCheck={() => void window.wooly.update.check()}
+          onUpdateDownload={() => void window.wooly.update.download()}
+          onUpdateInstall={() => void window.wooly.update.install()}
+        />
         {store.view === 'settings' ? (
           <SettingsView
             settings={store.settings}
             onChange={(settings) => useLauncher.setState({ settings })}
           />
         ) : (
-          <>
-            <InstanceSidebar
-              group={store.group}
-              instances={store.instances}
-              selectedId={store.selectedId}
-              onSelect={store.selectInstance}
-              onCreate={() => setCreateOpen(true)}
-              update={store.update}
-              onUpdateCheck={() => void window.wooly.update.check()}
-              onUpdateDownload={() => void window.wooly.update.download()}
-              onUpdateInstall={() => void window.wooly.update.install()}
-            />
-            <InstanceDetail
-              instance={selected}
-              group={store.group}
-              versions={store.versions}
-              launch={store.launch}
-              install={store.install}
-              logs={store.logs}
-              onPlay={() => void play()}
-              onInstall={() => void install()}
-              onStop={() => void window.wooly.launch.stop()}
-              onEdit={() => setEditOpen(true)}
-              onDelete={() => {
-                if (!selected) return
-                if (!window.confirm(t.deleteConfirm)) return
-                void window.wooly.instances.remove(selected.id)
-              }}
-              onFolder={() => selected && void window.wooly.openPath('instance', selected.id)}
-            />
-          </>
+          <InstanceDetail
+            instance={selected}
+            group={store.group}
+            versions={store.versions}
+            launch={store.launch}
+            install={store.install}
+            logs={store.logs}
+            onPlay={() => void play()}
+            onInstall={() => void install()}
+            onStop={() => void window.wooly.launch.stop()}
+            onEdit={() => setEditOpen(true)}
+            onDelete={() => {
+              if (!selected) return
+              if (!window.confirm(t.deleteConfirm)) return
+              void window.wooly.instances.remove(selected.id)
+            }}
+            onFolder={() => selected && void window.wooly.openPath('instance', selected.id)}
+          />
         )}
       </div>
       <InstanceFormDialog
@@ -162,16 +156,6 @@ export function Shell() {
         prompt={store.authPrompt}
         onClose={() => setAccountsOpen(false)}
       />
-      {store.view === 'settings' ? (
-        <div {...stylex.props(styles.settingsUpdate)}>
-          <UpdateBanner
-            update={store.update}
-            onCheck={() => void window.wooly.update.check()}
-            onDownload={() => void window.wooly.update.download()}
-            onInstall={() => void window.wooly.update.install()}
-          />
-        </div>
-      ) : null}
     </div>
   )
 }

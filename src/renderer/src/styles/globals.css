@@ -3,7 +3,6 @@
 :root {
   --ink: #f3ece3;
   --background: #161310;
-  --titlebar-bg: #3f3931;
   --card: #1e1a16;
   --card-foreground: var(--ink);
   --popover: #221e19;
@@ -25,10 +24,11 @@
   --info-foreground: #f4f8ff;
   --radius: 0.625rem;
   --sidebar: #14110e;
+  --titlebar-bg: var(--sidebar);
   --sidebar-foreground: var(--ink);
   --sidebar-accent: color-mix(in srgb, var(--ink) 7%, transparent);
   --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: color-mix(in srgb, var(--ink) 14%, transparent);
+  --sidebar-border: color-mix(in srgb, var(--ink) 22%, transparent);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-ring: var(--ring);
@@ -68,10 +68,6 @@ input,
 textarea,
 select {
   font: inherit;
-}
-
-button {
-  color: inherit;
 }
 
 code,

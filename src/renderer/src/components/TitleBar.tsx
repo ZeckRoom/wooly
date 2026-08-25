@@ -4,14 +4,13 @@ import MinusSignIcon from '@hugeicons/core-free-icons/MinusSignIcon'
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon'
 import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
-import type { InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 
 const styles = stylex.create({
   bar: {
     alignItems: 'center',
-    backgroundColor: 'var(--titlebar-bg)',
+    backgroundColor: colors.sidebar,
     borderBottomColor: colors.border,
     borderBottomStyle: 'solid',
     borderBottomWidth: 1,
@@ -26,8 +25,7 @@ const styles = stylex.create({
   left: {
     alignItems: 'center',
     display: 'flex',
-    gap: 10,
-    minWidth: 180,
+    minWidth: 0,
     WebkitAppRegion: 'no-drag'
   },
   brand: {
@@ -35,69 +33,16 @@ const styles = stylex.create({
     fontWeight: 500,
     letterSpacing: '-0.03em'
   },
-  tabs: {
-    backgroundColor: colors.background,
-    borderRadius: 999,
-    display: 'flex',
-    gap: 2,
-    padding: 3,
-    WebkitAppRegion: 'no-drag'
-  },
-  tab: {
-    borderRadius: 999,
-    fontSize: 13,
-    height: 28,
-    minWidth: 88,
-    paddingInline: 14
-  },
-  tabActive: {
-    backgroundColor: colors.secondary,
-    color: colors.foreground
-  },
   right: {
     alignItems: 'center',
     display: 'flex',
-    gap: 8,
+    gap: 4,
     justifyContent: 'flex-end',
-    minWidth: 180,
     WebkitAppRegion: 'no-drag'
-  },
-  account: {
-    alignItems: 'center',
-    display: 'flex',
-    gap: 8,
-    maxWidth: 180
-  },
-  avatar: {
-    borderRadius: 999,
-    height: 22,
-    width: 22,
-    backgroundColor: colors.secondary,
-    objectFit: 'cover'
-  },
-  name: {
-    fontSize: 12,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
   }
 })
 
-export function TitleBar({
-  group,
-  onGroup,
-  account,
-  onAccounts,
-  onSettings,
-  maximized
-}: {
-  group: InstanceGroup
-  onGroup: (group: InstanceGroup) => void
-  account: PublicAccount | null
-  onAccounts: () => void
-  onSettings: () => void
-  maximized: boolean
-}) {
+export function TitleBar({ maximized }: { maximized: boolean }) {
   return (
     <header
       data-tauri-drag-region
@@ -106,34 +51,7 @@ export function TitleBar({
       <div {...stylex.props(styles.left)}>
         <span {...stylex.props(styles.brand)}>{t.appName}</span>
       </div>
-      <div {...stylex.props(styles.tabs)}>
-        {(['vanilla', 'modded'] as const).map((item) => (
-          <Button
-            key={item}
-            variant="ghost"
-            size="sm"
-            aria-pressed={group === item}
-            onClick={() => onGroup(item)}
-            sx={group === item ? [styles.tab, styles.tabActive] : styles.tab}
-          >
-            {item === 'vanilla' ? t.vanilla : t.modded}
-          </Button>
-        ))}
-      </div>
       <div {...stylex.props(styles.right)}>
-        <Button variant="ghost" size="sm" onClick={onAccounts}>
-          <span {...stylex.props(styles.account)}>
-            {account ? (
-              <img alt="" {...stylex.props(styles.avatar)} src={account.avatarUrl} />
-            ) : (
-              <span {...stylex.props(styles.avatar)} />
-            )}
-            <span {...stylex.props(styles.name)}>{account?.username ?? t.accounts}</span>
-          </span>
-        </Button>
-        <Button variant="ghost" size="sm" onClick={onSettings}>
-          {t.settings}
-        </Button>
         <Button
           variant="ghost"
           size="icon-sm"

@@ -1,8 +1,9 @@
 import * as stylex from '@stylexjs/stylex'
 import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
+import Settings01Icon from '@hugeicons/core-free-icons/Settings01Icon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
-import type { AppUpdateState, GameInstance, InstanceGroup } from '@shared/types'
+import type { AppUpdateState, GameInstance, InstanceGroup, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { Plate } from './ui/plate'
@@ -10,6 +11,10 @@ import { UpdateBanner } from './UpdateBanner'
 
 const styles = stylex.create({
   root: {
+    backgroundColor: colors.sidebar,
+    borderRightColor: colors.sidebarBorder,
+    borderRightStyle: 'solid',
+    borderRightWidth: 1,
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
@@ -29,11 +34,30 @@ const styles = stylex.create({
     letterSpacing: '0.08em',
     textTransform: 'uppercase'
   },
+  tabs: {
+    backgroundColor: colors.background,
+    borderRadius: 999,
+    display: 'flex',
+    gap: 2,
+    padding: 3,
+    width: '100%'
+  },
+  tab: {
+    borderRadius: 999,
+    flex: 1,
+    fontSize: 13,
+    height: 28
+  },
+  tabActive: {
+    backgroundColor: colors.secondary,
+    color: colors.foreground
+  },
   list: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
     gap: 8,
+    minHeight: 0,
     overflow: 'auto'
   },
   row: {
@@ -68,27 +92,72 @@ const styles = stylex.create({
     lineHeight: 1.6,
     padding: 12
   },
-  updateSlot: {
+  footer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
     marginTop: 'auto'
+  },
+  nav: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4
+  },
+  navBtn: {
+    justifyContent: 'flex-start',
+    width: '100%'
+  },
+  navActive: {
+    backgroundColor: colors.accent
+  },
+  account: {
+    alignItems: 'center',
+    display: 'flex',
+    gap: 8,
+    minWidth: 0,
+    overflow: 'hidden'
+  },
+  avatar: {
+    backgroundColor: colors.secondary,
+    borderRadius: 999,
+    flexShrink: 0,
+    height: 22,
+    objectFit: 'cover',
+    width: 22
+  },
+  accountName: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   }
 })
 
 export function InstanceSidebar({
   group,
+  onGroup,
   instances,
   selectedId,
   onSelect,
   onCreate,
+  account,
+  onAccounts,
+  settingsActive,
+  onSettings,
   update,
   onUpdateCheck,
   onUpdateDownload,
   onUpdateInstall
 }: {
   group: InstanceGroup
+  onGroup: (group: InstanceGroup) => void
   instances: GameInstance[]
   selectedId: string | null
   onSelect: (id: string) => void
   onCreate: () => void
+  account: PublicAccount | null
+  onAccounts: () => void
+  settingsActive: boolean
+  onSettings: () => void
   update: AppUpdateState
   onUpdateCheck: () => void
   onUpdateDownload: () => void
@@ -103,6 +172,21 @@ export function InstanceSidebar({
           <Icon icon={PlusSignIcon} size={14} />
           {t.newInstance}
         </Button>
+      </div>
+      <div {...stylex.props(styles.tabs)} role="tablist" aria-label={t.instances}>
+        {(['vanilla', 'modded'] as const).map((item) => (
+          <Button
+            key={item}
+            variant="ghost"
+            size="sm"
+            role="tab"
+            aria-selected={group === item}
+            onClick={() => onGroup(item)}
+            sx={group === item ? [styles.tab, styles.tabActive] : styles.tab}
+          >
+            {item === 'vanilla' ? t.vanilla : t.modded}
+          </Button>
+        ))}
       </div>
       <div {...stylex.props(styles.list)}>
         {rows.length === 0 ? (
@@ -127,13 +211,37 @@ export function InstanceSidebar({
           ))
         )}
       </div>
-      <div {...stylex.props(styles.updateSlot)}>
+      <div {...stylex.props(styles.footer)}>
         <UpdateBanner
           update={update}
           onCheck={onUpdateCheck}
           onDownload={onUpdateDownload}
           onInstall={onUpdateInstall}
         />
+        <div {...stylex.props(styles.nav)}>
+          <Button variant="ghost" size="sm" onClick={onAccounts} sx={styles.navBtn}>
+            <span {...stylex.props(styles.account)}>
+              {account ? (
+                <img alt="" {...stylex.props(styles.avatar)} src={account.avatarUrl} />
+              ) : (
+                <span {...stylex.props(styles.avatar)} />
+              )}
+              <span {...stylex.props(styles.accountName)}>
+                {account?.username ?? t.accounts}
+              </span>
+            </span>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-pressed={settingsActive}
+            onClick={onSettings}
+            sx={settingsActive ? [styles.navBtn, styles.navActive] : styles.navBtn}
+          >
+            <Icon icon={Settings01Icon} size={14} />
+            {t.settings}
+          </Button>
+        </div>
       </div>
     </aside>
   )

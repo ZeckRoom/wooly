@@ -76,7 +76,6 @@ export const t = {
   authDevice: 'Enter this code on the Microsoft page.',
   premiumOnly: 'Premium Minecraft Java only',
   appVersion: 'Version',
-  updateKicker: 'Wooly',
   updateAvailable: 'Update available',
   updateDownloading: 'Downloading update',
   updateReady: 'Restart to update',

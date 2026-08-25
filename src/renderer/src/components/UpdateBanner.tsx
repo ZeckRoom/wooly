@@ -20,13 +20,6 @@ const styles = stylex.create({
     boxShadow: 'none',
     color: colors.foreground
   },
-  kicker: {
-    fontSize: 11,
-    fontWeight: 500,
-    letterSpacing: '0.08em',
-    opacity: 0.86,
-    textTransform: 'uppercase'
-  },
   title: {
     fontSize: 15,
     fontWeight: 500,
@@ -56,10 +49,10 @@ const styles = stylex.create({
   },
   action: {
     backgroundColor: {
-      ':hover': 'rgb(255 255 255 / 0.92)',
+      ':hover': '#f3ece3',
       default: '#fff'
     },
-    color: colors.info
+    color: '#1a1612'
   }
 })
 
@@ -77,7 +70,6 @@ export function UpdateBanner({
   if (update.phase === 'idle') {
     return (
       <aside {...stylex.props(styles.card, styles.idle)} aria-live="polite">
-        <div {...stylex.props(styles.kicker)}>{t.updateKicker}</div>
         <div {...stylex.props(styles.title)}>
           {t.appVersion} {update.currentVersion}
         </div>
@@ -111,7 +103,6 @@ export function UpdateBanner({
 
   return (
     <aside {...stylex.props(styles.card)} aria-live="polite">
-      <div {...stylex.props(styles.kicker)}>{t.updateKicker}</div>
       <div {...stylex.props(styles.title)}>{title}</div>
       {meta ? <p {...stylex.props(styles.meta)}>{meta}</p> : null}
       {update.phase === 'downloading' ? (
