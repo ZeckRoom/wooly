@@ -37,14 +37,12 @@ export function AccountDialog({
   accounts,
   activeId,
   prompt,
-  clientId,
   onClose
 }: {
   open: boolean
   accounts: PublicAccount[]
   activeId: string | null
   prompt: AuthPrompt | null
-  clientId: string
   onClose: () => void
 }) {
   const [error, setError] = useState<string | null>(null)
@@ -109,10 +107,9 @@ export function AccountDialog({
         )}
       </div>
       {error ? <p {...stylex.props(styles.error)}>{error}</p> : null}
-      <Button onClick={() => void login()} disabled={busy || !clientId}>
+      <Button onClick={() => void login()} disabled={busy}>
         {t.addAccount}
       </Button>
-      {!clientId ? <p {...stylex.props(styles.muted)}>{t.needClientId}</p> : null}
     </Dialog>
   )
 }

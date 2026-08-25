@@ -159,7 +159,6 @@ export function Shell() {
         accounts={store.accounts}
         activeId={store.activeAccountId}
         prompt={store.authPrompt}
-        clientId={store.settings.microsoftClientId}
         onClose={() => setAccountsOpen(false)}
       />
       {store.view === 'settings' ? (

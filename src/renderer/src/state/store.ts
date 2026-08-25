@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { EVENTS } from '@shared/constants'
+import { EVENTS, WOOLY_MS_CLIENT_ID } from '@shared/constants'
 import { idleUpdateState } from '@shared/update'
 import type {
   AppSettings,
@@ -48,7 +48,7 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
   splashProgress: 12,
   group: 'vanilla',
   view: 'library',
-  settings: { microsoftClientId: '', keepOpenOnLaunch: true, language: 'en' },
+  settings: { microsoftClientId: WOOLY_MS_CLIENT_ID, keepOpenOnLaunch: true, language: 'en' },
   accounts: [],
   activeAccountId: null,
   instances: [],

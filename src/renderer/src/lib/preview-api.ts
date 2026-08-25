@@ -1,4 +1,4 @@
-import { EVENTS } from '@shared/constants'
+import { EVENTS, WOOLY_MS_CLIENT_ID } from '@shared/constants'
 import { DEFAULT_MEMORY_MAX, DEFAULT_MEMORY_MIN, normalizeInstanceName } from '@shared/instance'
 import type {
   AppSettings,
@@ -45,7 +45,7 @@ export function installPreviewApi(): void {
   }
 
   let settings: AppSettings = {
-    microsoftClientId: '',
+    microsoftClientId: WOOLY_MS_CLIENT_ID,
     keepOpenOnLaunch: true,
     language: 'en'
   }

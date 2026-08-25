@@ -23,7 +23,7 @@ export const t = {
   active: 'Active',
   noAccounts: 'No Microsoft account yet.',
   noAccountsHint: 'Wooly launches premium Minecraft Java only. Sign in to continue.',
-  needClientId: 'Add your Azure application ID in Settings first.',
+  microsoftReady: 'Microsoft login is built into Wooly. Add your account from Accounts.',
   noInstances: 'Nothing here yet.',
   noInstancesVanilla: 'Create a vanilla instance to start playing.',
   noInstancesModded:
@@ -55,9 +55,6 @@ export const t = {
   consoleEmpty: 'Launch output will show up here.',
   latest: 'Latest',
   snapshot: 'Snapshot',
-  microsoftClientId: 'Microsoft application ID',
-  microsoftClientIdHint:
-    'Create an Azure App Registration (personal Microsoft accounts, public client, loopback http://127.0.0.1). Paste the Application (client) ID here.',
   keepOpen: 'Keep Wooly open while playing',
   dataFolder: 'Open launcher data',
   metaFolder: 'Open shared game files',

@@ -129,14 +129,7 @@ async function requirePremiumProfile(
 
 export async function resolveClientId(): Promise<string> {
   const settings = await loadSettings()
-  const id = settings.microsoftClientId.trim()
-  if (!id) {
-    throw new AuthError(
-      'NEED_CLIENT_ID',
-      'Add a Microsoft Azure application ID in Settings before signing in.'
-    )
-  }
-  return id
+  return settings.microsoftClientId
 }
 
 export async function loginMicrosoft(onPrompt: AuthEventSink): Promise<PublicAccount> {

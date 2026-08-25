@@ -1,9 +1,10 @@
 import type { AppSettings } from '@shared/types'
+import { resolveWoolyMsClientId } from '@shared/constants'
 import { settingsFile } from '../paths'
 import { readJsonFile, writeJsonFile } from './json'
 
 const defaults: AppSettings = {
-  microsoftClientId: process.env.WOOLY_MS_CLIENT_ID?.trim() ?? '',
+  microsoftClientId: resolveWoolyMsClientId({ env: process.env.WOOLY_MS_CLIENT_ID }),
   keepOpenOnLaunch: true,
   language: 'en'
 }
@@ -16,7 +17,10 @@ export async function loadSettings(): Promise<AppSettings> {
   cache = {
     ...defaults,
     ...stored,
-    microsoftClientId: stored.microsoftClientId?.trim() || defaults.microsoftClientId,
+    microsoftClientId: resolveWoolyMsClientId({
+      stored: stored.microsoftClientId,
+      env: process.env.WOOLY_MS_CLIENT_ID
+    }),
     language: 'en'
   }
   return cache
@@ -28,7 +32,10 @@ export async function saveSettings(patch: Partial<AppSettings>): Promise<AppSett
     ...current,
     ...patch,
     language: 'en',
-    microsoftClientId: (patch.microsoftClientId ?? current.microsoftClientId).trim()
+    microsoftClientId: resolveWoolyMsClientId({
+      stored: patch.microsoftClientId ?? current.microsoftClientId,
+      env: process.env.WOOLY_MS_CLIENT_ID
+    })
   }
   await writeJsonFile(settingsFile(), cache)
   return cache

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ownsMinecraftJava, xboxErrorMessage } from './auth'
 import { decorateCatalog, filterCatalog, javaRuntimeFor } from './minecraft'
+import { resolveWoolyMsClientId, WOOLY_MS_CLIENT_ID } from './constants'
 import { DEFAULT_MEMORY_MAX, defaultInstanceDraft, validateInstanceDraft } from './instance'
 import {
   compareLauncherVersions,
@@ -111,5 +112,15 @@ describe('launcher updates', () => {
     expect(updateDownloadPercent(50, 100)).toBe(50)
     expect(updateDownloadPercent(0, 0)).toBe(0)
     expect(updateDownloadPercent(200, 100)).toBe(100)
+  })
+})
+
+describe('Microsoft client id', () => {
+  it('uses the built-in Wooly Azure app by default', () => {
+    expect(resolveWoolyMsClientId()).toBe(WOOLY_MS_CLIENT_ID)
+    expect(resolveWoolyMsClientId({ stored: '  ' })).toBe(WOOLY_MS_CLIENT_ID)
+    expect(resolveWoolyMsClientId({ env: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee' })).toBe(
+      'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+    )
   })
 })

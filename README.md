@@ -74,18 +74,9 @@ pnpm build:win
 
 ## Microsoft login
 
-Wooly talks to official Microsoft, Xbox Live, and Minecraft services. Create an Azure App Registration:
+Wooly already includes its Azure public-client app. Open **Accounts → Add Microsoft account** — you do not paste an Application (client) ID.
 
-1. Azure Portal → App registrations → New
-2. Accounts in any org directory and personal Microsoft accounts
-3. Platform: Mobile and desktop / public client
-4. Redirect URI: `http://127.0.0.1`
-5. Allow public client flows: Yes
-6. Copy the Application (client) ID
-
-Paste it in **Settings → Microsoft application ID**, or set `WOOLY_MS_CLIENT_ID` in a local `.env` (see `.env.example`).
-
-Wooly refuses accounts that do not own Minecraft Java Edition.
+Only premium Minecraft Java accounts work. A fork can override the ID with `WOOLY_MS_CLIENT_ID`.
 
 ## Data on Windows
 

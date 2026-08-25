@@ -3,6 +3,16 @@ export const APP_ID = 'net.wooly.launcher'
 export const LAUNCHER_BRAND = 'wooly'
 export const LAUNCHER_VERSION = '0.1.0'
 
+/** Public Azure app (Wooly Launcher). Desktop public-client IDs are not secrets. */
+export const WOOLY_MS_CLIENT_ID = 'f8e1ccbe-2013-423b-8eb9-f864385b46a6'
+
+export function resolveWoolyMsClientId(options: {
+  stored?: string | null
+  env?: string | null
+} = {}): string {
+  return options.env?.trim() || options.stored?.trim() || WOOLY_MS_CLIENT_ID
+}
+
 export const MS_SCOPES = ['XboxLive.signin', 'offline_access']
 
 export const MOJANG = {
