@@ -11,7 +11,6 @@ import type {
   CatalogVersion,
   GameInstance,
   InstallProgress,
-  InstanceGroup,
   LaunchState,
   LogLine
 } from '@shared/types'
@@ -86,7 +85,6 @@ function playLabel(phase: LaunchState['phase']): string {
 
 export function InstanceDetail({
   instance,
-  group,
   versions,
   launch,
   install,
@@ -99,7 +97,6 @@ export function InstanceDetail({
   onFolder
 }: {
   instance: GameInstance | null
-  group: InstanceGroup
   versions: CatalogVersion[]
   launch: LaunchState
   install: InstallProgress | null
@@ -125,9 +122,6 @@ export function InstanceDetail({
         <Plate>
           <div {...stylex.props(styles.hero)}>
             <h1 {...stylex.props(styles.title)}>{t.noInstances}</h1>
-            <p {...stylex.props(styles.muted)}>
-              {group === 'modded' ? t.noInstancesModded : t.noInstancesVanilla}
-            </p>
           </div>
         </Plate>
       </main>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
@@ -38,13 +38,9 @@ export function Shell() {
   const [accountsOpen, setAccountsOpen] = useState(false)
   const account = activeAccount()
   const selected = store.instances.find((item) => item.id === store.selectedId) ?? null
-  const groupInstances = useMemo(
-    () => store.instances.filter((item) => item.group === store.group),
-    [store.instances, store.group]
-  )
 
   const create = async (draft: InstanceDraft) => {
-    const created = await window.wooly.instances.create({ ...draft, group: store.group })
+    const created = await window.wooly.instances.create({ ...draft, group: draft.group })
     store.selectInstance(created.id)
   }
 
@@ -80,8 +76,6 @@ export function Shell() {
       ) : null}
       <div {...stylex.props(styles.body)}>
         <InstanceSidebar
-          group={store.group}
-          onGroup={store.setGroup}
           instances={store.instances}
           selectedId={store.selectedId}
           onSelect={(id) => {
@@ -109,7 +103,6 @@ export function Shell() {
         ) : (
           <InstanceDetail
             instance={selected}
-            group={store.group}
             versions={store.versions}
             launch={store.launch}
             install={store.install}
@@ -128,18 +121,18 @@ export function Shell() {
         )}
       </div>
       <InstanceFormDialog
-        key={`create-${store.group}-${createOpen}`}
+        key={`create-${createOpen}`}
         open={createOpen}
-        group={store.group}
+        group="vanilla"
         versions={store.versions}
-        existing={groupInstances}
+        existing={store.instances}
         onClose={() => setCreateOpen(false)}
         onSubmit={create}
       />
       <InstanceFormDialog
         key={`edit-${selected?.id ?? 'none'}-${editOpen}`}
         open={editOpen}
-        group={store.group}
+        group="vanilla"
         versions={store.versions}
         existing={store.instances}
         instance={selected}

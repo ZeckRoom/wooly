@@ -14,9 +14,9 @@ const styles = stylex.create({
       ':hover': 'color-mix(in srgb, white 10%, var(--info))',
       default: colors.info
     },
-    borderRadius: 16,
+    borderRadius: 0,
     borderStyle: 'none',
-    boxShadow: '0 8px 24px rgb(20 50 120 / 0.28)',
+    boxShadow: 'none',
     color: colors.infoForeground,
     cursor: { ':disabled': 'default', default: 'pointer' },
     display: 'flex',

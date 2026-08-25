@@ -4,7 +4,7 @@ import Settings01Icon from '@hugeicons/core-free-icons/Settings01Icon'
 import UserIcon from '@hugeicons/core-free-icons/UserIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
-import type { AppUpdateState, GameInstance, InstanceGroup, PublicAccount } from '@shared/types'
+import type { AppUpdateState, GameInstance, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { UpdateBanner } from './UpdateBanner'
@@ -20,34 +20,16 @@ const styles = stylex.create({
     gap: 12,
     height: '100%',
     minWidth: 280,
-    padding: 16,
+    paddingBottom: 0,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 16,
     width: 300
   },
   head: {
     alignItems: 'center',
     display: 'flex',
-    justifyContent: 'space-between'
-  },
-  title: {
-    color: colors.mutedForeground,
-    fontSize: 12,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase'
-  },
-  tabs: {
-    display: 'flex',
-    gap: 4,
-    width: '100%'
-  },
-  tab: {
-    borderRadius: 999,
-    flex: 1,
-    fontSize: 13,
-    height: 28
-  },
-  tabActive: {
-    backgroundColor: colors.secondary,
-    color: colors.foreground
+    justifyContent: 'flex-start'
   },
   list: {
     display: 'flex',
@@ -84,17 +66,31 @@ const styles = stylex.create({
     fontSize: 12
   },
   footer: {
+    borderColor: colors.border,
+    borderLeftStyle: 'none',
+    borderRadius: 0,
+    borderRightStyle: 'none',
+    borderBottomStyle: 'none',
+    borderTopStyle: 'solid',
+    borderTopWidth: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: 8,
-    marginTop: 'auto'
+    gap: 0,
+    marginLeft: -16,
+    marginRight: -16,
+    marginTop: 'auto',
+    overflow: 'hidden'
   },
   profile: {
     alignItems: 'center',
+    borderTopColor: colors.border,
+    borderTopStyle: 'solid',
+    borderTopWidth: 1,
     display: 'flex',
     gap: 4,
     minWidth: 0,
-    paddingBlock: 4
+    paddingBlock: 4,
+    paddingInline: 4
   },
   identity: {
     alignItems: 'center',
@@ -102,7 +98,7 @@ const styles = stylex.create({
       ':hover': colors.accent,
       default: 'transparent'
     },
-    borderRadius: 14,
+    borderRadius: 0,
     borderStyle: 'none',
     color: colors.foreground,
     cursor: 'pointer',
@@ -148,6 +144,7 @@ const styles = stylex.create({
     whiteSpace: 'nowrap'
   },
   gear: {
+    borderRadius: 0,
     color: colors.mutedForeground,
     flexShrink: 0
   },
@@ -158,8 +155,6 @@ const styles = stylex.create({
 })
 
 export function InstanceSidebar({
-  group,
-  onGroup,
   instances,
   selectedId,
   onSelect,
@@ -173,8 +168,6 @@ export function InstanceSidebar({
   onUpdateDownload,
   onUpdateInstall
 }: {
-  group: InstanceGroup
-  onGroup: (group: InstanceGroup) => void
   instances: GameInstance[]
   selectedId: string | null
   onSelect: (id: string) => void
@@ -188,33 +181,16 @@ export function InstanceSidebar({
   onUpdateDownload: () => void
   onUpdateInstall: () => void
 }) {
-  const rows = instances.filter((item) => item.group === group)
   return (
     <aside {...stylex.props(styles.root)}>
       <div {...stylex.props(styles.head)}>
-        <div {...stylex.props(styles.title)}>{t.instances}</div>
         <Button size="sm" variant="secondary" onClick={onCreate}>
           <Icon icon={PlusSignIcon} size={14} />
           {t.newInstance}
         </Button>
       </div>
-      <div {...stylex.props(styles.tabs)} role="tablist" aria-label={t.instances}>
-        {(['vanilla', 'modded'] as const).map((item) => (
-          <Button
-            key={item}
-            variant="ghost"
-            size="sm"
-            role="tab"
-            aria-selected={group === item}
-            onClick={() => onGroup(item)}
-            sx={group === item ? [styles.tab, styles.tabActive] : styles.tab}
-          >
-            {item === 'vanilla' ? t.vanilla : t.modded}
-          </Button>
-        ))}
-      </div>
       <div {...stylex.props(styles.list)}>
-        {rows.map((item) => (
+        {instances.map((item) => (
           <button
             key={item.id}
             type="button"
