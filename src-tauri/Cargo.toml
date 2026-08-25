@@ -8,7 +8,8 @@ rust-version = "1.77.2"
 
 [lib]
 name = "wooly_launcher_lib"
-crate-type = ["staticlib", "cdylib", "rlib"]
+# Windows desktop only — skip Android/iOS crate types that extra-link the same lib.
+crate-type = ["rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
@@ -38,9 +39,9 @@ windows-sys = { version = "0.59", features = [
   "Win32_Security_Cryptography"
 ] }
 
+# Fast `tauri build` / CI. Size is not a priority for this launcher.
 [profile.release]
-codegen-units = 1
-lto = true
-opt-level = "s"
-panic = "abort"
+opt-level = 2
+codegen-units = 256
+lto = false
 strip = true
