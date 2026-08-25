@@ -17,7 +17,8 @@ const styles = stylex.create({
     display: 'flex',
     height: 'var(--titlebar)',
     justifyContent: 'space-between',
-    paddingInline: 12,
+    paddingLeft: 12,
+    paddingRight: 0,
     position: 'relative',
     WebkitAppRegion: 'drag',
     zIndex: 10
@@ -41,7 +42,7 @@ const styles = stylex.create({
     gap: 0,
     height: '100%',
     justifyContent: 'flex-end',
-    marginRight: -12,
+    marginRight: 0,
     WebkitAppRegion: 'no-drag'
   },
   caption: {
