@@ -10,3 +10,4 @@ coverage
 release
 *.exe
 *.blockmap
+/wooly/
