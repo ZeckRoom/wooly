@@ -151,7 +151,7 @@ const styles = stylex.create({
     font: 'inherit',
     fontSize: 15,
     fontWeight: 500,
-    padding: '0 14px 0 16px',
+    padding: '0 8px 0 16px',
     whiteSpace: 'nowrap'
   },
   round: {
@@ -177,9 +177,6 @@ const styles = stylex.create({
     },
     color: colors.primaryForeground,
     opacity: { ':disabled': 0.7, default: 1 }
-  },
-  plusSpin: {
-    display: 'flex'
   }
 })
 
@@ -225,7 +222,6 @@ export function LauncherDock({
   const [open, setOpen] = useState(false)
   const [shown, setShown] = useState(false)
   const panel = useRef<HTMLDivElement>(null)
-  const plus = useRef<HTMLSpanElement>(null)
   const latestVersion =
     versions.find((item) => item.latestRelease)?.id ?? versions[0]?.id ?? ''
   const versionLabel = selected?.versionId ?? latestVersion
@@ -251,13 +247,6 @@ export function LauncherDock({
   useGSAP(
     () => {
       const reduced = prefersReducedMotion()
-      if (plus.current) {
-        gsap.to(plus.current, {
-          rotation: open ? 45 : 0,
-          duration: reduced ? 0 : 0.32,
-          ease: 'power2.out'
-        })
-      }
       if (!shown || !panel.current) return
       gsap.killTweensOf(panel.current)
       if (open) {
@@ -397,6 +386,8 @@ export function LauncherDock({
         <div {...stylex.props(styles.dock, customClassName('wooly-glass'))}>
           <button
             type="button"
+            aria-expanded={open}
+            aria-haspopup="dialog"
             onClick={() => (open ? hide() : show())}
             {...stylex.props(styles.version)}
           >
@@ -417,17 +408,6 @@ export function LauncherDock({
             {...stylex.props(styles.round, styles.play)}
           >
             <Icon icon={running ? StopIcon : PlayIcon} size={18} />
-          </button>
-          <button
-            type="button"
-            aria-label={open ? t.close : t.newInstance}
-            aria-expanded={open}
-            onClick={() => (open ? hide() : show())}
-            {...stylex.props(styles.round, customClassName('wooly-glass-dot'))}
-          >
-            <span ref={plus} {...stylex.props(styles.plusSpin)}>
-              <Icon icon={PlusSignIcon} size={18} />
-            </span>
           </button>
         </div>
       </div>
