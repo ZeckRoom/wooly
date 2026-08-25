@@ -32,6 +32,7 @@ import {
   updateInstance
 } from './store/instances'
 import { loadSettings, saveSettings } from './store/settings'
+import { checkForUpdates, downloadUpdate, getUpdateState, installUpdate } from './update'
 
 function send(channel: string, payload: unknown): void {
   for (const win of BrowserWindow.getAllWindows()) {
@@ -65,7 +66,8 @@ export function registerIpc(): void {
         phase: isGameRunning() ? 'running' : 'idle',
         instanceId: null,
         error: null
-      }
+      },
+      update: getUpdateState()
     }
   })
 
@@ -222,4 +224,10 @@ export function registerIpc(): void {
       await shell.openPath(target)
     }
   )
+
+  ipcMain.handle(IPC.updateCheck, () => checkForUpdates())
+  ipcMain.handle(IPC.updateDownload, () => downloadUpdate())
+  ipcMain.handle(IPC.updateInstall, () => {
+    installUpdate()
+  })
 }

@@ -2,9 +2,10 @@ import * as stylex from '@stylexjs/stylex'
 import { Plus } from 'lucide-react'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
-import type { GameInstance, InstanceGroup } from '@shared/types'
+import type { AppUpdateState, GameInstance, InstanceGroup } from '@shared/types'
 import { Button } from './ui/button'
 import { Plate } from './ui/plate'
+import { UpdateBanner } from './UpdateBanner'
 
 const styles = stylex.create({
   root: {
@@ -65,6 +66,9 @@ const styles = stylex.create({
     fontSize: 13,
     lineHeight: 1.6,
     padding: 12
+  },
+  updateSlot: {
+    marginTop: 'auto'
   }
 })
 
@@ -73,13 +77,19 @@ export function InstanceSidebar({
   instances,
   selectedId,
   onSelect,
-  onCreate
+  onCreate,
+  update,
+  onUpdateDownload,
+  onUpdateInstall
 }: {
   group: InstanceGroup
   instances: GameInstance[]
   selectedId: string | null
   onSelect: (id: string) => void
   onCreate: () => void
+  update: AppUpdateState
+  onUpdateDownload: () => void
+  onUpdateInstall: () => void
 }) {
   const rows = instances.filter((item) => item.group === group)
   return (
@@ -113,6 +123,9 @@ export function InstanceSidebar({
             </button>
           ))
         )}
+      </div>
+      <div {...stylex.props(styles.updateSlot)}>
+        <UpdateBanner update={update} onDownload={onUpdateDownload} onInstall={onUpdateInstall} />
       </div>
     </aside>
   )

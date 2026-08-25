@@ -20,6 +20,8 @@
   --secondary: #2a241e;
   --secondary-foreground: var(--ink);
   --destructive: #e26d5a;
+  --info: #3d7dff;
+  --info-foreground: #f4f8ff;
   --radius: 0.625rem;
   --sidebar: #14110e;
   --sidebar-foreground: var(--ink);

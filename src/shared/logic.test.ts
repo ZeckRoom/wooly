@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { ownsMinecraftJava, xboxErrorMessage } from './auth'
 import { decorateCatalog, filterCatalog, javaRuntimeFor } from './minecraft'
 import { DEFAULT_MEMORY_MAX, defaultInstanceDraft, validateInstanceDraft } from './instance'
+import {
+  compareLauncherVersions,
+  isLauncherUpdate,
+  updateDownloadPercent
+} from './update'
 
 describe('ownsMinecraftJava', () => {
   it('accepts premium entitlements', () => {
@@ -91,5 +96,20 @@ describe('validateInstanceDraft', () => {
 
   it('uses a sane default max memory', () => {
     expect(DEFAULT_MEMORY_MAX).toBe(4096)
+  })
+})
+
+describe('launcher updates', () => {
+  it('detects a newer patch as an update', () => {
+    expect(compareLauncherVersions('0.1.16', '0.1.0')).toBeGreaterThan(0)
+    expect(isLauncherUpdate('0.1.0', '0.1.16')).toBe(true)
+    expect(isLauncherUpdate('0.1.16', '0.1.16')).toBe(false)
+    expect(isLauncherUpdate('0.1.16', '0.1.2')).toBe(false)
+  })
+
+  it('clamps download percent', () => {
+    expect(updateDownloadPercent(50, 100)).toBe(50)
+    expect(updateDownloadPercent(0, 0)).toBe(0)
+    expect(updateDownloadPercent(200, 100)).toBe(100)
   })
 })

@@ -12,6 +12,9 @@ concurrency:
   group: windows-installer-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -27,11 +30,22 @@ jobs:
       - run: pnpm install --frozen-lockfile --config.minimumReleaseAge=0 --config.confirmModulesPurge=false
       - run: pnpm test
       - run: pnpm typecheck
-      - run: pnpm build:win
+      - name: Stamp installer version
+        run: node scripts/stamp-version.mjs ${{ github.run_number }}
+      - name: Build Windows installer
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pnpm exec electron-vite build
+          if ("${{ github.event_name }}" -eq "pull_request") {
+            pnpm exec electron-builder --win --publish never
+          } else {
+            pnpm exec electron-builder --win --publish always
+          }
       - uses: actions/upload-artifact@v4
         with:
           name: wooly-launcher-windows
           path: |
             dist/*.exe
-            dist/*.zip
+            dist/*.yml
           if-no-files-found: error

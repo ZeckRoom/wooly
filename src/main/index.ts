@@ -6,6 +6,7 @@ import { EVENTS } from '@shared/constants'
 import { registerIpc } from './ipc'
 import { loadCatalogCache } from './minecraft/catalog'
 import { loadSettings } from './store/settings'
+import { setupAutoUpdate } from './update'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -53,6 +54,7 @@ app.whenReady().then(async () => {
   registerIpc()
   await loadSettings()
   await loadCatalogCache()
+  setupAutoUpdate()
   createWindow()
 
   app.on('activate', () => {

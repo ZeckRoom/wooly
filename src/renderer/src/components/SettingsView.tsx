@@ -3,6 +3,7 @@ import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AppSettings } from '@shared/types'
+import { useLauncher } from '@/state/store'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Plate } from './ui/plate'
@@ -46,6 +47,7 @@ export function SettingsView({
   onChange: (settings: AppSettings) => void
 }) {
   const [clientId, setClientId] = useState(settings.microsoftClientId)
+  const appVersion = useLauncher((s) => s.update.currentVersion)
 
   const save = async () => {
     const next = await window.wooly.settings.set({
@@ -90,6 +92,9 @@ export function SettingsView({
           </label>
           <p {...stylex.props(styles.muted)}>
             {t.language}: {t.languageValue}. {t.languageSoon}
+          </p>
+          <p {...stylex.props(styles.muted)}>
+            {t.appVersion} {appVersion}
           </p>
           <div {...stylex.props(styles.row)}>
             <Button

@@ -39,6 +39,11 @@ const api: WoolyApi = {
     stop: () => ipcRenderer.invoke(IPC.launchStop)
   },
   openPath: (kind, instanceId) => ipcRenderer.invoke(IPC.openPath, kind, instanceId),
+  update: {
+    check: () => ipcRenderer.invoke(IPC.updateCheck),
+    download: () => ipcRenderer.invoke(IPC.updateDownload),
+    install: () => ipcRenderer.invoke(IPC.updateInstall)
+  },
   on: (channel, listener) => {
     const allowed = new Set<string>(Object.values(EVENTS))
     if (!allowed.has(channel)) return () => undefined

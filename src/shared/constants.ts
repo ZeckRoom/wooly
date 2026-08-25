@@ -36,7 +36,10 @@ export const IPC = {
   installCancel: 'wooly:install:cancel',
   launchPlay: 'wooly:launch:play',
   launchStop: 'wooly:launch:stop',
-  openPath: 'wooly:open-path'
+  openPath: 'wooly:open-path',
+  updateCheck: 'wooly:update:check',
+  updateDownload: 'wooly:update:download',
+  updateInstall: 'wooly:update:install'
 } as const
 
 export const EVENTS = {
@@ -48,5 +51,6 @@ export const EVENTS = {
   auth: 'wooly:event:auth',
   accounts: 'wooly:event:accounts',
   instances: 'wooly:event:instances',
-  maximized: 'wooly:event:maximized'
+  maximized: 'wooly:event:maximized',
+  update: 'wooly:event:update'
 } as const

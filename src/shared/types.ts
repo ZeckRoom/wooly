@@ -1,3 +1,7 @@
+import type { AppUpdateState } from './update'
+
+export type { AppUpdateState, UpdatePhase } from './update'
+
 export type InstanceGroup = 'vanilla' | 'modded'
 export type VersionChannel = 'release' | 'snapshot'
 export type LaunchPhase = 'idle' | 'installing' | 'launching' | 'running' | 'stopping'
@@ -90,6 +94,7 @@ export interface BootstrapPayload {
   instances: GameInstance[]
   versions: CatalogVersion[]
   launch: LaunchState
+  update: AppUpdateState
 }
 
 export interface WoolyErrorShape {
@@ -134,5 +139,10 @@ export interface WoolyApi {
     stop: () => Promise<void>
   }
   openPath: (kind: 'instance' | 'root' | 'meta', instanceId?: string) => Promise<void>
+  update: {
+    check: () => Promise<AppUpdateState>
+    download: () => Promise<void>
+    install: () => Promise<void>
+  }
   on: (channel: string, listener: (...args: unknown[]) => void) => () => void
 }

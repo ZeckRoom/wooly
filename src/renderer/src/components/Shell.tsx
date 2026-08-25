@@ -9,6 +9,7 @@ import { InstanceFormDialog } from './InstanceFormDialog'
 import { InstanceSidebar } from './InstanceSidebar'
 import { SettingsView } from './SettingsView'
 import { TitleBar } from './TitleBar'
+import { UpdateBanner } from './UpdateBanner'
 import { activeAccount, useLauncher } from '@/state/store'
 
 const styles = stylex.create({
@@ -16,7 +17,15 @@ const styles = stylex.create({
     backgroundColor: colors.background,
     display: 'flex',
     flexDirection: 'column',
-    height: '100%'
+    height: '100%',
+    position: 'relative'
+  },
+  settingsUpdate: {
+    bottom: 16,
+    left: 16,
+    position: 'absolute',
+    width: 268,
+    zIndex: 20
   },
   body: {
     display: 'flex',
@@ -98,6 +107,9 @@ export function Shell() {
               selectedId={store.selectedId}
               onSelect={store.selectInstance}
               onCreate={() => setCreateOpen(true)}
+              update={store.update}
+              onUpdateDownload={() => void window.wooly.update.download()}
+              onUpdateInstall={() => void window.wooly.update.install()}
             />
             <InstanceDetail
               instance={selected}
@@ -150,6 +162,15 @@ export function Shell() {
         clientId={store.settings.microsoftClientId}
         onClose={() => setAccountsOpen(false)}
       />
+      {store.view === 'settings' ? (
+        <div {...stylex.props(styles.settingsUpdate)}>
+          <UpdateBanner
+            update={store.update}
+            onDownload={() => void window.wooly.update.download()}
+            onInstall={() => void window.wooly.update.install()}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }

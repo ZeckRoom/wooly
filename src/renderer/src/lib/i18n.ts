@@ -77,7 +77,18 @@ export const t = {
   versionCount: 'versions',
   authBrowser: 'Finish signing in with Microsoft, then return here.',
   authDevice: 'Enter this code on the Microsoft page.',
-  premiumOnly: 'Premium Minecraft Java only'
+  premiumOnly: 'Premium Minecraft Java only',
+  appVersion: 'Version',
+  updateKicker: 'Wooly',
+  updateAvailable: 'Update available',
+  updateDownloading: 'Downloading update',
+  updateReady: 'Restart to update',
+  updateError: 'Update failed',
+  updateTo: 'Version',
+  updateHint: 'A newer Wooly build is ready.',
+  updateNow: 'Update',
+  updateRestart: 'Restart',
+  updateRetry: 'Try again'
 } as const
 
 export type MessageKey = keyof typeof t

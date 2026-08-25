@@ -87,7 +87,14 @@ export function installPreviewApi(): void {
         activeAccountId,
         instances,
         versions,
-        launch: { phase: 'idle', instanceId: null, error: null }
+        launch: { phase: 'idle', instanceId: null, error: null },
+        update: {
+          phase: 'available',
+          currentVersion: '0.1.0',
+          availableVersion: '0.1.16',
+          percent: 0,
+          error: null
+        }
       }
     },
     window: {
@@ -228,6 +235,49 @@ export function installPreviewApi(): void {
       }
     },
     openPath: async () => undefined,
+    update: {
+      check: async () => ({
+        phase: 'available' as const,
+        currentVersion: '0.1.0',
+        availableVersion: '0.1.16',
+        percent: 0,
+        error: null
+      }),
+      download: async () => {
+        emit(EVENTS.update, {
+          phase: 'downloading',
+          currentVersion: '0.1.0',
+          availableVersion: '0.1.16',
+          percent: 8,
+          error: null
+        })
+        await delay(220)
+        emit(EVENTS.update, {
+          phase: 'downloading',
+          currentVersion: '0.1.0',
+          availableVersion: '0.1.16',
+          percent: 62,
+          error: null
+        })
+        await delay(220)
+        emit(EVENTS.update, {
+          phase: 'ready',
+          currentVersion: '0.1.0',
+          availableVersion: '0.1.16',
+          percent: 100,
+          error: null
+        })
+      },
+      install: async () => {
+        emit(EVENTS.update, {
+          phase: 'idle',
+          currentVersion: '0.1.16',
+          availableVersion: null,
+          percent: 0,
+          error: null
+        })
+      }
+    },
     on: (channel, listener) => {
       if (!listeners.has(channel)) listeners.set(channel, new Set())
       listeners.get(channel)!.add(listener)

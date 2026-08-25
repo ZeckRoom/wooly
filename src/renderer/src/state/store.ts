@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { EVENTS } from '@shared/constants'
+import { idleUpdateState } from '@shared/update'
 import type {
   AppSettings,
   AuthPrompt,
@@ -9,7 +10,8 @@ import type {
   InstanceGroup,
   LaunchState,
   LogLine,
-  PublicAccount
+  PublicAccount,
+  AppUpdateState
 } from '@shared/types'
 
 interface LauncherStore {
@@ -30,6 +32,7 @@ interface LauncherStore {
   authPrompt: AuthPrompt | null
   maximized: boolean
   error: string | null
+  update: AppUpdateState
   hydrate: () => Promise<void>
   setGroup: (group: InstanceGroup) => void
   setView: (view: 'library' | 'settings') => void
@@ -57,6 +60,7 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
   authPrompt: null,
   maximized: false,
   error: null,
+  update: idleUpdateState('0.1.0'),
   setGroup: (group) => {
     const first = get().instances.find((item) => item.group === group)
     set({ group, selectedId: first?.id ?? null, view: 'library' })
@@ -102,6 +106,9 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
     const offMax = window.wooly.on(EVENTS.maximized, (value) => {
       set({ maximized: Boolean(value) })
     })
+    const offUpdate = window.wooly.on(EVENTS.update, (payload) => {
+      set({ update: payload as AppUpdateState })
+    })
     void offSplash
     void offCatalog
     void offAccounts
@@ -111,6 +118,7 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
     void offLogs
     void offAuth
     void offMax
+    void offUpdate
 
     try {
       const payload = await window.wooly.bootstrap()
@@ -123,6 +131,7 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
         instances: payload.instances,
         versions: payload.versions,
         launch: payload.launch,
+        update: payload.update,
         selectedId: first?.id ?? null,
         splashProgress: 100,
         splashStatus: 'Ready'

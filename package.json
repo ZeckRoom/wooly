@@ -30,6 +30,7 @@
     "@stylexjs/stylex": "^0.17.4",
     "@xmcl/core": "^2.16.0",
     "@xmcl/installer": "^6.1.0",
+    "electron-updater": "^6.8.9",
     "lucide-react": "^0.544.0",
     "zustand": "^5.0.8"
   },
