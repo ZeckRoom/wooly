@@ -33,15 +33,9 @@ jobs:
       - name: Stamp installer version
         run: node scripts/stamp-version.mjs ${{ github.run_number }}
       - name: Build Windows installer
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pnpm exec electron-vite build
-          if ("${{ github.event_name }}" -eq "pull_request") {
-            pnpm exec electron-builder --win --publish never
-          } else {
-            pnpm exec electron-builder --win --publish always
-          }
+          pnpm exec electron-builder --win --publish never
       - uses: actions/upload-artifact@v4
         with:
           name: wooly-launcher-windows
@@ -49,3 +43,19 @@ jobs:
             dist/*.exe
             dist/*.yml
           if-no-files-found: error
+      - name: Publish GitHub release
+        if: github.event_name != 'pull_request'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="v0.1.${{ github.run_number }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$tag"
+          git push origin "$tag"
+          shopt -s nullglob
+          files=(dist/*.exe dist/*.yml dist/*.blockmap)
+          gh release create "$tag" "${files[@]}" \
+            --title "Wooly Launcher 0.1.${{ github.run_number }}" \
+            --notes "Windows installer. Wooly checks this GitHub Release for in-app updates."
