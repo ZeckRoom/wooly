@@ -175,7 +175,12 @@ export function registerIpc(): void {
 
   ipcMain.handle(IPC.launchPlay, async (_e, instanceId: string) => {
     const instance = await getInstance(instanceId)
-    await getActiveAccount()
+    const account = await getActiveAccount()
+    if (!account) {
+      const message = 'Sign in with a premium Microsoft account before playing.'
+      send(EVENTS.launch, { phase: 'idle', instanceId, error: message } satisfies LaunchState)
+      fail(new Error(message))
+    }
     send(EVENTS.launch, { phase: 'installing', instanceId, error: null } satisfies LaunchState)
     try {
       await installVanilla(instance.versionId, (progress) => send(EVENTS.install, progress))

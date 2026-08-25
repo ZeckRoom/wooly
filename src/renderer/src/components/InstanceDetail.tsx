@@ -201,7 +201,9 @@ export function InstanceDetail({
               }`}
             />
           ) : null}
-          {launch.error ? <p {...stylex.props(styles.err)}>{launch.error}</p> : null}
+          {launch.error && launch.instanceId === instance.id ? (
+            <p {...stylex.props(styles.err)}>{launch.error}</p>
+          ) : null}
         </div>
       </Plate>
       <Plate>
