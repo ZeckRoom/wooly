@@ -36,11 +36,8 @@ const styles = stylex.create({
     textTransform: 'uppercase'
   },
   tabs: {
-    backgroundColor: colors.background,
-    borderRadius: 999,
     display: 'flex',
-    gap: 2,
-    padding: 3,
+    gap: 4,
     width: '100%'
   },
   tab: {
