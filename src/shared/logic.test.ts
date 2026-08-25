@@ -96,6 +96,16 @@ describe('validateInstanceDraft', () => {
     expect(validateInstanceDraft(draft, []).ok).toBe(false)
   })
 
+  it('rejects max memory that is not a 1024 MB multiple', () => {
+    const draft = {
+      ...defaultInstanceDraft('vanilla', '1.21.1'),
+      name: 'Odd',
+      memoryMaxMb: 6400
+    }
+    expect(validateInstanceDraft(draft, []).ok).toBe(false)
+    expect(validateInstanceDraft({ ...draft, memoryMaxMb: 6144 }, []).ok).toBe(true)
+  })
+
   it('uses a sane default max memory', () => {
     expect(DEFAULT_MEMORY_MAX).toBe(4096)
   })

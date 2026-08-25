@@ -5,8 +5,10 @@ import { t } from '@/lib/i18n'
 import { filterCatalog } from '@shared/minecraft'
 import {
   DEFAULT_MEMORY_MAX,
-  DEFAULT_MEMORY_MIN,
+  MEMORY_SLIDER_MAX,
+  MEMORY_STEP,
   defaultInstanceDraft,
+  snapMemoryMb,
   validateInstanceDraft
 } from '@shared/instance'
 import type {
@@ -96,7 +98,7 @@ export function InstanceFormDialog({
         name: instance.name,
         group: instance.group,
         versionId: instance.versionId,
-        memoryMaxMb: instance.memoryMaxMb,
+        memoryMaxMb: snapMemoryMb(instance.memoryMaxMb),
         memoryMinMb: instance.memoryMinMb,
         jvmArgs: instance.jvmArgs,
         width: instance.width,
@@ -195,11 +197,13 @@ export function InstanceFormDialog({
           </span>
           <input
             type="range"
-            min={DEFAULT_MEMORY_MIN}
-            max={16384}
-            step={256}
+            min={MEMORY_STEP}
+            max={MEMORY_SLIDER_MAX}
+            step={MEMORY_STEP}
             value={draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX}
-            onChange={(e) => setDraft({ ...draft, memoryMaxMb: Number(e.target.value) })}
+            onChange={(e) =>
+              setDraft({ ...draft, memoryMaxMb: snapMemoryMb(Number(e.target.value)) })
+            }
           />
         </label>
         {error ? <p {...stylex.props(styles.error)}>{error}</p> : null}

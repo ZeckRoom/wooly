@@ -4,6 +4,8 @@ export const NAME_MIN = 1
 export const NAME_MAX = 32
 export const MEMORY_MIN = 512
 export const MEMORY_MAX = 32768
+export const MEMORY_STEP = 1024
+export const MEMORY_SLIDER_MAX = 16384
 export const DEFAULT_MEMORY_MAX = 4096
 export const DEFAULT_MEMORY_MIN = 512
 
@@ -13,6 +15,11 @@ export interface InstanceValidation {
 }
 
 const NAME_PATTERN = /^[\p{L}\p{N} _.'-]+$/u
+
+export function snapMemoryMb(mb: number): number {
+  const snapped = Math.round(mb / MEMORY_STEP) * MEMORY_STEP
+  return Math.min(MEMORY_SLIDER_MAX, Math.max(MEMORY_STEP, snapped))
+}
 
 export function normalizeInstanceName(name: string): string {
   return name.trim().replace(/\s+/g, ' ')
@@ -49,8 +56,8 @@ export function validateInstanceDraft(
 
   const max = draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX
   const min = draft.memoryMinMb ?? DEFAULT_MEMORY_MIN
-  if (max < MEMORY_MIN || max > MEMORY_MAX) {
-    errors.push(`Max memory must be between ${MEMORY_MIN} and ${MEMORY_MAX} MB.`)
+  if (max < MEMORY_STEP || max > MEMORY_MAX || max % MEMORY_STEP !== 0) {
+    errors.push(`Max memory must be a multiple of ${MEMORY_STEP} MB.`)
   }
   if (min < MEMORY_MIN || min > max) {
     errors.push('Min memory must be at least 512 MB and not greater than max memory.')

@@ -8,6 +8,7 @@ pub const GITHUB_REPO: &str = "ZeckRoom/wooly";
 pub const NAME_MAX: usize = 32;
 pub const MEMORY_MIN: u32 = 512;
 pub const MEMORY_MAX: u32 = 32768;
+pub const MEMORY_STEP: u32 = 1024;
 pub const DEFAULT_MEMORY_MAX: u32 = 4096;
 pub const DEFAULT_MEMORY_MIN: u32 = 512;
 
@@ -65,9 +66,9 @@ pub fn validate_instance(
     if group != "vanilla" && group != "modded" {
         return Err("Pick Vanilla or Modded.".into());
     }
-    if !(MEMORY_MIN..=MEMORY_MAX).contains(&memory_max) {
+    if !(MEMORY_STEP..=MEMORY_MAX).contains(&memory_max) || memory_max % MEMORY_STEP != 0 {
         return Err(format!(
-            "Max memory must be between {MEMORY_MIN} and {MEMORY_MAX} MB."
+            "Max memory must be a multiple of {MEMORY_STEP} MB."
         ));
     }
     if memory_min < MEMORY_MIN || memory_min > memory_max {
@@ -297,6 +298,16 @@ mod tests {
             None
         )
         .is_ok());
+        assert!(validate_instance(
+            "Odd",
+            "vanilla",
+            "1.21.4",
+            512,
+            6400,
+            &[],
+            None
+        )
+        .is_err());
         assert!(validate_instance("Pack", "modded", "", 512, 4096, &["pack".into()], None).is_err());
     }
 }
