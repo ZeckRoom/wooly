@@ -49,7 +49,13 @@ const styles = stylex.create({
     whiteSpace: 'nowrap'
   },
   glyph: {
-    flexShrink: 0
+    alignItems: 'center',
+    display: 'flex',
+    flexShrink: 0,
+    height: 18,
+    justifyContent: 'center',
+    lineHeight: 0,
+    width: 18
   },
   track: {
     backgroundColor: 'rgb(255 255 255 / 0.22)',
