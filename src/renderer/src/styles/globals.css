@@ -1,29 +1,29 @@
 @import '@fontsource-variable/inter-tight';
 
 :root {
-  --ink: #f3ece3;
-  --background: #161310;
-  --card: #1e1a16;
+  --ink: #eef0f3;
+  --background: #121416;
+  --card: #1a1d21;
   --card-foreground: var(--ink);
-  --popover: #221e19;
+  --popover: #1e2227;
   --popover-foreground: var(--ink);
   --foreground: var(--ink);
   --muted: color-mix(in srgb, var(--ink) 7%, transparent);
-  --muted-foreground: #a39484;
+  --muted-foreground: #8b919a;
   --border: color-mix(in srgb, var(--ink) 14%, transparent);
   --input: color-mix(in srgb, var(--ink) 16%, transparent);
   --accent: color-mix(in srgb, var(--ink) 7%, transparent);
   --accent-foreground: var(--ink);
-  --primary: #d4b48c;
-  --primary-foreground: #1a1612;
-  --ring: #e0c9a4;
-  --secondary: #2a241e;
+  --primary: #3d7dff;
+  --primary-foreground: #f4f8ff;
+  --ring: #6b9fff;
+  --secondary: #25282d;
   --secondary-foreground: var(--ink);
   --destructive: #e26d5a;
   --info: #3d7dff;
   --info-foreground: #f4f8ff;
   --radius: 0.625rem;
-  --sidebar: #14110e;
+  --sidebar: #101214;
   --titlebar-bg: var(--sidebar);
   --sidebar-foreground: var(--ink);
   --sidebar-accent: color-mix(in srgb, var(--ink) 7%, transparent);
@@ -51,7 +51,7 @@ body,
 }
 
 body {
-  background: #161310;
+  background: #121416;
   color: var(--foreground);
   font-family: 'Inter Tight Variable', 'Inter Tight', 'Segoe UI', sans-serif;
   font-weight: 400;

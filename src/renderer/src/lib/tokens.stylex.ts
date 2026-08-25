@@ -3,7 +3,7 @@ import type { StyleXStyles } from '@stylexjs/stylex'
 
 /**
  * Design tokens for the StyleX component set.
- * Maps CSS variables so theming stays in globals.css (OA + wool).
+ * Maps CSS variables so theming stays in globals.css (cool charcoal + blue).
  */
 export const colors = stylex.defineVars({
   accent: 'var(--accent)',

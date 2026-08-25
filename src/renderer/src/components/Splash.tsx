@@ -20,9 +20,9 @@ const styles = stylex.create({
     gap: 14
   },
   orb: {
-    backgroundImage: 'radial-gradient(circle at 30% 28%, #f3e0c4, #d4b48c 42%, #9a7a52 100%)',
+    backgroundImage: 'radial-gradient(circle at 30% 28%, #9ec0ff, #3d7dff 48%, #1f4fbf 100%)',
     borderRadius: '50%',
-    boxShadow: '0 8px 32px rgb(212 180 140 / 0.18)',
+    boxShadow: '0 8px 32px rgb(61 125 255 / 0.22)',
     height: 72,
     width: 72
   },

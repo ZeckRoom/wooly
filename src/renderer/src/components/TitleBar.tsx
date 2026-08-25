@@ -50,6 +50,13 @@ const styles = stylex.create({
     height: '100%',
     transform: { ':active': 'none', default: 'none' },
     width: 46
+  },
+  captionClose: {
+    backgroundColor: {
+      ':hover': 'color-mix(in srgb, #e26d5a 46%, transparent)',
+      default: 'transparent'
+    },
+    color: { ':hover': '#fff', default: colors.foreground }
   }
 })
 
@@ -85,7 +92,7 @@ export function TitleBar({ maximized }: { maximized: boolean }) {
           variant="ghost"
           size="icon-sm"
           aria-label={t.close}
-          sx={styles.caption}
+          sx={[styles.caption, styles.captionClose]}
           onClick={() => window.wooly.window.close()}
         >
           <Icon icon={Cancel01Icon} size={14} />

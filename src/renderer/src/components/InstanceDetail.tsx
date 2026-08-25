@@ -57,9 +57,9 @@ const styles = stylex.create({
     justifyContent: 'flex-end'
   },
   console: {
-    backgroundColor: '#120f0c',
+    backgroundColor: '#0e1012',
     borderRadius: 18,
-    color: '#d8cfc4',
+    color: '#c8cdd4',
     cursor: 'text',
     flex: 1,
     fontFamily: 'ui-monospace, Consolas, monospace',
@@ -72,7 +72,7 @@ const styles = stylex.create({
     whiteSpace: 'pre-wrap'
   },
   err: { color: '#e26d5a' },
-  out: { color: '#d8cfc4' },
+  out: { color: '#c8cdd4' },
   launch: { color: colors.primary }
 })
 
