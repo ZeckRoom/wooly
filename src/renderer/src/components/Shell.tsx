@@ -3,10 +3,11 @@ import * as stylex from '@stylexjs/stylex'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceDraft } from '@shared/types'
+import { AccountChip } from './AccountChip'
 import { AccountDialog } from './AccountDialog'
 import { InstanceDetail } from './InstanceDetail'
 import { InstanceFormDialog } from './InstanceFormDialog'
-import { InstanceSidebar } from './InstanceSidebar'
+import { LauncherDock } from './LauncherDock'
 import { SettingsView } from './SettingsView'
 import { TitleBar } from './TitleBar'
 import { activeAccount, useLauncher } from '@/state/store'
@@ -14,6 +15,8 @@ import { activeAccount, useLauncher } from '@/state/store'
 const styles = stylex.create({
   root: {
     backgroundColor: colors.background,
+    backgroundImage:
+      'radial-gradient(ellipse 90% 55% at 50% 115%, rgb(61 125 255 / 0.22), transparent 58%), radial-gradient(ellipse 45% 40% at 8% 88%, rgb(47 191 113 / 0.12), transparent 52%)',
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
@@ -22,7 +25,31 @@ const styles = stylex.create({
   body: {
     display: 'flex',
     flex: 1,
-    minHeight: 0
+    minHeight: 0,
+    position: 'relative'
+  },
+  chrome: {
+    inset: 0,
+    pointerEvents: 'none',
+    position: 'absolute',
+    zIndex: 20
+  },
+  account: {
+    bottom: 18,
+    left: 18,
+    pointerEvents: 'auto',
+    position: 'absolute',
+    zIndex: 21
+  },
+  dock: {
+    bottom: 18,
+    display: 'flex',
+    justifyContent: 'center',
+    left: 0,
+    pointerEvents: 'none',
+    position: 'absolute',
+    right: 0,
+    zIndex: 21
   },
   banner: {
     color: colors.destructive,
@@ -75,26 +102,6 @@ export function Shell() {
         </p>
       ) : null}
       <div {...stylex.props(styles.body)}>
-        <InstanceSidebar
-          instances={store.instances}
-          selectedId={store.selectedId}
-          onSelect={(id) => {
-            store.selectInstance(id)
-            store.setView('library')
-          }}
-          onCreate={() => {
-            store.setView('library')
-            setCreateOpen(true)
-          }}
-          account={account}
-          onAccounts={() => setAccountsOpen(true)}
-          settingsActive={store.view === 'settings'}
-          onSettings={() => store.setView(store.view === 'settings' ? 'library' : 'settings')}
-          update={store.update}
-          onUpdateCheck={() => void window.wooly.update.check()}
-          onUpdateDownload={() => void window.wooly.update.download()}
-          onUpdateInstall={() => void window.wooly.update.install()}
-        />
         {store.view === 'settings' ? (
           <SettingsView
             settings={store.settings}
@@ -107,9 +114,7 @@ export function Shell() {
             launch={store.launch}
             install={store.install}
             logs={store.logs}
-            onPlay={() => void play()}
             onInstall={() => void install()}
-            onStop={() => void window.wooly.launch.stop()}
             onEdit={() => setEditOpen(true)}
             onDelete={() => {
               if (!selected) return
@@ -119,6 +124,34 @@ export function Shell() {
             onFolder={() => selected && void window.wooly.openPath('instance', selected.id)}
           />
         )}
+        <div {...stylex.props(styles.chrome)}>
+          <div {...stylex.props(styles.account)}>
+            <AccountChip account={account} onClick={() => setAccountsOpen(true)} />
+          </div>
+          <div {...stylex.props(styles.dock)}>
+            <LauncherDock
+              instances={store.instances}
+              selected={selected}
+              launch={store.launch}
+              settingsActive={store.view === 'settings'}
+              update={store.update}
+              onPlay={() => void play()}
+              onStop={() => void window.wooly.launch.stop()}
+              onSelect={(id) => {
+                store.selectInstance(id)
+                store.setView('library')
+              }}
+              onCreate={() => {
+                store.setView('library')
+                setCreateOpen(true)
+              }}
+              onSettings={() => store.setView(store.view === 'settings' ? 'library' : 'settings')}
+              onUpdateCheck={() => void window.wooly.update.check()}
+              onUpdateDownload={() => void window.wooly.update.download()}
+              onUpdateInstall={() => void window.wooly.update.install()}
+            />
+          </div>
+        </div>
       </div>
       <InstanceFormDialog
         key={`create-${createOpen}`}

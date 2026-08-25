@@ -12,7 +12,7 @@ const styles = stylex.create({
     flex: 1,
     flexDirection: 'column',
     gap: 16,
-    padding: '8px 24px 24px'
+    padding: '8px 24px 120px'
   },
   title: {
     fontSize: 22,

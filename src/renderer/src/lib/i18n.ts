@@ -19,6 +19,7 @@ export const t = {
   addAccount: 'Add Microsoft account',
   signIn: 'Sign in with Microsoft',
   signInShort: 'Sign in',
+  logIn: 'Log in',
   premium: 'Premium',
   signOut: 'Remove',
   useAccount: 'Use this account',

@@ -2,8 +2,6 @@ import { useEffect, useRef } from 'react'
 import * as stylex from '@stylexjs/stylex'
 import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
 import FolderOpenIcon from '@hugeicons/core-free-icons/FolderOpenIcon'
-import PlayIcon from '@hugeicons/core-free-icons/PlayIcon'
-import StopIcon from '@hugeicons/core-free-icons/StopIcon'
 import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { formatBytes, formatSpeed } from '@shared/minecraft'
@@ -26,7 +24,7 @@ const styles = stylex.create({
     flexDirection: 'column',
     gap: 16,
     minWidth: 0,
-    padding: '8px 20px 20px 8px'
+    padding: '8px 24px 120px'
   },
   hero: {
     display: 'flex',
@@ -75,12 +73,9 @@ const styles = stylex.create({
   launch: { color: colors.primary }
 })
 
-function playLabel(phase: LaunchState['phase']): string {
-  if (phase === 'installing') return t.installing
-  if (phase === 'launching') return t.launching
-  if (phase === 'running') return t.playing
-  if (phase === 'stopping') return t.stop
-  return t.play
+function installLabel(phase: LaunchState['phase'], instanceId: string, currentId: string): string {
+  if (instanceId === currentId && phase === 'installing') return t.installing
+  return t.install
 }
 
 export function InstanceDetail({
@@ -89,9 +84,7 @@ export function InstanceDetail({
   launch,
   install,
   logs,
-  onPlay,
   onInstall,
-  onStop,
   onEdit,
   onDelete,
   onFolder
@@ -101,9 +94,7 @@ export function InstanceDetail({
   launch: LaunchState
   install: InstallProgress | null
   logs: LogLine[]
-  onPlay: () => void
   onInstall: () => void
-  onStop: () => void
   onEdit: () => void
   onDelete: () => void
   onFolder: () => void
@@ -127,7 +118,6 @@ export function InstanceDetail({
   }
 
   const busy = launch.phase !== 'idle' && launch.instanceId === instance.id
-  const running = launch.phase === 'running' && launch.instanceId === instance.id
   const percent =
     install && install.total > 0
       ? Math.round((install.current / install.total) * 100)
@@ -157,25 +147,10 @@ export function InstanceDetail({
               </p>
             </div>
             <div {...stylex.props(styles.actions)}>
-              {running ? (
-                <Button variant="secondary" onClick={onStop}>
-                  <Icon icon={StopIcon} size={14} />
-                  {t.stop}
-                </Button>
-              ) : (
-                <>
-                  <Button variant="secondary" onClick={onInstall} disabled={busy}>
-                    <Icon icon={Download01Icon} size={14} />
-                    {launch.instanceId === instance.id && launch.phase === 'installing'
-                      ? t.installing
-                      : t.install}
-                  </Button>
-                  <Button onClick={onPlay} disabled={busy}>
-                    <Icon icon={PlayIcon} size={14} />
-                    {playLabel(launch.instanceId === instance.id ? launch.phase : 'idle')}
-                  </Button>
-                </>
-              )}
+              <Button variant="secondary" onClick={onInstall} disabled={busy}>
+                <Icon icon={Download01Icon} size={14} />
+                {installLabel(launch.phase, launch.instanceId ?? '', instance.id)}
+              </Button>
               <Button variant="secondary" onClick={onEdit} disabled={busy}>
                 {t.edit}
               </Button>
