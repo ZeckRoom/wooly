@@ -16,6 +16,39 @@ Wooly focuses on a fast desktop shell: a short branded splash, isolated instance
 - Automatic Mojang Java runtime
 - Play + install progress + console logs
 
+## Run on Windows
+
+There is no store listing yet. Use the repo (this branch / PR) on Windows 10/11.
+
+### Fastest: open from source
+
+1. Install [Node.js 22 LTS](https://nodejs.org/) (include PATH).
+2. Install [Git](https://git-scm.com/download/win).
+3. PowerShell:
+
+```powershell
+git clone https://github.com/ZeckRoom/wooly.git
+cd wooly
+git checkout cursor/wooly-launcher-v1-f472
+corepack enable
+pnpm install
+pnpm dev
+```
+
+After the first install you can double-click `Wooly.bat` in the repo folder, or run `pnpm dev` again.
+
+### Installer (shortcut on the desktop)
+
+From the same folder:
+
+```powershell
+pnpm build:win
+```
+
+Then run `dist\wooly-launcher-0.1.0-setup.exe`. SmartScreen may warn because the build is unsigned; choose More info → Run anyway.
+
+CI also builds that setup file: GitHub → Actions → **Windows installer** → latest run → **wooly-launcher-windows**.
+
 ## Develop
 
 Requires Node 22+ and pnpm.
