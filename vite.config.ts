@@ -1,58 +1,11 @@
-import { existsSync } from 'fs'
-import { dirname, isAbsolute, relative, resolve, sep } from 'path'
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import stylex from '@stylexjs/unplugin'
+import tailwindcss from '@tailwindcss/vite'
 
 const shared = resolve('src/shared')
 const rendererSrc = resolve('src/renderer/src')
-const STYLEX_EXTS = ['', '.js', '.ts', '.tsx', '.jsx', '.mjs', '.cjs'] as const
 const host = process.env.TAURI_DEV_HOST
-
-function expandStylexSpecs(
-  importPath: string,
-  aliases: Readonly<{ [key: string]: ReadonlyArray<string> }> | null | undefined
-): string[] {
-  const specs = [importPath]
-  if (aliases == null) {
-    return specs
-  }
-  for (const [alias, values] of Object.entries(aliases)) {
-    if (alias.includes('*')) {
-      const [before, after = ''] = alias.split('*')
-      if (importPath.startsWith(before) && importPath.endsWith(after)) {
-        const mid = importPath.slice(before.length, after.length > 0 ? -after.length : undefined)
-        for (const value of values) {
-          specs.push(value.split('*').join(mid))
-        }
-      }
-    } else if (importPath === alias || importPath.startsWith(`${alias}/`)) {
-      const rest = importPath === alias ? '' : importPath.slice(alias.length + 1)
-      for (const value of values) {
-        specs.push(rest ? `${value.replace(/[/\\]+$/, '')}/${rest}` : value)
-      }
-    }
-  }
-  return specs
-}
-
-function resolveStylexFile(
-  importPath: string,
-  sourceFilePath: string,
-  aliases: Readonly<{ [key: string]: ReadonlyArray<string> }> | null | undefined
-): string | undefined {
-  const fromDir = dirname(sourceFilePath)
-  for (const spec of expandStylexSpecs(importPath, aliases)) {
-    const absolute = spec.startsWith('.') || !isAbsolute(spec) ? resolve(fromDir, spec) : spec
-    for (const ext of STYLEX_EXTS) {
-      const candidate = absolute + ext
-      if (existsSync(candidate)) {
-        return candidate
-      }
-    }
-  }
-  return undefined
-}
 
 export default defineConfig({
   root: resolve('src/renderer'),
@@ -80,22 +33,7 @@ export default defineConfig({
       '@shared': shared
     }
   },
-  plugins: [
-    stylex.vite({
-      useCSSLayers: true,
-      aliases: {
-        '@': [rendererSrc],
-        '@/*': [`${rendererSrc.split('\\').join('/')}/*`]
-      },
-      unstable_moduleResolution: {
-        type: 'custom',
-        filePathResolver: (importPath, sourceFilePath, aliases) =>
-          resolveStylexFile(importPath, sourceFilePath, aliases),
-        getCanonicalFilePath: (filePath) => relative(process.cwd(), filePath).split(sep).join('/')
-      }
-    }),
-    react()
-  ],
+  plugins: [tailwindcss(), react()],
   build: {
     outDir: resolve('dist'),
     emptyOutDir: true,

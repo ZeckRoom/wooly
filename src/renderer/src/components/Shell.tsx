@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import * as stylex from '@stylexjs/stylex'
-import { colors, customClassName } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { InstanceDraft } from '@shared/types'
 import { AccountDialog } from './AccountDialog'
@@ -11,50 +9,6 @@ import { LauncherDock } from './LauncherDock'
 import { SettingsView } from './SettingsView'
 import { TitleBar } from './TitleBar'
 import { activeAccount, useLauncher } from '@/state/store'
-
-const styles = stylex.create({
-  root: {
-    backgroundColor: colors.sidebar,
-    display: 'flex',
-    flexDirection: 'row',
-    height: '100%',
-    overflow: 'hidden'
-  },
-  stage: {
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    minWidth: 0,
-    position: 'relative'
-  },
-  body: {
-    display: 'flex',
-    flex: 1,
-    minHeight: 0,
-    position: 'relative'
-  },
-  chrome: {
-    inset: 0,
-    pointerEvents: 'none',
-    position: 'absolute',
-    zIndex: 20
-  },
-  dock: {
-    bottom: 18,
-    display: 'flex',
-    justifyContent: 'center',
-    left: 0,
-    pointerEvents: 'none',
-    position: 'absolute',
-    right: 0,
-    zIndex: 21
-  },
-  banner: {
-    color: colors.destructive,
-    fontSize: 13,
-    padding: '0 20px 8px'
-  }
-})
 
 export function Shell() {
   const store = useLauncher()
@@ -92,7 +46,7 @@ export function Shell() {
   }
 
   return (
-    <div {...stylex.props(styles.root)}>
+    <div className="flex h-full flex-row overflow-hidden bg-void">
       <InstanceRail
         instances={store.instances}
         selectedId={store.selectedId}
@@ -108,7 +62,7 @@ export function Shell() {
         onHome={() => store.setView('library')}
         onAccounts={() => setAccountsOpen(true)}
       />
-      <div {...stylex.props(styles.stage, customClassName('wooly-stage'))}>
+      <div className="relative flex min-w-0 flex-1 flex-col bg-void bg-[radial-gradient(ellipse_78%_42%_at_50%_118%,rgb(22_101_52/0.28),transparent_62%)]">
         <TitleBar
           maximized={store.maximized}
           view={store.view}
@@ -116,58 +70,58 @@ export function Shell() {
           onSettings={() => store.setView('settings')}
         />
         {store.error && store.error !== store.launch.error ? (
-          <p role="alert" {...stylex.props(styles.banner)}>
+          <p role="alert" className="px-5 pb-2 text-[13px] text-destructive">
             {store.error}
           </p>
         ) : null}
-        <div {...stylex.props(styles.body)}>
-        {store.view === 'settings' ? (
-          <SettingsView
-            settings={store.settings}
-            onChange={(settings) => useLauncher.setState({ settings })}
-          />
-        ) : (
-          <InstanceDetail
-            instance={selected}
-            versions={store.versions}
-            launch={store.launch}
-            install={store.install}
-            logs={store.logs}
-            onInstall={() => void install()}
-            onEdit={() => setEditOpen(true)}
-            onDelete={() => {
-              if (!selected) return
-              if (!window.confirm(t.deleteConfirm)) return
-              void window.wooly.instances.remove(selected.id)
-            }}
-            onFolder={() => selected && void window.wooly.openPath('instance', selected.id)}
-          />
-        )}
-        <div {...stylex.props(styles.chrome)}>
-          <div {...stylex.props(styles.dock)}>
-            <LauncherDock
-              instances={store.instances}
-              selected={selected}
+        <div className="relative flex min-h-0 flex-1">
+          {store.view === 'settings' ? (
+            <SettingsView
+              settings={store.settings}
+              onChange={(settings) => useLauncher.setState({ settings })}
+            />
+          ) : (
+            <InstanceDetail
+              instance={selected}
               versions={store.versions}
               launch={store.launch}
-              update={store.update}
-              onPlay={() => void play()}
-              onStop={() => void window.wooly.launch.stop()}
-              onSelect={(id) => {
-                store.selectInstance(id)
-                store.setView('library')
+              install={store.install}
+              logs={store.logs}
+              onInstall={() => void install()}
+              onEdit={() => setEditOpen(true)}
+              onDelete={() => {
+                if (!selected) return
+                if (!window.confirm(t.deleteConfirm)) return
+                void window.wooly.instances.remove(selected.id)
               }}
-              onCreate={() => {
-                store.setView('library')
-                setCreateOpen(true)
-              }}
-              onUpdateCheck={() => void window.wooly.update.check()}
-              onUpdateDownload={() => void window.wooly.update.download()}
-              onUpdateInstall={() => void window.wooly.update.install()}
+              onFolder={() => selected && void window.wooly.openPath('instance', selected.id)}
             />
+          )}
+          <div className="pointer-events-none absolute inset-0 z-20">
+            <div className="pointer-events-none absolute right-0 bottom-[18px] left-0 z-21 flex justify-center">
+              <LauncherDock
+                instances={store.instances}
+                selected={selected}
+                versions={store.versions}
+                launch={store.launch}
+                update={store.update}
+                onPlay={() => void play()}
+                onStop={() => void window.wooly.launch.stop()}
+                onSelect={(id) => {
+                  store.selectInstance(id)
+                  store.setView('library')
+                }}
+                onCreate={() => {
+                  store.setView('library')
+                  setCreateOpen(true)
+                }}
+                onUpdateCheck={() => void window.wooly.update.check()}
+                onUpdateDownload={() => void window.wooly.update.download()}
+                onUpdateInstall={() => void window.wooly.update.install()}
+              />
+            </div>
           </div>
         </div>
-      </div>
       </div>
       <InstanceFormDialog
         key={`create-${createOpen}`}

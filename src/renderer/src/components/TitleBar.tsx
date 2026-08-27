@@ -1,107 +1,14 @@
-import * as stylex from '@stylexjs/stylex'
 import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
 import MinusSignIcon from '@hugeicons/core-free-icons/MinusSignIcon'
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon'
-import { colors, customClassName } from '../lib/tokens.stylex'
+import { island } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 
-const styles = stylex.create({
-  bar: {
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    display: 'flex',
-    height: 'var(--titlebar)',
-    justifyContent: 'flex-end',
-    paddingLeft: 12,
-    paddingRight: 0,
-    position: 'relative',
-    WebkitAppRegion: 'drag',
-    zIndex: 10
-  },
-  nav: {
-    alignItems: 'center',
-    display: 'flex',
-    gap: 2,
-    height: 40,
-    left: '50%',
-    padding: 4,
-    pointerEvents: 'auto',
-    position: 'absolute',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    WebkitAppRegion: 'no-drag',
-    zIndex: 1
-  },
-  mark: {
-    alignItems: 'center',
-    appearance: 'none',
-    backgroundColor: colors.primary,
-    borderColor: 'var(--primary-edge)',
-    borderRadius: 10,
-    borderStyle: 'solid',
-    borderWidth: 1,
-    color: colors.primaryForeground,
-    cursor: 'pointer',
-    display: 'flex',
-    flexShrink: 0,
-    font: 'inherit',
-    fontSize: 13,
-    fontWeight: 600,
-    height: 28,
-    justifyContent: 'center',
-    letterSpacing: '-0.04em',
-    width: 28
-  },
-  link: {
-    alignItems: 'center',
-    appearance: 'none',
-    backgroundColor: {
-      ':hover': 'rgb(255 255 255 / 0.07)',
-      default: 'transparent'
-    },
-    borderRadius: 999,
-    borderStyle: 'none',
-    color: colors.mutedForeground,
-    cursor: 'pointer',
-    display: 'flex',
-    font: 'inherit',
-    fontSize: 13,
-    fontWeight: 500,
-    height: 32,
-    paddingInline: 12,
-    whiteSpace: 'nowrap'
-  },
-  linkActive: {
-    backgroundColor: 'rgb(255 255 255 / 0.08)',
-    color: colors.foreground
-  },
-  right: {
-    alignItems: 'stretch',
-    alignSelf: 'stretch',
-    display: 'flex',
-    flexShrink: 0,
-    gap: 0,
-    height: '100%',
-    justifyContent: 'flex-end',
-    WebkitAppRegion: 'no-drag',
-    zIndex: 2
-  },
-  caption: {
-    borderRadius: 0,
-    height: '100%',
-    transform: { ':active': 'none', default: 'none' },
-    width: 46
-  },
-  captionClose: {
-    backgroundColor: {
-      ':hover': 'color-mix(in srgb, var(--destructive) 46%, transparent)',
-      default: 'transparent'
-    },
-    color: { ':hover': '#fff', default: colors.foreground }
-  }
-})
+const caption =
+  'h-full w-[46px] rounded-none hover:enabled:translate-y-0 active:translate-y-0 active:scale-100'
 
 export function TitleBar({
   maximized,
@@ -117,15 +24,21 @@ export function TitleBar({
   return (
     <header
       data-tauri-drag-region
-      {...stylex.props(styles.bar, customClassName('wooly-titlebar'))}
+      className="relative z-10 flex h-[var(--titlebar)] items-center justify-end bg-transparent pr-0 pl-3"
     >
-      <nav {...stylex.props(styles.nav, customClassName('wooly-island'))} aria-label={t.appProduct}>
+      <nav
+        className={cn(
+          'no-drag pointer-events-auto absolute top-1/2 left-1/2 z-[1] flex h-10 -translate-x-1/2 -translate-y-1/2 items-center gap-0.5 rounded-full p-1',
+          island
+        )}
+        aria-label={t.appProduct}
+      >
         <button
           type="button"
           title={t.appProduct}
           aria-label={t.appProduct}
           onClick={onLibrary}
-          {...stylex.props(styles.mark)}
+          className="flex size-7 shrink-0 items-center justify-center rounded-[10px] border border-primary-edge bg-primary text-[13px] font-semibold tracking-[-0.04em] text-white"
         >
           W
         </button>
@@ -133,7 +46,10 @@ export function TitleBar({
           type="button"
           aria-current={view === 'library' ? 'page' : undefined}
           onClick={onLibrary}
-          {...stylex.props(styles.link, view === 'library' && styles.linkActive)}
+          className={cn(
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted hover:bg-white/[0.07]',
+            view === 'library' && 'bg-white/[0.08] text-ink'
+          )}
         >
           {t.library}
         </button>
@@ -141,17 +57,20 @@ export function TitleBar({
           type="button"
           aria-current={view === 'settings' ? 'page' : undefined}
           onClick={onSettings}
-          {...stylex.props(styles.link, view === 'settings' && styles.linkActive)}
+          className={cn(
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted hover:bg-white/[0.07]',
+            view === 'settings' && 'bg-white/[0.08] text-ink'
+          )}
         >
           {t.settings}
         </button>
       </nav>
-      <div {...stylex.props(styles.right)}>
+      <div className="no-drag z-[2] flex h-full shrink-0 items-stretch justify-end gap-0 self-stretch">
         <Button
           variant="ghost"
           size="icon-sm"
           aria-label={t.minimize}
-          sx={styles.caption}
+          className={caption}
           onClick={() => window.wooly.window.minimize()}
         >
           <Icon icon={MinusSignIcon} size={14} />
@@ -160,7 +79,7 @@ export function TitleBar({
           variant="ghost"
           size="icon-sm"
           aria-label={maximized ? t.restore : t.maximize}
-          sx={styles.caption}
+          className={caption}
           onClick={() => window.wooly.window.maximize()}
         >
           <Icon icon={SquareIcon} size={12} />
@@ -169,7 +88,10 @@ export function TitleBar({
           variant="ghost"
           size="icon-sm"
           aria-label={t.close}
-          sx={[styles.caption, styles.captionClose]}
+          className={cn(
+            caption,
+            'text-ink hover:enabled:bg-destructive/50 hover:enabled:text-white'
+          )}
           onClick={() => window.wooly.window.close()}
         >
           <Icon icon={Cancel01Icon} size={14} />

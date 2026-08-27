@@ -22,7 +22,7 @@ function ShellIn() {
     { scope: root }
   )
   return (
-    <div ref={root} style={{ height: '100%' }}>
+    <div ref={root} className="h-full">
       <Shell />
     </div>
   )

@@ -1,55 +1,32 @@
+@import 'tailwindcss';
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 
-:root {
-  --ink: #f5f5f4;
-  --void: #000000;
-  --background: #000000;
-  --card: #0b0c0e;
-  --card-foreground: var(--ink);
-  --popover: #0b0c0e;
-  --popover-foreground: var(--ink);
-  --foreground: var(--ink);
-  --muted: color-mix(in srgb, var(--ink) 6%, transparent);
-  --muted-foreground: #8b938f;
-  --border: #26302e;
-  --input: #26302e;
-  --accent: color-mix(in srgb, var(--ink) 6%, transparent);
-  --accent-foreground: var(--ink);
-  --primary: #166534;
-  --primary-edge: #34d399;
-  --primary-foreground: #ffffff;
-  --ring: #34d399;
-  --secondary: #161616;
-  --secondary-foreground: var(--ink);
-  --destructive: #9a3412;
-  --destructive-edge: #fb923c;
-  --info: #166534;
-  --info-foreground: #ffffff;
-  --success: #34d399;
-  --success-foreground: #022c22;
-  --chip: #6d28d9;
-  --chip-foreground: #f5f3ff;
-  --radius: 0.75rem;
-  --sidebar: #000000;
-  --titlebar-bg: #000000;
-  --sidebar-foreground: var(--ink);
-  --sidebar-accent: color-mix(in srgb, var(--ink) 6%, transparent);
-  --sidebar-accent-foreground: var(--ink);
-  --sidebar-border: #26302e;
-  --sidebar-primary: var(--primary);
-  --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-ring: var(--ring);
-  --shadow-rest: none;
-  --shadow-float: 0 12px 40px rgb(0 0 0 / 0.3);
+@source '../**/*.{ts,tsx,html}';
+@source '../../index.html';
+
+@theme {
+  --color-void: #000000;
+  --color-card: #0b0c0e;
+  --color-ink: #f5f5f4;
+  --color-muted: #8b938f;
+  --color-hairline: #26302e;
+  --color-primary: #166534;
+  --color-primary-edge: #34d399;
+  --color-chip: #6d28d9;
+  --color-chip-fg: #f5f3ff;
+  --color-secondary: #161616;
+  --color-destructive: #9a3412;
+  --color-destructive-edge: #fb923c;
+  --color-success: #34d399;
+  --font-sans: 'Geist Variable', Geist, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, Consolas, monospace;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --titlebar: 56px;
-  --rail: 72px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
+:root {
+  --titlebar: 56px;
+  --rail: 72px;
 }
 
 html,
@@ -60,10 +37,9 @@ body,
 }
 
 body {
-  background: var(--void);
-  color: var(--foreground);
-  font-family: 'Geist Variable', Geist, 'Segoe UI', sans-serif;
-  font-weight: 400;
+  background: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
   font-size: 14px;
   line-height: 1.5;
   letter-spacing: -0.011em;
@@ -79,75 +55,9 @@ select {
   font: inherit;
 }
 
-code,
-kbd,
-pre,
-.mono {
-  font-family: 'Geist Mono Variable', 'Geist Mono', ui-monospace, Consolas, monospace;
-}
-
-h1,
-h2,
-h3,
-strong {
-  font-weight: 500;
-}
-
 input[type='checkbox'],
 input[type='range'] {
-  accent-color: var(--success);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--ink) 14%, transparent);
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-
-.drag {
-  -webkit-app-region: drag;
-  app-region: drag;
-}
-
-.wooly-titlebar {
-  background-color: transparent;
-}
-
-.wooly-stage {
-  background-color: var(--void);
-  background-image: radial-gradient(
-    ellipse 78% 42% at 50% 118%,
-    rgb(22 101 52 / 0.28),
-    transparent 62%
-  );
-}
-
-.wooly-glass {
-  appearance: none;
-  background: rgb(10 11 14 / 0.6);
-  border: 1px solid rgb(255 255 255 / 0.1);
-  box-shadow: 0 12px 40px rgb(0 0 0 / 0.3);
-  color: var(--ink);
-  -webkit-appearance: none;
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
-}
-
-.wooly-island {
-  appearance: none;
-  background: rgb(18 19 22 / 0.92);
-  border: 1px solid rgb(255 255 255 / 0.12);
-  box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
-  color: var(--ink);
-  -webkit-appearance: none;
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
+  accent-color: var(--color-success);
 }
 
 [data-tauri-drag-region] {
@@ -161,13 +71,4 @@ input[type='range'] {
 .no-drag {
   -webkit-app-region: no-drag;
   app-region: no-drag;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
 }

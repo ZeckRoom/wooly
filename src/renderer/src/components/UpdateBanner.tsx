@@ -1,69 +1,9 @@
-import * as stylex from '@stylexjs/stylex'
 import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
 import RefreshCwIcon from '@hugeicons/core-free-icons/RefreshCwIcon'
-import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
 import type { AppUpdateState } from '@shared/types'
 import { Icon } from './ui/icon'
-
-const styles = stylex.create({
-  row: {
-    alignItems: 'center',
-    backgroundColor: {
-      ':hover': 'rgb(255 255 255 / 0.05)',
-      default: 'transparent'
-    },
-    borderRadius: 10,
-    borderStyle: 'none',
-    color: colors.foreground,
-    cursor: { ':disabled': 'default', default: 'pointer' },
-    display: 'flex',
-    font: 'inherit',
-    gap: 10,
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-    padding: '10px 12px',
-    position: 'relative',
-    textAlign: 'left',
-    width: '100%'
-  },
-  live: {
-    color: colors.success
-  },
-  title: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: 500,
-    letterSpacing: '-0.03em',
-    lineHeight: 1.2,
-    minWidth: 0,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap'
-  },
-  glyph: {
-    alignItems: 'center',
-    display: 'flex',
-    flexShrink: 0,
-    height: 18,
-    justifyContent: 'center',
-    lineHeight: 0,
-    width: 18
-  },
-  track: {
-    backgroundColor: 'rgb(52 211 153 / 0.22)',
-    bottom: 0,
-    height: 2,
-    left: 12,
-    position: 'absolute',
-    right: 12
-  },
-  bar: {
-    backgroundColor: colors.success,
-    height: '100%',
-    transition: 'width 0.2s ease-out'
-  }
-})
 
 export function UpdateBanner({
   update,
@@ -114,15 +54,30 @@ export function UpdateBanner({
       aria-live="polite"
       aria-label={hint ? `${title}. ${hint}` : title}
       onClick={activate}
-      {...stylex.props(styles.row, !idle && styles.live)}
+      className={cn(
+        'relative flex w-full items-center justify-between gap-2.5 overflow-hidden rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink hover:enabled:bg-white/[0.05] disabled:cursor-default',
+        !idle && 'text-success'
+      )}
     >
-      <span {...stylex.props(styles.title)}>{title}</span>
-      <span {...stylex.props(styles.glyph)} aria-hidden>
+      <span className="min-w-0 flex-1 truncate text-sm font-medium tracking-[-0.03em] leading-tight">
+        {title}
+      </span>
+      <span
+        className="flex size-[18px] shrink-0 items-center justify-center leading-none"
+        aria-hidden
+      >
         <Icon icon={idle || update.phase === 'ready' ? RefreshCwIcon : Download01Icon} size={18} />
       </span>
       {busy ? (
-        <span {...stylex.props(styles.track)} role="progressbar" aria-valuenow={update.percent}>
-          <span {...stylex.props(styles.bar)} style={{ width: `${update.percent}%` }} />
+        <span
+          className="absolute right-3 bottom-0 left-3 h-0.5 bg-success/22"
+          role="progressbar"
+          aria-valuenow={update.percent}
+        >
+          <span
+            className="block h-full bg-success transition-[width] duration-200 ease-out"
+            style={{ width: `${update.percent}%` }}
+          />
         </span>
       ) : null}
     </button>

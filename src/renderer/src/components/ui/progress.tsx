@@ -1,32 +1,4 @@
-import * as stylex from '@stylexjs/stylex'
-import { colors, customClassName } from '../../lib/tokens.stylex'
-
-const styles = stylex.create({
-  wrap: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    width: '100%'
-  },
-  track: {
-    backgroundColor: 'color-mix(in srgb, var(--success) 18%, transparent)',
-    borderRadius: '9999px',
-    height: '0.35rem',
-    overflow: 'hidden',
-    position: 'relative',
-    width: '100%'
-  },
-  bar: {
-    backgroundColor: colors.success,
-    height: '100%',
-    transition: 'width 0.2s ease-out'
-  },
-  label: {
-    color: colors.mutedForeground,
-    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
-    fontSize: '0.75rem'
-  }
-})
+import { cn } from '@/lib/utils'
 
 export function Progress({
   value = 0,
@@ -40,13 +12,16 @@ export function Progress({
   const width = Math.max(0, Math.min(100, value))
   return (
     <div
-      {...stylex.props(styles.wrap, customClassName(className))}
+      className={cn('flex w-full flex-col gap-2', className)}
       role="progressbar"
       aria-valuenow={width}
     >
-      {label ? <div {...stylex.props(styles.label)}>{label}</div> : null}
-      <div {...stylex.props(styles.track)}>
-        <div {...stylex.props(styles.bar)} style={{ width: `${width}%` }} />
+      {label ? <div className="font-mono text-xs text-muted">{label}</div> : null}
+      <div className="relative h-[0.35rem] w-full overflow-hidden rounded-full bg-success/18">
+        <div
+          className="h-full bg-success transition-[width] duration-200 ease-out"
+          style={{ width: `${width}%` }}
+        />
       </div>
     </div>
   )

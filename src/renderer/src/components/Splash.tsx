@@ -1,39 +1,8 @@
 import { useRef } from 'react'
-import * as stylex from '@stylexjs/stylex'
-import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/motion'
 
-const styles = stylex.create({
-  root: {
-    backgroundColor: colors.background,
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    justifyContent: 'center',
-    width: '100%'
-  },
-  track: {
-    height: 3,
-    overflow: 'hidden',
-    width: '100%'
-  },
-  bar: {
-    backgroundColor: colors.success,
-    height: '100%',
-    transform: 'scaleX(0)',
-    transformOrigin: 'left center',
-    width: '100%'
-  }
-})
-
-export function Splash({
-  progress,
-  onFinished
-}: {
-  progress: number
-  onFinished: () => void
-}) {
+export function Splash({ progress, onFinished }: { progress: number; onFinished: () => void }) {
   const root = useRef<HTMLDivElement>(null)
   const bar = useRef<HTMLDivElement>(null)
   const done = useRef(false)
@@ -86,10 +55,10 @@ export function Splash({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.max(0, Math.min(100, progress))}
-      {...stylex.props(styles.root)}
+      className="flex h-full w-full flex-col justify-center bg-void"
     >
-      <div {...stylex.props(styles.track)}>
-        <div ref={bar} {...stylex.props(styles.bar)} />
+      <div className="h-[3px] w-full overflow-hidden">
+        <div ref={bar} className="h-full w-full origin-left scale-x-0 bg-success" />
       </div>
     </div>
   )

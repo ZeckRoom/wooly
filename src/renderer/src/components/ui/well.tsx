@@ -1,24 +1,17 @@
-import * as stylex from '@stylexjs/stylex'
-import type { StyleXStyles } from '@stylexjs/stylex'
-import { colors } from '../../lib/tokens.stylex'
-
-const styles = stylex.create({
-  root: {
-    backgroundColor: colors.card,
-    borderColor: colors.border,
-    borderRadius: 16,
-    borderStyle: 'solid',
-    borderWidth: 1
-  }
-})
+import type { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
 
 /** One surface. Do not nest Wells. */
-export function Well({
-  children,
-  sx
-}: {
-  children: React.ReactNode
-  sx?: StyleXStyles
-}) {
-  return <section {...stylex.props(styles.root, sx)}>{children}</section>
+export function Well({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <section
+      data-slot="well"
+      className={cn(
+        'overflow-hidden rounded-[20px] bg-card shadow-[inset_0_0_0_1px_var(--color-hairline)]',
+        className
+      )}
+    >
+      {children}
+    </section>
+  )
 }

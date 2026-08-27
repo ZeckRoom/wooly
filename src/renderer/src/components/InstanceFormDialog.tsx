@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
-import * as stylex from '@stylexjs/stylex'
-import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
 import { filterCatalog } from '@shared/minecraft'
 import {
   DEFAULT_MEMORY_MAX,
@@ -21,68 +20,6 @@ import type {
 import { Button } from './ui/button'
 import { Dialog } from './ui/dialog'
 import { Input } from './ui/input'
-
-const styles = stylex.create({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 12,
-    minHeight: 0
-  },
-  label: {
-    color: colors.mutedForeground,
-    fontSize: 11,
-    fontWeight: 500,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase'
-  },
-  field: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 6
-  },
-  row: {
-    display: 'flex',
-    gap: 8
-  },
-  list: {
-    maxHeight: 180,
-    overflow: 'auto'
-  },
-  option: {
-    backgroundColor: {
-      ':hover': 'rgb(255 255 255 / 0.05)',
-      default: 'transparent'
-    },
-    borderBottomColor: colors.border,
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
-    borderLeftStyle: 'none',
-    borderRightStyle: 'none',
-    borderTopStyle: 'none',
-    color: colors.foreground,
-    cursor: 'pointer',
-    display: 'block',
-    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
-    fontSize: 13,
-    padding: '10px 4px',
-    textAlign: 'left',
-    width: '100%'
-  },
-  optionActive: {
-    color: colors.success
-  },
-  error: {
-    color: colors.destructive,
-    fontSize: 13
-  },
-  footer: {
-    display: 'flex',
-    gap: 8,
-    justifyContent: 'flex-end',
-    paddingTop: 8
-  }
-})
 
 export function InstanceFormDialog({
   open,
@@ -154,23 +91,27 @@ export function InstanceFormDialog({
 
   return (
     <Dialog open={open} title={instance ? t.editTitle : t.createTitle} onClose={onClose}>
-      <div {...stylex.props(styles.form)}>
-        <label {...stylex.props(styles.field)}>
-          <span {...stylex.props(styles.label)}>{t.name}</span>
+      <div className="flex min-h-0 flex-col gap-3">
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase">
+            {t.name}
+          </span>
           <Input
             value={draft.name}
             onChange={(e) => setDraft({ ...draft, name: e.target.value })}
           />
         </label>
-        <label {...stylex.props(styles.field)}>
-          <span {...stylex.props(styles.label)}>{t.version}</span>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase">
+            {t.version}
+          </span>
           <Input
             value={query}
             placeholder={t.searchVersions}
             onChange={(e) => setQuery(e.target.value)}
           />
         </label>
-        <div {...stylex.props(styles.row)}>
+        <div className="flex gap-2">
           {(['release', 'snapshot', 'all'] as const).map((item) => (
             <Button
               key={item}
@@ -182,15 +123,15 @@ export function InstanceFormDialog({
             </Button>
           ))}
         </div>
-        <div {...stylex.props(styles.list)}>
+        <div className="max-h-[180px] overflow-auto">
           {filtered.slice(0, 40).map((version) => (
             <button
               key={version.id}
               type="button"
               onClick={() => setDraft({ ...draft, versionId: version.id })}
-              {...stylex.props(
-                styles.option,
-                draft.versionId === version.id && styles.optionActive
+              className={cn(
+                'block w-full border-b border-hairline bg-transparent py-2.5 pr-1 pl-1 text-left font-mono text-[13px] text-ink hover:bg-white/[0.05]',
+                draft.versionId === version.id && 'text-success'
               )}
             >
               {version.id}
@@ -199,8 +140,8 @@ export function InstanceFormDialog({
             </button>
           ))}
         </div>
-        <label {...stylex.props(styles.field)}>
-          <span {...stylex.props(styles.label)}>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase">
             {t.maxMemory}: {draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX} {t.mb}
           </span>
           <input
@@ -208,14 +149,15 @@ export function InstanceFormDialog({
             min={MEMORY_STEP}
             max={MEMORY_SLIDER_MAX}
             step={MEMORY_STEP}
+            className="w-full"
             value={draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX}
             onChange={(e) =>
               setDraft({ ...draft, memoryMaxMb: snapMemoryMb(Number(e.target.value)) })
             }
           />
         </label>
-        {error ? <p {...stylex.props(styles.error)}>{error}</p> : null}
-        <div {...stylex.props(styles.footer)}>
+        {error ? <p className="text-[13px] text-destructive">{error}</p> : null}
+        <div className="flex justify-end gap-2 pt-2">
           <Button variant="secondary" onClick={onClose}>
             {t.cancel}
           </Button>

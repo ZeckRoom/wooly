@@ -1,37 +1,8 @@
 import { useState } from 'react'
-import * as stylex from '@stylexjs/stylex'
-import { colors } from '../lib/tokens.stylex'
 import { t } from '@/lib/i18n'
 import type { AuthPrompt, PublicAccount } from '@shared/types'
 import { Button } from './ui/button'
 import { Dialog } from './ui/dialog'
-
-const styles = stylex.create({
-  list: { display: 'flex', flexDirection: 'column' },
-  row: {
-    alignItems: 'center',
-    borderBottomColor: colors.border,
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
-    display: 'flex',
-    gap: 12,
-    justifyContent: 'space-between',
-    paddingBlock: 12
-  },
-  who: { alignItems: 'center', display: 'flex', gap: 10 },
-  avatar: { borderRadius: 999, height: 32, width: 32 },
-  muted: { color: colors.mutedForeground, fontSize: 13, lineHeight: 1.6 },
-  code: {
-    color: colors.success,
-    fontFamily: "'Geist Mono Variable', ui-monospace, Consolas, monospace",
-    fontSize: 22,
-    letterSpacing: '0.12em',
-    padding: '8px 0',
-    textAlign: 'center'
-  },
-  error: { color: colors.destructive, fontSize: 13 },
-  name: { fontWeight: 500 }
-})
 
 export function AccountDialog({
   open,
@@ -63,26 +34,33 @@ export function AccountDialog({
 
   return (
     <Dialog open={open} title={t.accounts} onClose={onClose}>
-      <p {...stylex.props(styles.muted)}>{t.premiumOnly}</p>
+      <p className="text-[13px] leading-relaxed text-muted">{t.premiumOnly}</p>
       {prompt ? (
         <div>
-          <p {...stylex.props(styles.muted)}>{prompt.message}</p>
-          {prompt.userCode ? <div {...stylex.props(styles.code)}>{prompt.userCode}</div> : null}
+          <p className="text-[13px] leading-relaxed text-muted">{prompt.message}</p>
+          {prompt.userCode ? (
+            <div className="py-2 text-center font-mono text-[22px] tracking-[0.12em] text-success">
+              {prompt.userCode}
+            </div>
+          ) : null}
         </div>
       ) : null}
-      <div {...stylex.props(styles.list)}>
+      <div className="flex flex-col">
         {accounts.map((account) => (
-          <div key={account.id} {...stylex.props(styles.row)}>
-            <div {...stylex.props(styles.who)}>
-              <img alt="" src={account.avatarUrl} {...stylex.props(styles.avatar)} />
+          <div
+            key={account.id}
+            className="flex items-center justify-between gap-3 border-b border-hairline py-3"
+          >
+            <div className="flex items-center gap-2.5">
+              <img alt="" src={account.avatarUrl} className="size-8 rounded-full" />
               <div>
-                <div {...stylex.props(styles.name)}>{account.username}</div>
-                <div {...stylex.props(styles.muted)}>
+                <div className="font-medium">{account.username}</div>
+                <div className="text-[13px] leading-relaxed text-muted">
                   {account.id === activeId ? t.active : account.xboxGamertag}
                 </div>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 6 }}>
+            <div className="flex gap-1.5">
               {account.id !== activeId ? (
                 <Button
                   size="sm"
@@ -103,7 +81,7 @@ export function AccountDialog({
           </div>
         ))}
       </div>
-      {error ? <p {...stylex.props(styles.error)}>{error}</p> : null}
+      {error ? <p className="text-[13px] text-destructive">{error}</p> : null}
       <Button onClick={() => void login()} disabled={busy}>
         {t.addAccount}
       </Button>

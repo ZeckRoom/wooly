@@ -8,7 +8,7 @@ export function Icon({ icon, size = 16 }: { icon: IconSvgElement; size?: number 
       size={size}
       color="currentColor"
       strokeWidth={1.5}
-      style={{ display: 'block', flexShrink: 0 }}
+      className="block shrink-0"
     />
   )
 }
