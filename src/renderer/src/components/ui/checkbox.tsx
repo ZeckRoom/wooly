@@ -21,7 +21,7 @@ export function Checkbox({
       onCheckedChange={onCheckedChange}
       data-slot="checkbox"
       className={cn(
-        'flex size-[18px] shrink-0 cursor-pointer items-center justify-center rounded-[5px] border border-hairline bg-void text-white outline-none focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] data-checked:border-primary-edge data-checked:bg-primary',
+        'flex size-[18px] shrink-0 cursor-pointer items-center justify-center rounded-[5px] border border-hairline bg-void text-white outline-none focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] data-checked:border-primary-edge data-checked:bg-primary [&_input]:cursor-pointer',
         className
       )}
     >

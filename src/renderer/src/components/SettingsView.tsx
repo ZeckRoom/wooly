@@ -23,7 +23,7 @@ export function SettingsView({
       </div>
       <Well>
         <div className="flex flex-col gap-3.5 px-5 py-[18px]">
-          <label className="flex items-center gap-2.5">
+          <label className="flex cursor-pointer items-center gap-2.5">
             <Checkbox
               checked={settings.keepOpenOnLaunch}
               onCheckedChange={(checked) => {
