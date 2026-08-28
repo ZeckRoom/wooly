@@ -45,9 +45,9 @@ export function InstanceRail({
         title={t.appProduct}
         aria-label={t.appProduct}
         onClick={onHome}
-        className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-primary-edge bg-primary text-[18px] font-semibold tracking-[-0.04em] text-white italic"
+        className="flex size-12 shrink-0 items-center justify-center rounded-2xl border border-primary-edge bg-primary text-[18px] font-semibold tracking-[-0.04em] text-white"
       >
-        W
+        <span className="italic">W</span>
       </button>
       <hr className="my-0.5 h-px w-8 shrink-0 border-0 bg-hairline" />
       <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-2 overflow-auto py-0.5">
