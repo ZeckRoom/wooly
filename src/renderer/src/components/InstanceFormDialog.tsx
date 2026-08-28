@@ -150,6 +150,7 @@ export function InstanceFormDialog({
             max={MEMORY_SLIDER_MAX}
             step={MEMORY_STEP}
             value={draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX}
+            aria-label={t.maxMemory}
             onValueChange={(memoryMaxMb) =>
               setDraft({ ...draft, memoryMaxMb: snapMemoryMb(memoryMaxMb) })
             }
