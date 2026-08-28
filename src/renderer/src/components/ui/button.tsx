@@ -1,4 +1,5 @@
-import type { ButtonHTMLAttributes } from 'react'
+import { forwardRef } from 'react'
+import { Button as ButtonPrimitive } from '@base-ui/react/button'
 import { cn } from '@/lib/utils'
 
 type ButtonVariant = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
@@ -22,31 +23,32 @@ const sizes: Record<ButtonSize, string> = {
   'icon-lg': 'size-10 p-0'
 }
 
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = ButtonPrimitive.Props & {
   variant?: ButtonVariant
   size?: ButtonSize
 }
 
-export function Button({
-  className,
-  variant = 'default',
-  size = 'default',
-  type = 'button',
-  ...props
-}: ButtonProps) {
+export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
+  { className, variant = 'default', size = 'default', type = 'button', ...props },
+  ref
+) {
   return (
-    <button
-      type={type}
+    <ButtonPrimitive
+      nativeButton
       data-slot="button"
+      {...props}
+      ref={ref}
+      type={type}
       data-variant={variant}
       data-size={size}
-      className={cn(
-        'inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-solid text-sm font-medium whitespace-nowrap outline-none transition-[color,background-color,border-color,filter,transform] duration-150 ease-out select-none hover:enabled:-translate-y-px focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] active:translate-y-px active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
-        variants[variant],
-        sizes[size],
-        className
-      )}
-      {...props}
+      className={(state) =>
+        cn(
+          'inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-solid text-sm font-medium whitespace-nowrap outline-none transition-[color,background-color,border-color,filter,transform] duration-150 ease-out select-none hover:enabled:-translate-y-px focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] active:translate-y-px active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50',
+          variants[variant],
+          sizes[size],
+          typeof className === 'function' ? className(state) : className
+        )
+      }
     />
   )
-}
+})

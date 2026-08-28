@@ -3,6 +3,7 @@ import { t } from '@/lib/i18n'
 import type { AppSettings } from '@shared/types'
 import { useLauncher } from '@/state/store'
 import { Button } from './ui/button'
+import { Checkbox } from './ui/checkbox'
 import { Well } from './ui/well'
 
 export function SettingsView({
@@ -23,13 +24,10 @@ export function SettingsView({
       <Well>
         <div className="flex flex-col gap-3.5 px-5 py-[18px]">
           <label className="flex items-center gap-2.5">
-            <input
-              type="checkbox"
+            <Checkbox
               checked={settings.keepOpenOnLaunch}
-              onChange={(e) => {
-                void window.wooly.settings
-                  .set({ keepOpenOnLaunch: e.target.checked })
-                  .then(onChange)
+              onCheckedChange={(checked) => {
+                void window.wooly.settings.set({ keepOpenOnLaunch: checked }).then(onChange)
               }}
             />
             {t.keepOpen}

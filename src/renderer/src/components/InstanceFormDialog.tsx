@@ -20,6 +20,7 @@ import type {
 import { Button } from './ui/button'
 import { Dialog } from './ui/dialog'
 import { Input } from './ui/input'
+import { Slider } from './ui/slider'
 
 export function InstanceFormDialog({
   open,
@@ -144,15 +145,13 @@ export function InstanceFormDialog({
           <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase">
             {t.maxMemory}: {draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX} {t.mb}
           </span>
-          <input
-            type="range"
+          <Slider
             min={MEMORY_STEP}
             max={MEMORY_SLIDER_MAX}
             step={MEMORY_STEP}
-            className="w-full"
             value={draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX}
-            onChange={(e) =>
-              setDraft({ ...draft, memoryMaxMb: snapMemoryMb(Number(e.target.value)) })
+            onValueChange={(memoryMaxMb) =>
+              setDraft({ ...draft, memoryMaxMb: snapMemoryMb(memoryMaxMb) })
             }
           />
         </label>

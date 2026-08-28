@@ -6,7 +6,7 @@ Wooly is a **Tauri 2** desktop app: a short branded splash, isolated instances, 
 
 ## v1
 
-- Tauri 2 + WebView2, React, TypeScript, [Tailwind CSS](https://tailwindcss.com)
+- Tauri 2 + WebView2, React, TypeScript, [Tailwind CSS](https://tailwindcss.com), [Base UI](https://base-ui.com)
 - Visual language: void black, emerald Play, version chips, Geist, one surface at a time
 - English UI (Spanish and Polish later)
 - Microsoft / Xbox / Minecraft login, multiple accounts, encrypted persistent sessions
@@ -94,5 +94,5 @@ If you signed in with the Electron app, sign in once more. Chromium `safeStorage
 ## Layout
 
 - `src-tauri` — window, commands, auth, install, launch (Rust)
-- `src/renderer` — splash, library, settings (React + Tailwind)
+- `src/renderer` — splash, library, settings (React + Tailwind + Base UI)
 - `src/shared` — types and pure helpers (tested)

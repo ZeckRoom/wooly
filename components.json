@@ -3,6 +3,7 @@
   "style": "new-york",
   "rsc": false,
   "tsx": true,
+  "base": "base-ui",
   "tailwind": {
     "config": "",
     "css": "src/renderer/src/styles/globals.css",
