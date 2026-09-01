@@ -28,6 +28,13 @@
 :root {
   --titlebar: 56px;
   --rail: 72px;
+  --frame: 32px;
+  --stage: 26px;
+  --frame-gap: 8px;
+}
+
+[data-frame][data-maximized='true'] {
+  --frame-gap: 0px;
 }
 
 html,
@@ -37,8 +44,12 @@ body,
   overflow: hidden;
 }
 
+html,
 body {
-  background: var(--color-void);
+  background: transparent;
+}
+
+body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 14px;
@@ -47,6 +58,27 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   user-select: none;
+}
+
+html.wooly-preview,
+html.wooly-preview body {
+  background: #111111;
+}
+
+html.wooly-preview body {
+  display: flex;
+  box-sizing: border-box;
+  padding: 18px;
+}
+
+html.wooly-preview:has([data-maximized='true']) body {
+  padding: 0;
+}
+
+html.wooly-preview #root {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
 }
 
 button,

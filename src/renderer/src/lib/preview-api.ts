@@ -49,6 +49,7 @@ export function installPreviewApi(): void {
     keepOpenOnLaunch: true,
     language: 'en'
   }
+  let maximized = false
   let instances: GameInstance[] = []
   const accounts: PublicAccount[] = []
   const activeAccountId: string | null = null
@@ -99,9 +100,12 @@ export function installPreviewApi(): void {
     },
     window: {
       minimize: async () => undefined,
-      maximize: async () => undefined,
+      maximize: async () => {
+        maximized = !maximized
+        emit(EVENTS.maximized, maximized)
+      },
       close: async () => undefined,
-      isMaximized: async () => false
+      isMaximized: async () => maximized
     },
     settings: {
       get: async () => settings,

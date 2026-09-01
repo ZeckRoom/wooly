@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { AppFrame } from './components/AppFrame'
 import { Splash } from './components/Splash'
 import { Shell } from './components/Shell'
 import { gsap, prefersReducedMotion, useGSAP } from './lib/motion'
@@ -22,7 +23,7 @@ function ShellIn() {
     { scope: root }
   )
   return (
-    <div ref={root} className="h-full">
+    <div ref={root} className="h-full min-h-0">
       <Shell />
     </div>
   )
@@ -37,13 +38,16 @@ export default function App(): React.JSX.Element {
     void hydrate()
   }, [hydrate])
 
-  if (splash) {
-    return (
-      <Splash
-        progress={splashProgress}
-        onFinished={() => useLauncher.setState({ splash: false })}
-      />
-    )
-  }
-  return <ShellIn />
+  return (
+    <AppFrame>
+      {splash ? (
+        <Splash
+          progress={splashProgress}
+          onFinished={() => useLauncher.setState({ splash: false })}
+        />
+      ) : (
+        <ShellIn />
+      )}
+    </AppFrame>
+  )
 }

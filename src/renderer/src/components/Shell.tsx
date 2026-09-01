@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { stage } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
 import type { InstanceDraft } from '@shared/types'
 import { AccountDialog } from './AccountDialog'
 import { InstanceDetail } from './InstanceDetail'
@@ -17,6 +19,7 @@ export function Shell() {
   const [accountsOpen, setAccountsOpen] = useState(false)
   const account = activeAccount()
   const selected = store.instances.find((item) => item.id === store.selectedId) ?? null
+  const maximized = store.maximized
 
   const create = async (draft: InstanceDraft) => {
     const created = await window.wooly.instances.create({ ...draft, group: draft.group })
@@ -46,7 +49,7 @@ export function Shell() {
   }
 
   return (
-    <div className="flex h-full flex-row overflow-hidden bg-void">
+    <div className="flex h-full min-h-0 flex-row overflow-hidden bg-void">
       <InstanceRail
         instances={store.instances}
         selectedId={store.selectedId}
@@ -62,9 +65,15 @@ export function Shell() {
         onHome={() => store.setView('library')}
         onAccounts={() => setAccountsOpen(true)}
       />
-      <div className="relative flex min-w-0 flex-1 flex-col bg-void bg-[radial-gradient(ellipse_78%_42%_at_50%_118%,rgb(22_101_52/0.28),transparent_62%)]">
+      <section
+        className={cn(
+          'relative my-[var(--frame-gap)] mr-[var(--frame-gap)] ml-0 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden',
+          stage,
+          maximized ? 'rounded-none' : 'rounded-[var(--stage)] border border-white/10'
+        )}
+      >
         <TitleBar
-          maximized={store.maximized}
+          maximized={maximized}
           view={store.view}
           onLibrary={() => store.setView('library')}
           onSettings={() => store.setView('settings')}
@@ -98,31 +107,29 @@ export function Shell() {
             />
           )}
           <div className="pointer-events-none absolute inset-0 z-20">
-            <div className="pointer-events-none absolute right-0 bottom-[18px] left-0 z-21 flex justify-center">
-              <LauncherDock
-                instances={store.instances}
-                selected={selected}
-                versions={store.versions}
-                launch={store.launch}
-                update={store.update}
-                onPlay={() => void play()}
-                onStop={() => void window.wooly.launch.stop()}
-                onSelect={(id) => {
-                  store.selectInstance(id)
-                  store.setView('library')
-                }}
-                onCreate={() => {
-                  store.setView('library')
-                  setCreateOpen(true)
-                }}
-                onUpdateCheck={() => void window.wooly.update.check()}
-                onUpdateDownload={() => void window.wooly.update.download()}
-                onUpdateInstall={() => void window.wooly.update.install()}
-              />
-            </div>
+            <LauncherDock
+              instances={store.instances}
+              selected={selected}
+              versions={store.versions}
+              launch={store.launch}
+              update={store.update}
+              onPlay={() => void play()}
+              onStop={() => void window.wooly.launch.stop()}
+              onSelect={(id) => {
+                store.selectInstance(id)
+                store.setView('library')
+              }}
+              onCreate={() => {
+                store.setView('library')
+                setCreateOpen(true)
+              }}
+              onUpdateCheck={() => void window.wooly.update.check()}
+              onUpdateDownload={() => void window.wooly.update.download()}
+              onUpdateInstall={() => void window.wooly.update.install()}
+            />
           </div>
         </div>
-      </div>
+      </section>
       <InstanceFormDialog
         key={`create-${createOpen}`}
         open={createOpen}

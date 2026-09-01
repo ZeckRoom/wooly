@@ -7,8 +7,10 @@ import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 
-const caption =
+const captionFlush =
   'h-full w-[46px] rounded-none hover:enabled:translate-y-0 active:translate-y-0 active:scale-100'
+const captionInset =
+  'h-8 w-10 rounded-lg hover:enabled:translate-y-0 active:translate-y-0 active:scale-100'
 
 export function TitleBar({
   maximized,
@@ -24,7 +26,10 @@ export function TitleBar({
   return (
     <header
       data-tauri-drag-region
-      className="relative z-10 flex h-[var(--titlebar)] items-center justify-end bg-transparent pr-0 pl-3"
+      className={cn(
+        'relative z-10 flex h-[var(--titlebar)] items-center justify-end bg-transparent pl-3',
+        maximized ? 'pr-0' : 'pr-3'
+      )}
     >
       <nav
         className={cn(
@@ -65,12 +70,17 @@ export function TitleBar({
           {t.settings}
         </button>
       </nav>
-      <div className="no-drag z-[2] flex h-full shrink-0 items-stretch justify-end gap-0 self-stretch">
+      <div
+        className={cn(
+          'no-drag z-[2] flex shrink-0 items-center justify-end gap-0',
+          maximized ? 'h-full items-stretch self-stretch' : 'self-center'
+        )}
+      >
         <Button
           variant="ghost"
           size="icon-sm"
           aria-label={t.minimize}
-          className={caption}
+          className={maximized ? captionFlush : captionInset}
           onClick={() => window.wooly.window.minimize()}
         >
           <Icon icon={MinusSignIcon} size={14} />
@@ -79,7 +89,7 @@ export function TitleBar({
           variant="ghost"
           size="icon-sm"
           aria-label={maximized ? t.restore : t.maximize}
-          className={caption}
+          className={maximized ? captionFlush : captionInset}
           onClick={() => window.wooly.window.maximize()}
         >
           <Icon icon={SquareIcon} size={12} />
@@ -89,7 +99,7 @@ export function TitleBar({
           size="icon-sm"
           aria-label={t.close}
           className={cn(
-            caption,
+            maximized ? captionFlush : captionInset,
             'text-ink hover:enabled:bg-destructive/50 hover:enabled:text-white'
           )}
           onClick={() => window.wooly.window.close()}

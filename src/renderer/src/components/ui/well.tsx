@@ -7,7 +7,7 @@ export function Well({ children, className }: { children: ReactNode; className?:
     <section
       data-slot="well"
       className={cn(
-        'overflow-hidden rounded-[20px] bg-card shadow-[inset_0_0_0_1px_var(--color-hairline)]',
+        'overflow-hidden rounded-[24px] border border-white/10 bg-black/40 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.1)] backdrop-blur-xl',
         className
       )}
     >

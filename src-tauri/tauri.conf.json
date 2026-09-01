@@ -21,8 +21,8 @@
         "resizable": true,
         "center": true,
         "decorations": false,
-        "shadow": true,
-        "backgroundColor": "#161310"
+        "transparent": true,
+        "shadow": true
       }
     ],
     "security": {
@@ -32,12 +32,7 @@
   "bundle": {
     "active": true,
     "targets": ["nsis"],
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.ico"
-    ],
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.ico"],
     "publisher": "Wooly",
     "shortDescription": "Minecraft Java Edition launcher",
     "category": "Game",

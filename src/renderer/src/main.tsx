@@ -7,7 +7,10 @@ import { installPreviewApi } from './lib/preview-api'
 import { installTauriApi, isTauriRuntime } from './lib/tauri-api'
 
 if (isTauriRuntime()) installTauriApi()
-else installPreviewApi()
+else {
+  document.documentElement.classList.add('wooly-preview')
+  installPreviewApi()
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

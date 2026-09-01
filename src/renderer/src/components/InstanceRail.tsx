@@ -37,7 +37,7 @@ export function InstanceRail({
 }) {
   return (
     <aside
-      className="flex h-full w-[var(--rail)] shrink-0 flex-col items-center gap-2 overflow-hidden border-r border-hairline bg-void pt-3 pb-3"
+      className="flex h-full w-[var(--rail)] shrink-0 flex-col items-center gap-2 overflow-hidden bg-void pt-4 pb-4"
       aria-label={t.instances}
     >
       <button
