@@ -1,8 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
-import PlayIcon from '@hugeicons/core-free-icons/PlayIcon'
-import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
-import StopIcon from '@hugeicons/core-free-icons/StopIcon'
 import { glass, kicker } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/motion'
@@ -154,7 +150,7 @@ export function LauncherDock({
                   onClick={hide}
                   className="flex size-8 items-center justify-center rounded-full border border-hairline bg-transparent text-ink"
                 >
-                  <Icon icon={Cancel01Icon} size={14} />
+                  <Icon name="close" size={16} />
                 </button>
               </div>
               <div className="flex min-h-0 flex-1 flex-col overflow-auto px-2 pt-1 pb-2">
@@ -167,7 +163,7 @@ export function LauncherDock({
                   }}
                   className="flex w-full flex-row items-center gap-2.5 rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink hover:bg-white/[0.05]"
                 >
-                  <Icon icon={PlusSignIcon} size={16} />
+                  <Icon name="plus" size={16} />
                   <span className="text-[15px] font-medium">{t.newInstance}</span>
                 </button>
                 {instances.length === 0 ? (
@@ -245,7 +241,7 @@ export function LauncherDock({
                   : 'border-primary-edge bg-primary hover:enabled:brightness-110 disabled:bg-primary/55'
               )}
             >
-              <Icon icon={running ? StopIcon : PlayIcon} size={18} />
+              <Icon name={running ? 'stop' : 'play'} size={16} />
             </button>
           </div>
         </div>

@@ -1,5 +1,3 @@
-import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
-import RefreshCwIcon from '@hugeicons/core-free-icons/RefreshCwIcon'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import type { AppUpdateState } from '@shared/types'
@@ -66,7 +64,7 @@ export function UpdateBanner({
         className="flex size-[18px] shrink-0 items-center justify-center leading-none"
         aria-hidden
       >
-        <Icon icon={idle || update.phase === 'ready' ? RefreshCwIcon : Download01Icon} size={18} />
+        <Icon name={idle || update.phase === 'ready' ? 'refresh' : 'download'} size={16} />
       </span>
       {busy ? (
         <span

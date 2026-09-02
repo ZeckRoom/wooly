@@ -1,6 +1,4 @@
 import { useEffect, useRef } from 'react'
-import Download01Icon from '@hugeicons/core-free-icons/Download01Icon'
-import FolderOpenIcon from '@hugeicons/core-free-icons/FolderOpenIcon'
 import { kicker } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 import { formatBytes, formatSpeed } from '@shared/minecraft'
@@ -99,14 +97,14 @@ export function InstanceDetail({
           </div>
           <div className="flex flex-wrap justify-end gap-2">
             <Button variant="secondary" onClick={onInstall} disabled={busy}>
-              <Icon icon={Download01Icon} size={14} />
+              <Icon name="download" size={16} />
               {installLabel(launch.phase, launch.instanceId ?? '', instance.id)}
             </Button>
             <Button variant="secondary" onClick={onEdit} disabled={busy}>
               {t.edit}
             </Button>
             <Button variant="ghost" onClick={onFolder} aria-label={t.folder}>
-              <Icon icon={FolderOpenIcon} size={16} />
+              <Icon name="folder" size={16} />
             </Button>
             <Button variant="ghost" onClick={onDelete} disabled={busy}>
               {t.delete}

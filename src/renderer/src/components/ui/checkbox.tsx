@@ -1,4 +1,3 @@
-import Tick02Icon from '@hugeicons/core-free-icons/Tick02Icon'
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
 import { cn } from '@/lib/utils'
 import { Icon } from './icon'
@@ -26,7 +25,7 @@ export function Checkbox({
       )}
     >
       <CheckboxPrimitive.Indicator>
-        <Icon icon={Tick02Icon} size={12} />
+        <Icon name="check" size={16} />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

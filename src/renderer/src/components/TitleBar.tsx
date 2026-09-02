@@ -1,6 +1,3 @@
-import Cancel01Icon from '@hugeicons/core-free-icons/Cancel01Icon'
-import MinusSignIcon from '@hugeicons/core-free-icons/MinusSignIcon'
-import SquareIcon from '@hugeicons/core-free-icons/SquareIcon'
 import { island } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
@@ -83,7 +80,7 @@ export function TitleBar({
           className={maximized ? captionFlush : captionInset}
           onClick={() => window.wooly.window.minimize()}
         >
-          <Icon icon={MinusSignIcon} size={14} />
+          <Icon name="minus" size={16} />
         </Button>
         <Button
           variant="ghost"
@@ -92,7 +89,7 @@ export function TitleBar({
           className={maximized ? captionFlush : captionInset}
           onClick={() => window.wooly.window.maximize()}
         >
-          <Icon icon={SquareIcon} size={12} />
+          <Icon name={maximized ? 'restore' : 'square'} size={16} />
         </Button>
         <Button
           variant="ghost"
@@ -104,7 +101,7 @@ export function TitleBar({
           )}
           onClick={() => window.wooly.window.close()}
         >
-          <Icon icon={Cancel01Icon} size={14} />
+          <Icon name="close" size={16} />
         </Button>
       </div>
     </header>

@@ -1,4 +1,3 @@
-import PlusSignIcon from '@hugeicons/core-free-icons/PlusSignIcon'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import type { GameInstance, PublicAccount } from '@shared/types'
@@ -85,7 +84,7 @@ export function InstanceRail({
           onClick={onCreate}
           className="flex size-12 shrink-0 items-center justify-center rounded-full border border-hairline bg-transparent text-success transition-[border-radius,background-color] duration-200 ease-out hover:rounded-2xl hover:border-primary-edge hover:bg-primary hover:text-white"
         >
-          <Icon icon={PlusSignIcon} size={22} />
+          <Icon name="plus" size={16} />
         </button>
       </div>
       <div className="shrink-0 pt-2">

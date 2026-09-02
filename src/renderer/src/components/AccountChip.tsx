@@ -1,4 +1,3 @@
-import UserIcon from '@hugeicons/core-free-icons/UserIcon'
 import { t } from '@/lib/i18n'
 import type { PublicAccount } from '@shared/types'
 import { Icon } from './ui/icon'
@@ -27,7 +26,7 @@ export function AccountChip({
         />
       ) : (
         <span className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-hairline bg-secondary text-ink">
-          <Icon icon={UserIcon} size={18} />
+          <Icon name="user" size={16} />
         </span>
       )}
       <span className="max-w-full truncate text-center text-[11px] font-medium text-muted">
