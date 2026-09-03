@@ -1,0 +1,108 @@
+import { island } from '@/lib/chrome'
+import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
+import { Button } from './ui/button'
+import { Icon } from './ui/icon'
+
+const captionFlush =
+  'h-full w-[46px] rounded-none hover:enabled:translate-y-0 active:enabled:scale-100'
+const captionInset = 'h-8 w-10 rounded-lg hover:enabled:translate-y-0 active:enabled:scale-100'
+
+export function TitleBar({
+  maximized,
+  view,
+  onLibrary,
+  onSettings
+}: {
+  maximized: boolean
+  view: 'library' | 'settings'
+  onLibrary: () => void
+  onSettings: () => void
+}) {
+  return (
+    <header
+      data-tauri-drag-region
+      className={cn(
+        'relative z-10 flex h-[var(--titlebar)] items-center justify-end bg-transparent pl-3',
+        maximized ? 'pr-0' : 'pr-3'
+      )}
+    >
+      <nav
+        className={cn(
+          'no-drag pointer-events-auto absolute top-1/2 left-1/2 z-[1] flex h-10 -translate-x-1/2 -translate-y-1/2 items-center gap-0.5 rounded-full p-1',
+          island
+        )}
+        aria-label={t.appProduct}
+      >
+        <button
+          type="button"
+          title={t.appProduct}
+          aria-label={t.appProduct}
+          onClick={onLibrary}
+          className="flex size-7 shrink-0 items-center justify-center rounded-[10px] border border-primary-edge bg-primary text-[13px] font-semibold tracking-[-0.04em] text-white"
+        >
+          W
+        </button>
+        <button
+          type="button"
+          aria-current={view === 'library' ? 'page' : undefined}
+          onClick={onLibrary}
+          className={cn(
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.07]',
+            view === 'library' && 'bg-white/[0.08] text-ink'
+          )}
+        >
+          {t.library}
+        </button>
+        <button
+          type="button"
+          aria-current={view === 'settings' ? 'page' : undefined}
+          onClick={onSettings}
+          className={cn(
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.07]',
+            view === 'settings' && 'bg-white/[0.08] text-ink'
+          )}
+        >
+          {t.settings}
+        </button>
+      </nav>
+      <div
+        className={cn(
+          'no-drag z-[2] flex shrink-0 items-center justify-end gap-0',
+          maximized ? 'h-full items-stretch self-stretch' : 'self-center'
+        )}
+      >
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label={t.minimize}
+          className={maximized ? captionFlush : captionInset}
+          onClick={() => window.wooly.window.minimize()}
+        >
+          <Icon name="minus" size={16} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label={maximized ? t.restore : t.maximize}
+          className={maximized ? captionFlush : captionInset}
+          onClick={() => window.wooly.window.maximize()}
+        >
+          <Icon name={maximized ? 'restore' : 'square'} size={16} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label={t.close}
+          className={cn(
+            maximized ? captionFlush : captionInset,
+            'text-ink hover:enabled:bg-destructive/50 hover:enabled:text-white'
+          )}
+          onClick={() => window.wooly.window.close()}
+        >
+          <Icon name="close" size={16} />
+        </Button>
+      </div>
+    </header>
+  )
+}
