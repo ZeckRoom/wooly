@@ -50,7 +50,7 @@ export function InstanceDetail({
 
   if (!instance) {
     return (
-      <main className="flex min-w-0 flex-1 flex-col gap-7 px-8 pt-5 pb-[120px]">
+      <main className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-7 px-8 pt-5 pb-[120px]">
         <div className="flex flex-col gap-2.5">
           <div className={kicker}>{t.appName}</div>
           <h1 className="text-[28px] leading-[1.15] font-medium tracking-[-0.03em]">
@@ -75,7 +75,7 @@ export function InstanceDetail({
     : t.never
 
   return (
-    <main className="flex min-w-0 flex-1 flex-col gap-7 px-8 pt-5 pb-[120px]">
+    <main className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-7 px-8 pt-5 pb-[120px]">
       <div className="flex flex-col gap-2.5">
         <div className="flex items-start justify-between gap-4">
           <div>

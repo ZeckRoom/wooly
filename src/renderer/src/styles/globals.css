@@ -40,6 +40,7 @@
 html,
 body,
 #root {
+  width: 100%;
   height: 100%;
   overflow: hidden;
 }
@@ -67,6 +68,7 @@ html.wooly-preview body {
 
 html.wooly-preview body {
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   padding: 18px;
 }
@@ -77,6 +79,7 @@ html.wooly-preview:has([data-maximized='true']) body {
 
 html.wooly-preview #root {
   flex: 1;
+  width: 100%;
   min-height: 0;
   min-width: 0;
 }

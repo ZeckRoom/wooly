@@ -55,7 +55,7 @@ export function Splash({ progress, onFinished }: { progress: number; onFinished:
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.max(0, Math.min(100, progress))}
-      className="flex h-full w-full flex-col justify-center bg-void"
+      className="flex h-full min-h-0 w-full flex-1 flex-col justify-center bg-void"
     >
       <div className="h-[3px] w-full overflow-hidden">
         <div ref={bar} className="h-full w-full origin-left scale-x-0 bg-success" />

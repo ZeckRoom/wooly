@@ -23,7 +23,7 @@ function ShellIn() {
     { scope: root }
   )
   return (
-    <div ref={root} className="h-full min-h-0">
+    <div ref={root} className="flex h-full min-h-0 w-full flex-1 flex-col">
       <Shell />
     </div>
   )

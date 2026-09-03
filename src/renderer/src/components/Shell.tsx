@@ -49,7 +49,7 @@ export function Shell() {
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-row overflow-hidden bg-void">
+    <div className="flex h-full min-h-0 w-full flex-1 flex-row overflow-hidden bg-void">
       <InstanceRail
         instances={store.instances}
         selectedId={store.selectedId}
@@ -83,7 +83,7 @@ export function Shell() {
             {store.error}
           </p>
         ) : null}
-        <div className="relative flex min-h-0 flex-1">
+        <div className="relative flex min-h-0 w-full min-w-0 flex-1 flex-col">
           {store.view === 'settings' ? (
             <SettingsView
               settings={store.settings}

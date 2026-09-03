@@ -16,7 +16,7 @@ export function SettingsView({
   const appVersion = useLauncher((s) => s.update.currentVersion)
 
   return (
-    <main className="flex flex-1 flex-col gap-5 px-8 pt-5 pb-[120px]">
+    <main className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-5 px-8 pt-5 pb-[120px]">
       <div>
         <div className={kicker}>{t.appName}</div>
         <h1 className="text-[28px] font-medium tracking-[-0.03em]">{t.settings}</h1>

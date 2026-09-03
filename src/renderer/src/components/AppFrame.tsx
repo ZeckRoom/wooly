@@ -10,7 +10,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
       data-frame=""
       data-maximized={maximized ? 'true' : undefined}
       className={cn(
-        'flex h-full w-full min-h-0 overflow-hidden bg-void',
+        'flex h-full w-full min-h-0 flex-col overflow-hidden bg-void',
         maximized
           ? 'rounded-none border-transparent shadow-none'
           : 'rounded-[var(--frame)] border border-black shadow-[inset_0_0_0_1px_rgb(255_255_255/0.14)]'
