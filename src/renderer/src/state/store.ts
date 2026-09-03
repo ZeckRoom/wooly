@@ -34,7 +34,7 @@ interface LauncherStore {
   maximized: boolean
   error: string | null
   update: AppUpdateState
-  hydrate: () => Promise<void>
+  hydrate: () => Promise<() => void>
   setGroup: (group: InstanceGroup) => void
   setView: (view: 'library' | 'settings') => void
   selectInstance: (id: string | null) => void
@@ -70,55 +70,49 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
   selectInstance: (id) => set({ selectedId: id }),
   setError: (error) => set({ error }),
   hydrate: async () => {
-    const offSplash = window.wooly.on(EVENTS.splash, (status) => {
+    const offs: Array<() => void> = []
+    const listen = (channel: string, fn: (...args: unknown[]) => void) => {
+      offs.push(window.wooly.on(channel, fn))
+    }
+    listen(EVENTS.splash, (status) => {
       set({
         splashStatus: String(status),
         splashProgress: Math.min(90, get().splashProgress + 18)
       })
     })
-    const offCatalog = window.wooly.on(EVENTS.catalog, (versions) => {
+    listen(EVENTS.catalog, (versions) => {
       set({ versions: versions as CatalogVersion[] })
     })
-    const offAccounts = window.wooly.on(EVENTS.accounts, (payload) => {
+    listen(EVENTS.accounts, (payload) => {
       const data = payload as { accounts: PublicAccount[]; activeAccountId: string | null }
       set({ accounts: data.accounts, activeAccountId: data.activeAccountId })
     })
-    const offInstances = window.wooly.on(EVENTS.instances, (instances) => {
+    listen(EVENTS.instances, (instances) => {
       const list = instances as GameInstance[]
       const selectedId = get().selectedId
       const stillThere = list.some((item) => item.id === selectedId)
       const fallback = list.find((item) => item.group === get().group)?.id ?? list[0]?.id ?? null
       set({ instances: list, selectedId: stillThere ? selectedId : fallback })
     })
-    const offInstall = window.wooly.on(EVENTS.install, (progress) => {
+    listen(EVENTS.install, (progress) => {
       set({ install: progress as InstallProgress })
     })
-    const offLaunch = window.wooly.on(EVENTS.launch, (launch) => {
+    listen(EVENTS.launch, (launch) => {
       set({ launch: launch as LaunchState, error: (launch as LaunchState).error })
     })
-    const offLogs = window.wooly.on(EVENTS.logs, (line) => {
+    listen(EVENTS.logs, (line) => {
       const logs = [...get().logs, line as LogLine]
       set({ logs: logs.slice(-MAX_LOGS) })
     })
-    const offAuth = window.wooly.on(EVENTS.auth, (prompt) => {
+    listen(EVENTS.auth, (prompt) => {
       set({ authPrompt: prompt as AuthPrompt | null })
     })
-    const offMax = window.wooly.on(EVENTS.maximized, (value) => {
+    listen(EVENTS.maximized, (value) => {
       set({ maximized: Boolean(value) })
     })
-    const offUpdate = window.wooly.on(EVENTS.update, (payload) => {
+    listen(EVENTS.update, (payload) => {
       set({ update: payload as AppUpdateState })
     })
-    void offSplash
-    void offCatalog
-    void offAccounts
-    void offInstances
-    void offInstall
-    void offLaunch
-    void offLogs
-    void offAuth
-    void offMax
-    void offUpdate
 
     try {
       const payload = await window.wooly.bootstrap()
@@ -142,6 +136,10 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
         splashProgress: 100,
         splashStatus: 'Ready'
       })
+    }
+
+    return () => {
+      offs.forEach((off) => off())
     }
   }
 }))

@@ -35,7 +35,16 @@ export default function App(): React.JSX.Element {
   const hydrate = useLauncher((s) => s.hydrate)
 
   useEffect(() => {
-    void hydrate()
+    let cancelled = false
+    let unsub = () => {}
+    void hydrate().then((off) => {
+      if (cancelled) off()
+      else unsub = off
+    })
+    return () => {
+      cancelled = true
+      unsub()
+    }
   }, [hydrate])
 
   return (
