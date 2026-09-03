@@ -1,14 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { kicker } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
+import { cn } from '@/lib/utils'
 import { formatBytes, formatSpeed } from '@shared/minecraft'
-import type {
-  CatalogVersion,
-  GameInstance,
-  InstallProgress,
-  LaunchState,
-  LogLine
-} from '@shared/types'
+import type { LaunchState, LogLine } from '@shared/types'
+import { useLauncher, useSelectedInstance } from '@/state/store'
 import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 import { Progress } from './ui/progress'
@@ -19,27 +15,39 @@ function installLabel(phase: LaunchState['phase'], instanceId: string, currentId
   return t.install
 }
 
+function ConsoleLine({ line }: { line: LogLine }) {
+  return (
+    <div
+      className={cn(
+        '[content-visibility:auto] [contain-intrinsic-size:auto_1.65em]',
+        line.stream === 'stderr'
+          ? 'text-destructive-edge'
+          : line.stream === 'launcher'
+            ? 'text-success'
+            : 'text-[#c4cdc8]'
+      )}
+    >
+      {line.text}
+    </div>
+  )
+}
+
 export function InstanceDetail({
-  instance,
-  versions,
-  launch,
-  install,
-  logs,
   onInstall,
   onEdit,
   onDelete,
   onFolder
 }: {
-  instance: GameInstance | null
-  versions: CatalogVersion[]
-  launch: LaunchState
-  install: InstallProgress | null
-  logs: LogLine[]
   onInstall: () => void
   onEdit: () => void
   onDelete: () => void
   onFolder: () => void
 }) {
+  const instance = useSelectedInstance()
+  const versions = useLauncher((s) => s.versions)
+  const launch = useLauncher((s) => s.launch)
+  const install = useLauncher((s) => s.install)
+  const logs = useLauncher((s) => s.logs)
   const consoleRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -51,7 +59,7 @@ export function InstanceDetail({
   if (!instance) {
     return (
       <main className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-7 px-8 pt-5 pb-[120px]">
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5" role="status">
           <div className={kicker}>{t.appName}</div>
           <h1 className="text-[28px] leading-[1.15] font-medium tracking-[-0.03em]">
             {t.noInstances}
@@ -83,7 +91,7 @@ export function InstanceDetail({
             <h1 className="text-[28px] leading-[1.15] font-medium tracking-[-0.03em]">
               {instance.name}
             </h1>
-            <p className="font-mono text-[13px] tracking-[-0.02em] text-muted">
+            <p className="font-mono text-[13px] tracking-[-0.02em] text-muted tabular-nums">
               <span className={version?.latestRelease ? 'text-success' : undefined}>
                 {instance.versionId}
               </span>
@@ -136,20 +144,7 @@ export function InstanceDetail({
           {logs.length === 0 ? (
             <span className="text-[13px] text-muted">{t.consoleEmpty}</span>
           ) : (
-            logs.map((line) => (
-              <div
-                key={line.id}
-                className={
-                  line.stream === 'stderr'
-                    ? 'text-destructive-edge'
-                    : line.stream === 'launcher'
-                      ? 'text-success'
-                      : 'text-[#c4cdc8]'
-                }
-              >
-                {line.text}
-              </div>
-            ))
+            logs.map((line) => <ConsoleLine key={line.id} line={line} />)
           )}
         </div>
       </Well>

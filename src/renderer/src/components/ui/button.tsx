@@ -43,7 +43,7 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(
       data-size={size}
       className={(state) =>
         cn(
-          'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-solid text-sm font-medium whitespace-nowrap outline-none transition-[color,background-color,border-color,filter,transform] duration-150 ease-out select-none hover:enabled:-translate-y-px focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] active:translate-y-px active:scale-[0.98] disabled:pointer-events-none disabled:cursor-default disabled:opacity-50',
+          'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border border-solid text-sm font-medium whitespace-nowrap outline-none transition-[color,background-color,border-color,filter,transform] duration-press ease-out select-none focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--color-primary-edge)_45%,transparent)] active:enabled:scale-[0.97] motion-reduce:active:enabled:scale-100 disabled:pointer-events-none disabled:cursor-default disabled:opacity-50',
           variants[variant],
           sizes[size],
           typeof className === 'function' ? className(state) : className

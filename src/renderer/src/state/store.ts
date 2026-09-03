@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { useShallow } from 'zustand/react/shallow'
 import { EVENTS, WOOLY_MS_CLIENT_ID } from '@shared/constants'
 import { idleUpdateState } from '@shared/update'
 import type {
@@ -145,7 +146,42 @@ export const useLauncher = create<LauncherStore>((set, get) => ({
   }
 }))
 
-export function activeAccount(): PublicAccount | null {
-  const { accounts, activeAccountId } = useLauncher.getState()
-  return accounts.find((item) => item.id === activeAccountId) ?? accounts[0] ?? null
+export function getSelectedInstance(): GameInstance | null {
+  const { instances, selectedId } = useLauncher.getState()
+  return instances.find((item) => item.id === selectedId) ?? null
+}
+
+export function useActiveAccount(): PublicAccount | null {
+  return useLauncher(
+    useShallow(
+      (s) => s.accounts.find((item) => item.id === s.activeAccountId) ?? s.accounts[0] ?? null
+    )
+  )
+}
+
+export function useSelectedInstance(): GameInstance | null {
+  return useLauncher(
+    useShallow((s) => s.instances.find((item) => item.id === s.selectedId) ?? null)
+  )
+}
+
+/** Chrome that must not re-render when the console streams. */
+export function useShellChrome() {
+  return useLauncher(
+    useShallow((s) => ({
+      view: s.view,
+      instances: s.instances,
+      versions: s.versions,
+      settings: s.settings,
+      accounts: s.accounts,
+      activeAccountId: s.activeAccountId,
+      authPrompt: s.authPrompt,
+      maximized: s.maximized,
+      error: s.error,
+      launchError: s.launch.error,
+      selectInstance: s.selectInstance,
+      setView: s.setView,
+      setError: s.setError
+    }))
+  )
 }

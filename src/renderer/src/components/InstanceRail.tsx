@@ -1,3 +1,4 @@
+import { pressable } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import type { GameInstance, PublicAccount } from '@shared/types'
@@ -68,7 +69,8 @@ export function InstanceRail({
                 onClick={() => onSelect(item.id)}
                 style={{ backgroundColor: tileColor(item.id) }}
                 className={cn(
-                  'flex size-12 items-center justify-center overflow-hidden rounded-full text-base font-semibold text-white transition-[border-radius] duration-200 ease-out hover:rounded-2xl',
+                  pressable,
+                  'flex size-12 items-center justify-center overflow-hidden rounded-full text-base font-semibold text-white transition-[border-radius,transform] duration-ui ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:rounded-2xl',
                   active && 'rounded-2xl'
                 )}
               >
@@ -82,7 +84,10 @@ export function InstanceRail({
           title={t.newInstance}
           aria-label={t.newInstance}
           onClick={onCreate}
-          className="flex size-12 shrink-0 items-center justify-center rounded-full border border-hairline bg-transparent text-success transition-[border-radius,background-color] duration-200 ease-out hover:rounded-2xl hover:border-primary-edge hover:bg-primary hover:text-white"
+          className={cn(
+            pressable,
+            'flex size-12 shrink-0 items-center justify-center rounded-full border border-hairline bg-transparent text-success transition-[border-radius,background-color,transform] duration-ui ease-out [@media(hover:hover)_and_(pointer:fine)]:hover:rounded-2xl [@media(hover:hover)_and_(pointer:fine)]:hover:border-primary-edge [@media(hover:hover)_and_(pointer:fine)]:hover:bg-primary [@media(hover:hover)_and_(pointer:fine)]:hover:text-white'
+          )}
         >
           <Icon name="plus" size={16} />
         </button>

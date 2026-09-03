@@ -9,3 +9,7 @@ export const kicker = 'text-[11px] font-medium tracking-[0.12em] text-muted uppe
 
 export const stage =
   'bg-[#08090a] bg-[radial-gradient(ellipse_72%_48%_at_82%_-8%,rgb(22_101_52/0.28),transparent_58%),radial-gradient(ellipse_55%_42%_at_12%_108%,rgb(18_48_52/0.4),transparent_62%)]'
+
+/** Press scale for raw buttons. Caption controls opt out. */
+export const pressable =
+  'transition-[transform,filter,background-color,border-color] duration-press ease-out active:enabled:scale-[0.97] motion-reduce:active:enabled:scale-100'

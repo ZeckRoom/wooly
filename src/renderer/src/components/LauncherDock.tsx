@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { glass, kicker } from '@/lib/chrome'
+import { glass, kicker, pressable } from '@/lib/chrome'
 import { t } from '@/lib/i18n'
 import { gsap, prefersReducedMotion, useGSAP } from '@/lib/motion'
 import { cn } from '@/lib/utils'
-import type { AppUpdateState, CatalogVersion, GameInstance, LaunchState } from '@shared/types'
+import type { LaunchState } from '@shared/types'
+import { useLauncher, useSelectedInstance } from '@/state/store'
 import { Icon } from './ui/icon'
 import { UpdateBanner } from './UpdateBanner'
 
@@ -16,11 +17,6 @@ function playLabel(phase: LaunchState['phase']): string {
 }
 
 export function LauncherDock({
-  instances,
-  selected,
-  versions,
-  launch,
-  update,
   onPlay,
   onStop,
   onSelect,
@@ -29,11 +25,6 @@ export function LauncherDock({
   onUpdateDownload,
   onUpdateInstall
 }: {
-  instances: GameInstance[]
-  selected: GameInstance | null
-  versions: CatalogVersion[]
-  launch: LaunchState
-  update: AppUpdateState
   onPlay: () => void
   onStop: () => void
   onSelect: (id: string) => void
@@ -42,6 +33,11 @@ export function LauncherDock({
   onUpdateDownload: () => void
   onUpdateInstall: () => void
 }) {
+  const instances = useLauncher((s) => s.instances)
+  const versions = useLauncher((s) => s.versions)
+  const launch = useLauncher((s) => s.launch)
+  const update = useLauncher((s) => s.update)
+  const selected = useSelectedInstance()
   const [open, setOpen] = useState(false)
   const [shown, setShown] = useState(false)
   const panel = useRef<HTMLDivElement>(null)
@@ -80,13 +76,13 @@ export function LauncherDock({
         }
         gsap.fromTo(
           panel.current,
-          { opacity: 0, y: 28, scale: 0.9 },
+          { opacity: 0, y: 16, scale: 0.95 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.48,
-            ease: 'power3.out',
+            duration: 0.28,
+            ease: 'power2.out',
             transformOrigin: '50% 100%'
           }
         )
@@ -94,8 +90,8 @@ export function LauncherDock({
         if (rows.length > 0) {
           gsap.fromTo(
             rows,
-            { opacity: 0, y: 8 },
-            { opacity: 1, y: 0, duration: 0.32, stagger: 0.04, delay: 0.08, ease: 'power2.out' }
+            { opacity: 0, y: 6 },
+            { opacity: 1, y: 0, duration: 0.2, stagger: 0.03, delay: 0.04, ease: 'power2.out' }
           )
         }
         return
@@ -106,10 +102,10 @@ export function LauncherDock({
       }
       gsap.to(panel.current, {
         opacity: 0,
-        y: 18,
-        scale: 0.94,
-        duration: 0.26,
-        ease: 'power2.in',
+        y: 12,
+        scale: 0.96,
+        duration: 0.22,
+        ease: 'power2.out',
         transformOrigin: '50% 100%',
         onComplete: () => setShown(false)
       })
@@ -125,7 +121,10 @@ export function LauncherDock({
         <div
           role="presentation"
           onClick={hide}
-          className="pointer-events-auto absolute inset-0 z-20 cursor-default rounded-[inherit] bg-black/45"
+          className={cn(
+            'pointer-events-auto absolute inset-0 z-20 cursor-default rounded-[inherit] bg-black/45 transition-opacity duration-ui ease-out',
+            open ? 'opacity-100' : 'opacity-0'
+          )}
         />
       ) : null}
       <div className="pointer-events-auto absolute right-0 bottom-[18px] left-0 z-21 flex justify-center">
@@ -148,7 +147,10 @@ export function LauncherDock({
                   type="button"
                   aria-label={t.close}
                   onClick={hide}
-                  className="flex size-8 items-center justify-center rounded-full border border-hairline bg-transparent text-ink"
+                  className={cn(
+                    'flex size-8 items-center justify-center rounded-full border border-hairline bg-transparent text-ink',
+                    pressable
+                  )}
                 >
                   <Icon name="close" size={16} />
                 </button>
@@ -161,7 +163,7 @@ export function LauncherDock({
                     hide()
                     onCreate()
                   }}
-                  className="flex w-full flex-row items-center gap-2.5 rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink hover:bg-white/[0.05]"
+                  className="flex w-full flex-row items-center gap-2.5 rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.05]"
                 >
                   <Icon name="plus" size={16} />
                   <span className="text-[15px] font-medium">{t.newInstance}</span>
@@ -181,12 +183,12 @@ export function LauncherDock({
                         onSelect(item.id)
                       }}
                       className={cn(
-                        'flex w-full flex-col gap-0.5 rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink hover:bg-white/[0.05]',
+                        'flex w-full flex-col gap-0.5 rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.05]',
                         selected?.id === item.id && 'bg-white/[0.07]'
                       )}
                     >
                       <span className="text-[15px] font-medium">{item.name}</span>
-                      <span className="font-mono text-xs text-muted">
+                      <span className="font-mono text-xs tabular-nums text-muted">
                         {item.versionId} ·{' '}
                         {item.versionType === 'snapshot' ? t.snapshot : t.releases}
                       </span>
@@ -218,7 +220,10 @@ export function LauncherDock({
               aria-expanded={open}
               aria-haspopup="dialog"
               onClick={() => (open ? hide() : show())}
-              className="flex h-10 min-w-10 shrink-0 items-center justify-center rounded-full bg-chip px-3.5 font-mono text-xs font-medium tracking-[0.02em] whitespace-nowrap text-chip-fg"
+              className={cn(
+                'flex h-10 min-w-10 shrink-0 items-center justify-center rounded-full bg-chip px-3.5 font-mono text-xs font-medium tracking-[0.02em] whitespace-nowrap text-chip-fg tabular-nums',
+                pressable
+              )}
             >
               {versionLabel}
             </button>
@@ -235,10 +240,11 @@ export function LauncherDock({
                 else onPlay()
               }}
               className={cn(
+                pressable,
                 'flex size-11 shrink-0 items-center justify-center rounded-full border border-solid disabled:opacity-70',
                 running
-                  ? 'border-destructive-edge bg-destructive hover:brightness-110'
-                  : 'border-primary-edge bg-primary hover:enabled:brightness-110 disabled:bg-primary/55'
+                  ? 'border-destructive-edge bg-destructive [@media(hover:hover)_and_(pointer:fine)]:hover:brightness-110'
+                  : 'border-primary-edge bg-primary [@media(hover:hover)_and_(pointer:fine)]:hover:enabled:brightness-110 disabled:bg-primary/55'
               )}
             >
               <Icon name={running ? 'stop' : 'play'} size={16} />

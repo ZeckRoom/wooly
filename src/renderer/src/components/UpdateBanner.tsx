@@ -53,7 +53,7 @@ export function UpdateBanner({
       aria-label={hint ? `${title}. ${hint}` : title}
       onClick={activate}
       className={cn(
-        'relative flex w-full items-center justify-between gap-2.5 overflow-hidden rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink hover:enabled:bg-white/[0.05] disabled:cursor-default',
+        'relative flex w-full items-center justify-between gap-2.5 overflow-hidden rounded-[10px] bg-transparent px-3 py-2.5 text-left text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:enabled:bg-white/[0.05] disabled:cursor-default',
         !idle && 'text-success'
       )}
     >
@@ -73,7 +73,7 @@ export function UpdateBanner({
           aria-valuenow={update.percent}
         >
           <span
-            className="block h-full bg-success transition-[width] duration-200 ease-out"
+            className="block h-full bg-success transition-[width] duration-ui ease-out"
             style={{ width: `${update.percent}%` }}
           />
         </span>

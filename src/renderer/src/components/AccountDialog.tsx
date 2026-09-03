@@ -39,7 +39,7 @@ export function AccountDialog({
         <div>
           <p className="text-[13px] leading-relaxed text-muted">{prompt.message}</p>
           {prompt.userCode ? (
-            <div className="py-2 text-center font-mono text-[22px] tracking-[0.12em] text-success">
+            <div className="py-2 text-center font-mono text-[22px] tracking-[0.12em] text-success tabular-nums">
               {prompt.userCode}
             </div>
           ) : null}

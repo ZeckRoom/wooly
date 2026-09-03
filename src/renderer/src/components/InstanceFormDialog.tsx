@@ -131,7 +131,7 @@ export function InstanceFormDialog({
               type="button"
               onClick={() => setDraft({ ...draft, versionId: version.id })}
               className={cn(
-                'block w-full border-b border-hairline bg-transparent py-2.5 pr-1 pl-1 text-left font-mono text-[13px] text-ink hover:bg-white/[0.05]',
+                'block w-full border-b border-hairline bg-transparent py-2.5 pr-1 pl-1 text-left font-mono text-[13px] tabular-nums text-ink [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.05]',
                 draft.versionId === version.id && 'text-success'
               )}
             >
@@ -142,7 +142,7 @@ export function InstanceFormDialog({
           ))}
         </div>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase">
+          <span className="text-[11px] font-medium tracking-[0.08em] text-muted uppercase tabular-nums">
             {t.maxMemory}: {draft.memoryMaxMb ?? DEFAULT_MEMORY_MAX} {t.mb}
           </span>
           <Slider

@@ -37,7 +37,8 @@ export function SettingsView({
             {t.language}: {t.languageValue}. {t.languageSoon}
           </p>
           <p className="text-[13px] leading-relaxed text-muted">
-            {t.appVersion} <span className="font-mono text-[13px] text-success">{appVersion}</span>
+            {t.appVersion}{' '}
+            <span className="font-mono text-[13px] tabular-nums text-success">{appVersion}</span>
           </p>
           <div className="flex items-center gap-2.5">
             <Button variant="secondary" size="sm" onClick={() => void window.wooly.update.check()}>

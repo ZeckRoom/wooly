@@ -16,8 +16,8 @@ function ShellIn() {
       }
       gsap.fromTo(
         root.current,
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.62, ease: 'power3.out' }
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
       )
     },
     { scope: root }

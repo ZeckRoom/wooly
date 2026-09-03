@@ -5,9 +5,8 @@ import { Button } from './ui/button'
 import { Icon } from './ui/icon'
 
 const captionFlush =
-  'h-full w-[46px] rounded-none hover:enabled:translate-y-0 active:translate-y-0 active:scale-100'
-const captionInset =
-  'h-8 w-10 rounded-lg hover:enabled:translate-y-0 active:translate-y-0 active:scale-100'
+  'h-full w-[46px] rounded-none hover:enabled:translate-y-0 active:enabled:scale-100'
+const captionInset = 'h-8 w-10 rounded-lg hover:enabled:translate-y-0 active:enabled:scale-100'
 
 export function TitleBar({
   maximized,
@@ -49,7 +48,7 @@ export function TitleBar({
           aria-current={view === 'library' ? 'page' : undefined}
           onClick={onLibrary}
           className={cn(
-            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted hover:bg-white/[0.07]',
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.07]',
             view === 'library' && 'bg-white/[0.08] text-ink'
           )}
         >
@@ -60,7 +59,7 @@ export function TitleBar({
           aria-current={view === 'settings' ? 'page' : undefined}
           onClick={onSettings}
           className={cn(
-            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted hover:bg-white/[0.07]',
+            'flex h-8 items-center rounded-full px-3 text-[13px] font-medium whitespace-nowrap text-muted [@media(hover:hover)_and_(pointer:fine)]:hover:bg-white/[0.07]',
             view === 'settings' && 'bg-white/[0.08] text-ink'
           )}
         >
